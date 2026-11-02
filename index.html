@@ -1,17 +1,92 @@
 <!doctype html>
 <html lang="en">
 <head>
+<!-- head:start -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>FlintRay · Get recommended when buyers ask AI</title>
-  <meta name="description" content="FlintRay runs your buyers' real questions through ChatGPT, Claude, Gemini and Perplexity, shows who gets recommended instead of you and why, then works the fixes.">
+  <meta name="description" content="FlintRay asks ChatGPT, Claude, Gemini and Perplexity the questions your buyers ask, shows who gets recommended instead of you and why, then fixes it.">
   <meta name="robots" content="noindex, nofollow">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="preload" as="image" href="assets/deep-ocean.webp">
-  <link rel="stylesheet" href="styles.css?v=5">
+  <link rel="canonical" href="https://xvomiit.github.io/flintray-staging/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="FlintRay">
+  <meta property="og:title" content="FlintRay · Get recommended when buyers ask AI">
+  <meta property="og:description" content="FlintRay asks ChatGPT, Claude, Gemini and Perplexity the questions your buyers ask, shows who gets recommended instead of you and why, then fixes it.">
+  <meta property="og:url" content="https://xvomiit.github.io/flintray-staging/">
+  <meta property="og:image" content="https://xvomiit.github.io/flintray-staging/assets/og.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="preload" href="assets/fonts/geist-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="styles.css?v=6">
   <link rel="icon" type="image/png" href="assets/manta-mark.png">
+  <script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@graph": [
+  {
+   "@type": "Organization",
+   "@id": "https://xvomiit.github.io/flintray-staging/#org",
+   "name": "FlintRay",
+   "url": "https://xvomiit.github.io/flintray-staging/",
+   "logo": "https://xvomiit.github.io/flintray-staging/assets/manta-mark.png",
+   "description": "FlintRay shows companies what ChatGPT, Claude, Gemini and Perplexity tell their buyers, who gets recommended instead and why, then works the fixes.",
+   "contactPoint": {
+    "@type": "ContactPoint",
+    "contactType": "sales",
+    "url": "https://xvomiit.github.io/flintray-staging/audit.html"
+   }
+  },
+  {
+   "@type": "WebSite",
+   "name": "FlintRay",
+   "url": "https://xvomiit.github.io/flintray-staging/",
+   "publisher": {
+    "@id": "https://xvomiit.github.io/flintray-staging/#org"
+   }
+  },
+  {
+   "@type": "Service",
+   "name": "Lens Monitor",
+   "description": "Your buyers' situations rerun in four AI assistants on a schedule, with the pages behind every answer and a fix plan your team works through.",
+   "provider": {
+    "@id": "https://xvomiit.github.io/flintray-staging/#org"
+   },
+   "serviceType": "Answer engine optimization (AEO)",
+   "offers": {
+    "@type": "Offer",
+    "priceCurrency": "USD",
+    "priceSpecification": {
+     "@type": "UnitPriceSpecification",
+     "minPrice": 2500,
+     "priceCurrency": "USD",
+     "unitText": "MONTH"
+    }
+   }
+  },
+  {
+   "@type": "Service",
+   "name": "Lens Engage",
+   "description": "Lens Monitor rerun weekly, plus FlintRay writes and places the fixes and reviews the results each month.",
+   "provider": {
+    "@id": "https://xvomiit.github.io/flintray-staging/#org"
+   },
+   "serviceType": "Answer engine optimization (AEO)",
+   "offers": {
+    "@type": "Offer",
+    "priceCurrency": "USD",
+    "priceSpecification": {
+     "@type": "UnitPriceSpecification",
+     "minPrice": 6500,
+     "priceCurrency": "USD",
+     "unitText": "MONTH"
+    }
+   }
+  }
+ ]
+}
+  </script>
+<!-- head:end -->
 </head>
 <body>
   <div class="draft-bar" role="note">Staging preview. Not the live site.</div>
@@ -37,7 +112,7 @@
       <img class="hero-manta" src="assets/manta.webp" alt="" aria-hidden="true" width="994" height="454">
       <div class="hero-inner">
         <div class="hero-copy">
-          <h1 id="hero-title">When your buyers ask AI who to hire, are you in the answer?</h1>
+          <h1 id="hero-title">When your buyers ask AI who to call, are you in the answer?</h1>
           <p class="lede">FlintRay asks ChatGPT, Claude, Gemini and Perplexity the questions your buyers ask. We show you who gets recommended instead of you and which pages decided it. Then we fix it, and prove the fix with the next run.</p>
           <div class="cta-row">
             <a class="btn" href="#audit">Get your free AI search audit</a>
@@ -83,7 +158,7 @@
           <li>
             <span class="num">2</span>
             <h3>Every major AI, the way buyers use it</h3>
-            <p>Each conversation runs in ChatGPT, Claude, Gemini and Perplexity, in their real apps, with the model behind every answer recorded. Not an API, and not a single prompt.</p>
+            <p>Each conversation runs in ChatGPT, Claude, Gemini and Perplexity, in the same apps your buyers use, as a full three-turn conversation. We record the model behind every answer.</p>
           </li>
           <li>
             <span class="num">3</span>
@@ -165,6 +240,16 @@
       </div>
     </section>
 
+    <section class="guides" aria-labelledby="guides-title">
+      <div class="wrap">
+        <h2 id="guides-title">Guides</h2>
+        <div class="guide-list">
+          <a class="guide" href="how-ai-assistants-decide.html"><h3>How AI assistants decide which companies to recommend</h3><p>What decides the three or four names a buyer gets, and what a company can change.</p></a>
+          <a class="guide" href="how-much-does-aeo-cost.html"><h3>How much does AEO cost?</h3><p>Price bands in 2026, what sets the price, and how to decide what to buy.</p></a>
+        </div>
+      </div>
+    </section>
+
     <section id="partners" class="partners" aria-labelledby="partners-title">
       <div class="wrap split">
         <div>
@@ -197,10 +282,10 @@
     <div class="wrap foot">
       <a class="brand" href="#top"><img src="assets/manta-mark.png" alt="" width="46" height="21"><span>FlintRay</span></a>
       <p>AI search visibility, measured and fixed.</p>
-      <p class="small"><a href="privacy.html">Privacy</a> · © 2026 FlintRay</p>
+      <p class="small"><a href="how-much-does-aeo-cost.html">AEO pricing</a> · <a href="how-ai-assistants-decide.html">How AI decides</a> · <a href="privacy.html">Privacy</a> · © 2026 FlintRay</p>
     </div>
   </footer>
 
-  <script src="main.js?v=5"></script>
+  <script src="main.js?v=6"></script>
 </body>
 </html>

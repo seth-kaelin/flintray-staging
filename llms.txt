@@ -1,0 +1,19 @@
+# FlintRay
+
+> FlintRay shows companies what ChatGPT, Claude, Gemini and Perplexity tell their buyers, who gets recommended instead and why, then works the fixes until the company is in the answer.
+
+- Method: each buyer situation runs as a three-turn conversation (the problem, the constraints, then "which companies would you contact?") in all four assistants, in the apps buyers use. The model behind every answer and the pages it read are recorded. A company counts as recommended only when the assistant's own words name it.
+- Free audit: 15 buyer situations, three turns each, four assistants, a private report and a walkthrough call.
+- Lens Monitor: from $2,500 a month. Situations rerun every two weeks, a live report, sources, a fix plan.
+- Lens Engage: from $6,500 a month. Monitor rerun weekly, plus FlintRay writes and places the fixes.
+- Partners: white-label delivery under a partner's brand. Pricing on request.
+
+## Pages
+
+- [FlintRay](https://xvomiit.github.io/flintray-staging/): What FlintRay does, proof, pricing and the free audit.
+- [How we measure what AI tells your buyers](https://xvomiit.github.io/flintray-staging/how-it-works.html): The method: buyer situations, three-turn conversations, four assistants, what we count, sources, fixes.
+- [Free AI search audit: see who AI recommends instead of you](https://xvomiit.github.io/flintray-staging/audit.html): What the free audit includes, a sample report, and how to request one.
+- [How much does AEO cost? Prices in 2026](https://xvomiit.github.io/flintray-staging/how-much-does-aeo-cost.html): AEO pricing in 2026: price bands, what sets the price, what each band buys, how to decide.
+- [How AI assistants decide which companies to recommend](https://xvomiit.github.io/flintray-staging/how-ai-assistants-decide.html): What decides which companies AI assistants recommend, and what to change.
+- [White-label AEO for agencies](https://xvomiit.github.io/flintray-staging/partners.html): White-label AEO for agencies and firms with clients.
+- [Privacy](https://xvomiit.github.io/flintray-staging/privacy.html): Privacy notice.

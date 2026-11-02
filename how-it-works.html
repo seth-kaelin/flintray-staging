@@ -1,16 +1,91 @@
 <!doctype html>
 <html lang="en">
 <head>
+<!-- head:start -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>How it works · FlintRay</title>
-  <meta name="description" content="How FlintRay measures what ChatGPT, Claude, Gemini and Perplexity tell your buyers, why each answer happened, and how fixes are checked against the next run.">
+  <title>How we measure what AI tells your buyers · FlintRay</title>
+  <meta name="description" content="Your buyers&#x27; real situations as three-turn conversations in ChatGPT, Claude, Gemini and Perplexity, counted word for word, with fixes checked on the next run.">
   <meta name="robots" content="noindex, nofollow">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=5">
+  <link rel="canonical" href="https://xvomiit.github.io/flintray-staging/how-it-works.html">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="FlintRay">
+  <meta property="og:title" content="How we measure what AI tells your buyers · FlintRay">
+  <meta property="og:description" content="Your buyers&#x27; real situations as three-turn conversations in ChatGPT, Claude, Gemini and Perplexity, counted word for word, with fixes checked on the next run.">
+  <meta property="og:url" content="https://xvomiit.github.io/flintray-staging/how-it-works.html">
+  <meta property="og:image" content="https://xvomiit.github.io/flintray-staging/assets/og.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="preload" href="assets/fonts/geist-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="styles.css?v=6">
   <link rel="icon" type="image/png" href="assets/manta-mark.png">
+  <script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@graph": [
+  {
+   "@type": "Organization",
+   "@id": "https://xvomiit.github.io/flintray-staging/#org",
+   "name": "FlintRay",
+   "url": "https://xvomiit.github.io/flintray-staging/",
+   "logo": "https://xvomiit.github.io/flintray-staging/assets/manta-mark.png",
+   "description": "FlintRay shows companies what ChatGPT, Claude, Gemini and Perplexity tell their buyers, who gets recommended instead and why, then works the fixes.",
+   "contactPoint": {
+    "@type": "ContactPoint",
+    "contactType": "sales",
+    "url": "https://xvomiit.github.io/flintray-staging/audit.html"
+   }
+  },
+  {
+   "@type": "FAQPage",
+   "mainEntity": [
+    {
+     "@type": "Question",
+     "name": "Do you name my company in the questions?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "No. We want to see whether an assistant finds and recommends you on its own, the way it would for a real buyer."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Which AI assistants do you test?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "ChatGPT, Claude, Gemini and Perplexity, in the same apps your buyers use. We record the model behind every answer."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "How often do you rerun the questions?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Every two weeks on Lens Monitor and every week on Lens Engage. Reruns show whether a change you made moved the answer."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "What counts as being recommended?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "An assistant has to name you in its own words when the buyer asks which companies to contact. We quote it exactly, and if the quote isn't in the answer, it doesn't count."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Can my team read the conversations?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Yes. Every conversation is saved in your live report, and you can connect your own AI assistant to the data to ask questions about it."
+     }
+    }
+   ]
+  }
+ ]
+}
+  </script>
+<!-- head:end -->
 </head>
 <body>
   <div class="draft-bar" role="note">Staging preview. Not the live site.</div>
@@ -98,7 +173,7 @@
       <div class="wrap chapter-grid">
         <div class="chapter-head"><span class="num">5</span><h2 id="c5">Why each answer happened</h2></div>
         <div class="chapter-body">
-          <p>Assistants read pages before they answer. We record which ones: your site, your competitors' sites, directories, review sites, publishers. You see which pages decided each shortlist, which of them mention you, and where you need to be.</p>
+          <p>Assistants read pages before they answer. We record which ones: your site, your competitors' sites, directories, review sites, publishers. You see which pages decided each shortlist, which of them mention you, and where you need to be. <a href="how-ai-assistants-decide.html">What we see deciding those shortlists</a>.</p>
         </div>
       </div>
     </section>
@@ -129,6 +204,34 @@
       </div>
     </section>
 
+    <section class="chapter faq" aria-labelledby="faq-title">
+      <div class="wrap chapter-grid">
+        <div class="chapter-head"><h2 id="faq-title">Questions</h2></div>
+        <div class="chapter-body faq-list">
+          <div class="faq-item">
+            <h3>Do you name my company in the questions?</h3>
+            <p>No. We want to see whether an assistant finds and recommends you on its own, the way it would for a real buyer.</p>
+          </div>
+          <div class="faq-item">
+            <h3>Which AI assistants do you test?</h3>
+            <p>ChatGPT, Claude, Gemini and Perplexity, in the same apps your buyers use. We record the model behind every answer.</p>
+          </div>
+          <div class="faq-item">
+            <h3>How often do you rerun the questions?</h3>
+            <p>Every two weeks on Lens Monitor and every week on Lens Engage. Reruns show whether a change you made moved the answer.</p>
+          </div>
+          <div class="faq-item">
+            <h3>What counts as being recommended?</h3>
+            <p>An assistant has to name you in its own words when the buyer asks which companies to contact. We quote it exactly, and if the quote isn't in the answer, it doesn't count.</p>
+          </div>
+          <div class="faq-item">
+            <h3>Can my team read the conversations?</h3>
+            <p>Yes. Every conversation is saved in your live report, and you can connect your own AI assistant to the data to ask questions about it.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <section class="cta-band" aria-labelledby="cta-title">
       <div class="wrap split">
         <div>
@@ -144,10 +247,10 @@
     <div class="wrap foot">
       <a class="brand" href="index.html"><img src="assets/manta-mark.png" alt="" width="46" height="21"><span>FlintRay</span></a>
       <p>AI search visibility, measured and fixed.</p>
-      <p class="small"><a href="privacy.html">Privacy</a> · © 2026 FlintRay</p>
+      <p class="small"><a href="how-much-does-aeo-cost.html">AEO pricing</a> · <a href="how-ai-assistants-decide.html">How AI decides</a> · <a href="privacy.html">Privacy</a> · © 2026 FlintRay</p>
     </div>
   </footer>
 
-  <script src="main.js?v=5"></script>
+  <script src="main.js?v=6"></script>
 </body>
 </html>

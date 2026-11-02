@@ -1,3 +1,7 @@
+/* Geist and Geist Mono, self-hosted (SIL OFL 1.1, assets/fonts/OFL.txt). Latin subset. */
+@font-face { font-family: "Geist"; font-style: normal; font-weight: 300 600; font-display: swap; src: url("assets/fonts/geist-latin.woff2") format("woff2"); }
+@font-face { font-family: "Geist Mono"; font-style: normal; font-weight: 400 500; font-display: swap; src: url("assets/fonts/geist-mono-latin.woff2") format("woff2"); }
+
 /* Palette sampled from flintray/brand/ on 2026-11-02 (median of regions). */
 :root {
   --abyss: #050917;
@@ -302,3 +306,22 @@ section { position: relative; }
 .sample-card .btn { flex-shrink: 0; }
 .page-hero .cta-row { margin-top: 32px; }
 @media (max-width: 960px) { .sample-card { flex-direction: column; align-items: flex-start; padding: 28px; } }
+
+/* FAQ and articles */
+.faq-list { gap: 26px; }
+.faq-item h3 { font-size: 18px; color: var(--ink); }
+.faq-item p { margin-top: 8px; color: #C3D2E4; max-width: 62ch; }
+.prose .table-wrap { overflow-x: auto; margin: 18px 0 6px; border: 1px solid var(--line); border-radius: var(--radius-sm); }
+.prose table { width: 100%; border-collapse: collapse; font-size: 15px; }
+.prose th, .prose td { text-align: left; vertical-align: top; padding: 12px 14px; border-bottom: 1px solid var(--line); color: #C3D2E4; }
+.prose thead th { color: var(--ink); font-weight: 500; background: rgba(24, 43, 69, 0.45); }
+.prose tbody th { color: var(--ink); font-weight: 500; white-space: nowrap; }
+.prose tr:last-child td, .prose tr:last-child th { border-bottom: 0; }
+.prose .ticks { margin-top: 14px; }
+.sources { margin: 12px 0 0; padding-left: 18px; color: var(--muted); font-size: 14px; display: grid; gap: 8px; }
+.guides { padding: 20px 0 60px; }
+.guide-list { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 28px; }
+.guide { display: block; padding: 24px 28px; border-radius: var(--radius); border: 1px solid var(--line); background: rgba(11, 29, 55, 0.3); text-decoration: none; transition: border-color .2s; }
+.guide:hover { border-color: rgba(126, 172, 210, 0.5); }
+.guide p { margin-top: 8px; color: var(--muted); font-size: 15px; }
+@media (max-width: 960px) { .guide-list { grid-template-columns: 1fr; } }
