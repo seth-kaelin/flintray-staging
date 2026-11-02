@@ -495,6 +495,8 @@ html.menu-open { overflow: hidden; }
 .guides-index .ledger { margin-top: 0; }
 .guides-index .ledger .meta { display: block; margin-bottom: 6px; }
 .guides-index .guide-title { max-width: 40ch; font: 500 22px/1.25 var(--sans); letter-spacing: -0.01em; }
+/* The hero names which company the sample measures, so "Not named" lands on a phone */
+.v-row .v-who { font-weight: 400; color: var(--manta-soft); }
 
 /* audit: only what the shared components don't cover, scoped to this page's <main>. */
 .aud .aud-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 16px 32px; margin-top: 36px; padding-left: 16px; }

@@ -119,7 +119,7 @@ for (const form of document.querySelectorAll(".audit-form")) {
     rows.push([e.subjectRole || "none", D.subject]);
     const later = e.later ? `<li class="v-later">${moreNamed(e.later)}</li>` : "";
     $("[data-f=verdict]").innerHTML = rows.map(([role, name], i) =>
-      `${name === D.subject ? later : ""}<li class="v-row${name === D.subject ? " is-you" : ""}" data-i="${i}"><span class="v-name">${name}</span><span class="stamp stamp-${role}">${ROLE[role]}</span></li>`).join("");
+      `${name === D.subject ? later : ""}<li class="v-row${name === D.subject ? " is-you" : ""}" data-i="${i}"><span class="v-name">${name}${name === D.subject ? '<span class="v-who">, the company measured</span>' : ""}</span><span class="stamp stamp-${role}">${ROLE[role]}</span></li>`).join("");
     $("[data-f=sources]").innerHTML = e.sourceIds.length
       ? e.sourceIds.map((i) => `<li data-src="${i}"><span class="n">[${i}]</span> ${e.sources[i - 1].domain} <span class="kind">${e.sources[i - 1].kind}</span></li>`).join("")
       : `<li class="none">${e.sources.length ? "No source cited in these lines." : "The app showed no sources for this answer."}</li>`;
@@ -148,6 +148,11 @@ for (const form of document.querySelectorAll(".audit-form")) {
       if (at >= 0) { range.setStart(node, at); range.setEnd(node, at + marker.length); end = range.getBoundingClientRect(); break; }
     }
     if (!end) { range.selectNodeContents(li); const rs = [...range.getClientRects()]; end = rs[rs.length - 1]; }
+    // The marker can sit mid-line ("Trellisec [1], Kontrolo and…"): leave from the end of that visual line,
+    // so the trace never runs through the words after it
+    range.selectNodeContents(li);
+    const row = [...range.getClientRects()].filter((r) => Math.abs(r.top + r.height / 2 - (end.top + end.height / 2)) < end.height / 2);
+    if (row.length) end = { top: end.top, height: end.height, right: Math.max(...row.map((r) => r.right)) };
     const c = s.getBoundingClientRect();
     const x1 = end.right - box.left + 10, y1 = end.top - box.top + end.height / 2;
     const x2 = c.left - box.left - 6, y2 = c.top - box.top + c.height / 2;
@@ -257,7 +262,11 @@ for (const form of document.querySelectorAll(".audit-form")) {
       if (match) {
         range.setStart(node, match.index);
         range.setEnd(node, match.index + match[0].length);
-        return range.getBoundingClientRect();
+        const at = range.getBoundingClientRect();
+        // Leave from the end of the marker's visual line, so the trace never crosses the words after it
+        range.selectNodeContents(marker);
+        const row = [...range.getClientRects()].filter((r) => Math.abs(r.top + r.height / 2 - (at.top + at.height / 2)) < at.height / 2);
+        return row.length ? { top: at.top, height: at.height, right: Math.max(...row.map((r) => r.right)) } : at;
       }
     }
     return null;
