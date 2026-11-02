@@ -119,7 +119,7 @@ for (const form of document.querySelectorAll(".audit-form")) {
     rows.push([e.subjectRole || "none", D.subject]);
     const later = e.later ? `<li class="v-later">${moreNamed(e.later)}</li>` : "";
     $("[data-f=verdict]").innerHTML = rows.map(([role, name], i) =>
-      `${name === D.subject ? later : ""}<li class="v-row${name === D.subject ? " is-you" : ""}" data-i="${i}"><span class="v-name">${name}${name === D.subject ? '<span class="v-who">, the company measured</span>' : ""}</span><span class="stamp stamp-${role}">${ROLE[role]}</span></li>`).join("");
+      `${name === D.subject ? later : ""}<li class="v-row${name === D.subject ? " is-you" : ""}" data-i="${i}"><span class="v-name">${name}${name === D.subject ? '<span class="v-who">the sample client</span>' : ""}</span><span class="stamp stamp-${role}">${ROLE[role]}</span></li>`).join("");
     $("[data-f=sources]").innerHTML = e.sourceIds.length
       ? e.sourceIds.map((i) => `<li data-src="${i}"><span class="n">[${i}]</span> ${e.sources[i - 1].domain} <span class="kind">${e.sources[i - 1].kind}</span></li>`).join("")
       : `<li class="none">${e.sources.length ? "No source cited in these lines." : "The app showed no sources for this answer."}</li>`;
