@@ -17,7 +17,9 @@
   <meta property="og:image:height" content="630">
   <meta name="twitter:card" content="summary_large_image">
   <link rel="preload" href="assets/fonts/geist-latin.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="styles.css?v=7">
+  <link rel="preload" href="assets/fonts/newsreader-italic-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="fr.css?v=7">
+  <link rel="icon" type="image/svg+xml" href="assets/hallmark.svg">
   <link rel="icon" type="image/png" href="assets/manta-mark.png">
   <script type="application/ld+json">
 {
@@ -67,203 +69,221 @@
   </script>
 </head>
 <body>
-  <div class="draft-bar" role="note">Staging preview. Not the live site.</div>
+  <div class="draft-bar" role="note">Staging · not live</div>
+  <div class="hairlines" aria-hidden="true"></div>
 
-  <header class="nav">
-    <a class="brand" href="#top" aria-label="FlintRay home">
-      <img src="assets/manta-mark.png" alt="" width="46" height="21">
-      <span>FlintRay</span>
-    </a>
-    <nav aria-label="Main">
-      <a href="how-it-works.html">How it works</a>
-      <a href="#proof">Proof</a>
-      <a href="#pricing">Pricing</a>
-      <a href="partners.html">Partners</a>
-    </nav>
-    <a class="btn btn-small" href="audit.html">Free audit</a>
+  <header class="site-nav">
+    <a class="wordmark" href="#top">FlintRay</a>
+    <nav class="nav-links" aria-label="Main"><a href="how-it-works.html">How it works</a><a href="audit/sample/">Sample report</a><a href="partners.html">Partners</a><a href="#pricing">Pricing</a></nav>
+    <a class="nav-cta" href="audit.html">Request audit</a>
+    <details class="menu">
+      <summary>Menu</summary>
+      <nav aria-label="Main, small screens"><a href="how-it-works.html">How it works</a><a href="audit/sample/">Sample report</a><a href="partners.html">Partners</a><a href="#pricing">Pricing</a><a href="audit.html">Request audit</a></nav>
+    </details>
   </header>
 
   <main id="top">
     <section class="hero" aria-labelledby="hero-title">
-      <div class="hero-bg" data-parallax="0.35" aria-hidden="true"></div>
-      <div class="hero-shade" aria-hidden="true"></div>
-      <img class="hero-manta" src="assets/manta.webp" alt="" aria-hidden="true" width="994" height="454">
-      <div class="hero-inner">
-        <div class="hero-copy">
-          <h1 id="hero-title">When your buyers ask AI who to call, are you in the answer?</h1>
-          <p class="lede">FlintRay asks ChatGPT, Claude, Gemini and Perplexity the questions your buyers ask. We show you who gets recommended instead of you and which pages decided it. Then we fix it, and prove the fix with the next run.</p>
-          <div class="cta-row">
-            <a class="btn" href="#audit">Get your free AI search audit</a>
-            <a class="btn btn-ghost" href="audit/sample/" target="_blank" rel="noopener">See a sample report</a>
+      <p class="kicker meta">AI search evidence</p>
+      <h1 id="hero-title"><span>Why AI recommends</span><span>your competitor<em>.</em></span></h1>
+      <div class="hero-copy">
+        <p><strong>…and what will change it.</strong> We run your buyers' real situations through ChatGPT, Claude, Gemini and Perplexity, quote what each one said, trace the sources behind it, and check every fix on the next run.</p>
+        <div class="ctas"><a class="btn" href="#request">Request a baseline audit</a><a class="btn btn-ghost" href="audit/sample/">Open the sample report</a></div>
+      </div>
+      <section class="evidence" aria-label="Sample conversation D007, Aurora" data-specimen data-lines="1" data-sources="cited" data-route="gutter">
+        <svg class="trace" aria-hidden="true" focusable="false"><path d=""/><circle r="3" cx="-9" cy="-9"/></svg>
+        <p class="corner c-tl"><span>situation:</span><b>D007 · Aurora</b></p>
+        <p class="corner c-tr"><span class="label">engine:</span><b data-f="engine">Perplexity</b><b>·</b><b data-f="model">Best</b><span data-f="pos">1/4</span><button class="next" type="button" data-next aria-label="Show the next engine's answer">next</button></p>
+        <article class="sheet">
+          <p class="ask-wrap"><q class="ask" data-f="ask">“Which companies around Aurora should I contact, both roofers that also do solar and dedicated solar installers?”</q><span class="caret" aria-hidden="true"></span></p>
+          <ul class="answer" data-f="answer"><li><b>Front Range Solar Co.</b>: regional installer with a commercial focus and engineering depth; start here [1].</li></ul>
+          <ol class="verdict" data-f="verdict"><li class="v-row" data-on><span class="v-name">Front Range Solar Co.</span><span class="stamp stamp-recommended">Put first</span></li><li class="v-row" data-on><span class="v-name">Peakwatt Solar</span><span class="stamp stamp-shortlisted">Shortlisted</span></li><li class="v-row" data-on><span class="v-name">SunPath Energy</span><span class="stamp stamp-shortlisted">Shortlisted</span></li><li class="v-row is-you" data-on><span class="v-name">Lumen Ridge Solar</span><span class="stamp stamp-none">Not named</span></li></ol>
+          <ol class="sources" data-f="sources"><li data-src="1"><span class="n">[1]</span> coloradosolarforum.example <span class="kind">Forum</span></li></ol>
+          <p class="base"><span class="figure">6 <small>of 60</small></span><span class="label">Lumen Ridge Solar · put forward</span></p>
+        </article>
+        <p class="caption"><a class="key key-sample" href="#evidence-key">Sample · fictional</a> Sample conversation, written to show the format. Real reports quote the engine's own answer.</p>
+        <p class="ruler" aria-hidden="true"><span>situations <b>15</b></span><span>conversations <b>60</b></span><span>engines <b>4</b></span><span>turns <b>3</b></span></p>
+        <script type="application/json" data-specimen-json>{"id": "D007", "market": "Aurora", "subject": "Lumen Ridge Solar", "engines": {"perplexity": {"label": "Perplexity", "model": "Best", "ask": "Which companies around Aurora should I contact, both roofers that also do solar and dedicated solar installers?", "lines": [{"text": "Front Range Solar Co.: regional installer with a commercial focus and engineering depth; start here [1].", "names": ["Front Range Solar Co."], "cites": [1]}, {"text": "Peakwatt Solar: Denver-area installer with many local reviews [1].", "names": ["Peakwatt Solar"], "cites": [1]}, {"text": "SunPath Energy: national installer with strong reviews, useful as a price benchmark [2].", "names": ["SunPath Energy"], "cites": [2]}], "named": [{"name": "Front Range Solar Co.", "role": "recommended"}, {"name": "Peakwatt Solar", "role": "shortlisted"}, {"name": "SunPath Energy", "role": "shortlisted"}], "subjectRole": null, "sources": [{"domain": "coloradosolarforum.example", "kind": "Forum"}, {"domain": "homeenergyreview.example", "kind": "Review publisher"}]}, "chatgpt": {"label": "ChatGPT", "model": "Instant", "ask": "Which companies around Aurora should I contact, both roofers that also do solar and dedicated solar installers?", "lines": [{"text": "SolarCompare: a quote marketplace that can line up several Front Range installers at once. It is useful for benchmarking price per watt.", "names": ["SolarCompare"], "cites": []}, {"text": "Vantage Roof & Solar: a roofer that also installs solar, so one contract can cover shingles, flashing and panels.", "names": ["Vantage Roof & Solar"], "cites": []}, {"text": "HelioNest: national, known for leases and $0-down offers. Compare carefully against your $45,000 budget, and read the lease terms on removal and reinstall.", "names": ["HelioNest"], "cites": []}, {"text": "Other local names such as Lumen Ridge Solar also come up in searches.", "names": ["Lumen Ridge Solar"], "cites": []}], "named": [{"name": "SolarCompare", "role": "recommended"}, {"name": "Vantage Roof & Solar", "role": "shortlisted"}, {"name": "HelioNest", "role": "shortlisted"}], "subjectRole": "mentioned", "sources": [{"domain": "coloradosolarforum.example", "kind": "Forum"}]}, "claude": {"label": "Claude", "model": "Sonnet 5.5 Medium", "ask": "Which companies around Aurora should I contact, both roofers that also do solar and dedicated solar installers?", "lines": [{"text": "I'd start with Peakwatt Solar, a Denver-area installer with many local reviews. That track record suggests they know Front Range hail and permitting well. SunPath Energy is worth a second quote; as a national installer with strong reviews, it gives you a useful price and warranty benchmark. Front Range Solar Co. is a regional installer with a commercial focus. Confirm they take residential, roof-coordinated jobs, because their engineering depth could be an asset.", "names": ["Peakwatt Solar", "SunPath Energy", "Front Range Solar Co."], "cites": []}], "named": [{"name": "Peakwatt Solar", "role": "recommended"}, {"name": "SunPath Energy", "role": "shortlisted"}, {"name": "Front Range Solar Co.", "role": "shortlisted"}], "subjectRole": null, "sources": []}, "gemini": {"label": "Gemini", "model": "Flash", "ask": "Which companies around Aurora should I contact, both roofers that also do solar and dedicated solar installers?", "lines": [{"text": "SunPath Energy: Top pick to contact first. A national installer with strong reviews and clear warranty documentation.", "names": ["SunPath Energy"], "cites": []}, {"text": "Summit Battery Works: A home battery specialist, worth a call if you want backup power during storm outages alongside solar.", "names": ["Summit Battery Works"], "cites": []}, {"text": "Front Range Solar Co.: Regional installer with a commercial focus. Ask whether they handle residential, roof-coordinated projects.", "names": ["Front Range Solar Co."], "cites": []}], "named": [{"name": "SunPath Energy", "role": "recommended"}, {"name": "Summit Battery Works", "role": "shortlisted"}, {"name": "Front Range Solar Co.", "role": "shortlisted"}], "subjectRole": null, "sources": [{"domain": "coloradosolarforum.example", "kind": "Forum"}]}}}</script>
+      </section>
+      <div class="giant-clip" aria-hidden="true"><span class="giant">FlintRay</span></div>
+      <img class="plate" src="assets/manta.webp" alt="" aria-hidden="true" width="994" height="454">
+    </section>
+
+    <section class="section problem" aria-labelledby="problem-title">
+      <div class="cols">
+        <div class="section-label"><p class="meta">01</p><p class="meta">The problem</p></div>
+        <div class="section-body">
+          <h2 id="problem-title">The shortlist forms before anyone visits your site.</h2>
+          <p class="intro">A buyer describes their situation to an AI assistant, adds the constraints that rule options out, then asks which companies to contact. The assistant answers with a few names and its reasons. Those companies get the first call. A company that isn't named never learns the deal existed, and nothing shows up in its analytics.</p>
+          <div class="view">
+            <span class="key key-view">Our view</span>
+            <p>The companies named early in that conversation set the frame for the rest of it. That is why we measure the whole conversation, not one prompt.</p>
           </div>
         </div>
+      </div>
+    </section>
 
-        <figure class="answer-card" aria-label="Illustration of an AI shortlist">
-          <div class="answer-q">
-            <span class="who">Buyer</span>
-            <p>Which specific companies would you contact for this? I'd like names I can call this week.</p>
+    <section class="section on-silt takeapart" aria-labelledby="takeapart-title">
+      <div class="cols">
+        <div class="section-label"><p class="meta">02</p><p class="meta">The evidence</p></div>
+        <div class="section-body">
+          <h2 id="takeapart-title">What one answer looks like when you take it apart.</h2>
+          <p class="intro">Every conversation we run is saved in full. For each one, the report shows the situation, the exact questions, the engine and the model the app showed, every company named and how, and the sources the app displayed.</p>
+          <div class="convo"><div class="convo-row"><p class="callout"><b>Situation</b>Written from research into who buys. It never names the client.</p><div class=""><p class="meta-line">D007 · Hail-worn roof due for replacement · Aurora</p></div></div><div class="convo-row"><p class="callout"><b>Turn 1 · the problem</b>The buyer's own framing.</p><div class=""><p class="record buyer">Our Aurora home has the original 18-year-old shingles with some hail wear, so we&#x27;re about due for a new roof. We&#x27;re wondering whether to add solar at the same time. Bills are around $160 a month. Can you help me understand how to coordinate a roof replacement with a solar install, and whether doing both together is actually smart?</p></div></div><div class="convo-row"><p class="callout"><b>Turn 2 · the constraints</b>What rules options out.</p><div class=""><p class="record buyer">I&#x27;m worried about hail damaging panels, since we get bad storms here. I&#x27;m also confused about whether to use one company for both the roof and the solar or two separate ones, and I&#x27;ve heard horror stories about voided warranties. Our total budget across both projects is maybe $45,000. What should I compare, and how do I protect myself on warranties and insurance?</p></div></div><div class="convo-row"><p class="callout"><b>Turn 3 · the ask</b>The answer to this turn is the one we grade.</p><div class=""><p class="record buyer">Thanks. Which companies around Aurora should I contact, both roofers that also do solar and dedicated solar installers? What should I ask each about hail ratings on panels, who&#x27;s responsible if the roof leaks around the mounts, and how they&#x27;d handle removing and reinstalling panels if we need roof repairs later?</p></div></div><div class="convo-row"><p class="callout"><b>Model</b>Recorded from the app at the time of the answer, because the same assistant answers differently on different models.</p><div class=""><p class="meta-line">Perplexity · Best · fresh chat · turn 3</p></div></div><div class="convo-row"><p class="callout"><b>Quote</b>A company counts only if this exact text appears in the answer.</p><div class="record"><p><b>Front Range Solar Co.</b>: regional installer with a commercial focus and engineering depth; start here [1].</p><p><b>Peakwatt Solar</b>: Denver-area installer with many local reviews [1].</p><p><b>SunPath Energy</b>: national installer with strong reviews, useful as a price benchmark [2].</p></div></div><div class="convo-row"><p class="callout"><b>Order</b>Who was put first, who was shortlisted, and who was left out.</p><div class=""><ul class="names"><li><span>Front Range Solar Co.</span><span class="stamp stamp-recommended">Put first</span></li><li><span>Peakwatt Solar</span><span class="stamp stamp-shortlisted">Shortlisted</span></li><li><span>SunPath Energy</span><span class="stamp stamp-shortlisted">Shortlisted</span></li><li><span>Lumen Ridge Solar</span><span class="stamp stamp-none">Not named</span></li></ul></div></div><div class="convo-row"><p class="callout"><b>Sources</b>The pages the answer drew on, classified by type.</p><div class=""><ul class="names srcs meta-line"><li><span class="n">[1]</span> coloradosolarforum.example · Forum</li><li><span class="n">[2]</span> homeenergyreview.example · Review publisher</li></ul></div></div><div class="convo-row"><p class="callout"><b>Next run</b>The same situation, rerun after the fix.</p><div class=""><p>The sample has one run. In an engagement, this row shows the rerun and marks the result moved, no change yet, or worse.</p></div></div></div>
+          <div class="after">
+            <a class="btn" href="audit/sample/">Open the full sample report</a>
+            <p>Sample conversation, written to show the format. Real reports quote the engine's own answer.</p>
           </div>
-          <div class="answer-a">
-            <span class="who">AI assistant</span>
-            <ol>
-              <li><span class="co">Competitor A</span><span class="tag tag-go">Recommended</span></li>
-              <li><span class="co">Competitor B</span><span class="tag tag-go">Recommended</span></li>
-              <li><span class="co">Competitor C</span><span class="tag tag-yield">Shortlisted</span></li>
-              <li class="missing"><span class="co">Your company</span><span class="tag tag-stop">Not named</span></li>
-            </ol>
+        </div>
+      </div>
+    </section>
+
+    <section class="section method" aria-labelledby="method-title">
+      <div class="cols">
+        <div class="section-label"><p class="meta">03</p><p class="meta">Method</p></div>
+        <div class="section-body">
+          <h2 id="method-title">Measured the way buyers actually ask.</h2>
+          <ol class="ledger">
+            <li><span class="n">01</span><h3>Buyer situation</h3><p>A real buyer type with a real problem, a budget, a deadline and constraints. Reviewed by someone who asks whether the client could actually win it.</p></li>
+            <li><span class="n">02</span><h3>Three turns</h3><p>The problem, then the constraints, then "which companies would you contact?" The third answer is the one we grade.</p></li>
+            <li><span class="n">03</span><h3>Four engines</h3><p>ChatGPT, Claude, Gemini and Perplexity, in the apps buyers use, each in a fresh chat with no history. The model behind every answer is recorded.</p></li>
+            <li><span class="n">04</span><h3>Classification</h3><p>Put first, shortlisted, mentioned, or not named. Every call is backed by an exact quote.</p></li>
+            <li><span class="n">05</span><h3>Source inspection</h3><p>Every cited source, classified: your site, a competitor's, a directory, a review site, a publisher or a forum.</p></li>
+            <li><span class="n">06</span><h3>Fix</h3><p>Specific pages, comparisons and listings, each with an owner.</p></li>
+            <li><span class="n">07</span><h3>Retest</h3><p>The same situations, rerun. Each fix is marked moved, no change yet, or worse.</p></li>
+          </ol>
+          <p class="after-link" style="margin-top:28px"><a class="link link-arrow" href="how-it-works.html">How it works, step by step</a></p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section proof" id="proof" aria-labelledby="proof-title">
+      <div class="cols">
+        <div class="section-label"><p class="meta">04</p><p class="meta">Proof</p></div>
+        <div class="section-body">
+          <h2 id="proof-title" class="visually-hidden">Proof</h2>
+          <div class="proof-figures">
+            <p class="corner c-tl"><span class="key key-measured">Measured · anonymized</span></p>
+            <p class="corner c-tr"><span>base:</span><b>74 situations · 2 runs · Oct 2026</b></p>
+            <p class="figure-block"><span class="eng">ChatGPT recommended it</span><br><span class="big">75<small>of 148</small></span></p>
+            <p class="figure-block"><span class="eng">Perplexity recommended it</span><br><span class="big">25<small>of 148</small></span></p>
+            <p class="claim"><b>Same B2B services company, same buyer situations, same week.</b> Each assistant reads different pages, so each one needs its own fix. A single blended score would hide this.</p>
           </div>
-          <figcaption>Illustration. Your audit shows the real answers, word for word. <a href="audit/sample/" target="_blank" rel="noopener">See a sample</a>.</figcaption>
-        </figure>
-      </div>
-    </section>
-
-    <section class="shift" aria-labelledby="shift-title">
-      <div class="wrap narrow">
-        <h2 id="shift-title">The shortlist now forms before anyone visits your site.</h2>
-        <p>Buyers describe their situation to an AI assistant and ask who to call. The assistant answers with a short list of names and its reasons. If you're not one of them, you never hear about the deal.</p>
-      </div>
-    </section>
-
-    <section id="how" class="how" aria-labelledby="how-title">
-      <div class="wrap">
-        <h2 id="how-title">How it works</h2>
-        <ol class="steps">
-          <li>
-            <span class="num">1</span>
-            <h3>Your buyers' real situations</h3>
-            <p>We research who buys from you and write the situations they're in, by segment, region and language. Each is a three-turn conversation: the problem, the constraints, then "which companies would you contact?" We never name you in the questions.</p>
-          </li>
-          <li>
-            <span class="num">2</span>
-            <h3>Every major AI, the way buyers use it</h3>
-            <p>Each conversation runs in ChatGPT, Claude, Gemini and Perplexity, in the same apps your buyers use, as a full three-turn conversation. We record the model behind every answer.</p>
-          </li>
-          <li>
-            <span class="num">3</span>
-            <h3>The evidence behind every answer</h3>
-            <p>Who was recommended, shortlisted or mentioned, quoted word for word, and the pages each AI read before it answered. You see why a competitor won, not just that it did.</p>
-          </li>
-          <li>
-            <span class="num">4</span>
-            <h3>Fixes, checked against the next run</h3>
-            <p>A plan of specific pages, comparisons and listings, each with an owner. We can do the work for you. Every fix is checked on the next run, so you know what moved the answer.</p>
-          </li>
-        </ol>
-      </div>
-    </section>
-
-    <section id="proof" class="proof" aria-labelledby="proof-title">
-      <div class="wrap">
-        <h2 id="proof-title">What we find</h2>
-        <p class="section-lede">From a real client run, and how we count. We never name clients, and every number shows what it's out of.</p>
-        <div class="cases">
-          <article class="case">
-            <p class="stat"><span class="big">75</span><span class="of">of 148</span></p>
-            <h3>versus 25 of 148</h3>
-            <p>Same company, same questions. ChatGPT recommended it in 75 of 148 conversations. Perplexity did in 25. Across all four AIs it was picked in 191 of 592. Each AI reads different pages, so each one needs its own fix.</p>
-          </article>
-          <article class="case">
-            <p class="stat"><span class="big">3</span><span class="of">turns</span></p>
-            <h3>in four AIs, the way buyers ask</h3>
-            <p>Each situation runs as a full conversation, not a single prompt: the problem, the constraints, then "which companies would you contact?" We record the model behind every answer.</p>
-          </article>
-          <article class="case">
-            <p class="stat"><span class="big">1:1</span><span class="of">quotes</span></p>
-            <h3>every mention, word for word</h3>
-            <p>We only count a company if the AI's own words name it. If a quote can't be found in the answer, it doesn't count. Every number opens the conversation behind it.</p>
-          </article>
+          <ul class="ledger">
+            <li><div><p class="stat">205 of 592 <small>conversations named it. It was put first in 30.</small></p><p class="meta src"><span class="key key-measured">Measured · anonymized</span> · the same runs</p></div><p>ChatGPT gave 22 of those 30 first places. Gemini gave none in 148. Being mentioned and being chosen are different results.</p></li>
+            <li><div><p class="stat">7 of 14 · 2 of 39 <small>put forward in its home state, and everywhere else.</small></p><p class="meta src"><span class="key key-measured">Measured · anonymized</span> · a company that serves all 50 states · one audit, November 2026</p></div><p>Assistants knew it locally and sent buyers everywhere else to competitors with a page for each situation.</p></li>
+            <li><div><p class="stat">0 of 56 <small>conversations named it. The category leader was put forward in 39.</small></p><p class="meta src"><span class="key key-measured">Measured · anonymized</span> · a software company · one audit, November 2026</p></div><p>Shortlists were built largely from competitors' own pages. None of the 56 cited the company's site.</p></li>
+            <li><div><p class="stat">6 of 60 <small>Lumen Ridge Solar, put forward across the sample.</small></p><p class="meta src"><a class="key key-sample" href="#evidence-key">Sample · fictional</a> · built to show the report format</p></div><p>Wherever an assistant read its own pages, it recommended it. <a class="link" href="audit/sample/">Open the sample report</a>.</p></li>
+          </ul>
         </div>
       </div>
     </section>
 
-    <section id="pricing" class="pricing" aria-labelledby="pricing-title">
-      <div class="wrap">
-        <h2 id="pricing-title">Start with the audit</h2>
-        <p class="section-lede">See where you stand before you spend anything. Ongoing work is scoped to your market: how many buyer situations, which engines, how often we retest, and how much of the fixing you want us to own.</p>
-        <div class="tiers">
-          <article class="tier">
-            <h3>Free audit</h3>
-            <p class="price">Free</p>
-            <ul>
-              <li>15 of your buyers' situations</li>
-              <li>All four AIs, three turns each</li>
-              <li>Who's recommended instead of you, and why</li>
-              <li>A private report and a walkthrough call</li>
-            </ul>
-            <a class="btn btn-ghost" href="audit.html">See what's in it</a>
-          </article>
-          <article class="tier tier-main">
-            <h3>Lens Monitor</h3>
-            <p class="price">Custom scope</p>
-            <ul>
-              <li>Your buyer situations, rerun on a schedule</li>
-              <li>A live report your whole team can open</li>
-              <li>The pages behind every answer</li>
-              <li>A fix plan with owners, checked each run</li>
-            </ul>
-            <a class="btn" href="#audit">Start with an audit</a>
-          </article>
-          <article class="tier">
-            <h3>Lens Engage</h3>
-            <p class="price">Custom scope</p>
-            <ul>
-              <li>Everything in Monitor, weekly</li>
-              <li>We do the fixes: pages, comparisons, listings</li>
-              <li>A monthly review of what moved</li>
-            </ul>
-            <a class="btn btn-ghost" href="#audit">Talk to us</a>
-          </article>
-        </div>
-        <p class="tier-note"><strong>Advanced: data access.</strong> For qualified teams, we can connect your own AI assistant to the evidence through MCP, so your team can ask questions of the data and act on it. Scoped with you.</p>
-      </div>
-    </section>
-
-    <section class="guides" aria-labelledby="guides-title">
-      <div class="wrap">
-        <h2 id="guides-title">Guides</h2>
-        <div class="guide-list">
-          <a class="guide" href="how-ai-assistants-decide.html"><h3>How AI assistants decide which companies to recommend</h3><p>What decides the short list of names a buyer gets, and what a company can change.</p></a>
-          <a class="guide" href="how-much-does-aeo-cost.html"><h3>How much does AEO cost?</h3><p>Price bands in 2026, what sets the price, and how to decide what to buy.</p></a>
+    <section class="section on-silt models" id="pricing" aria-labelledby="models-title">
+      <div class="cols">
+        <div class="section-label"><p class="meta">05</p><p class="meta">Operating models</p></div>
+        <div class="section-body">
+          <h2 id="models-title">Choose how much of the work you want us to own.</h2>
+          <p class="intro">Every engagement starts with measurement. After that, you choose who does the work and how often it is re-measured.</p>
+          <div class="models-wrap" role="region" aria-label="Operating models" tabindex="0">
+            <table class="models-table">
+              <thead><tr><td></td><th scope="col">Baseline audit<span>Measurement</span></th><th scope="col">Lens Monitor<span>Monitoring</span></th><th scope="col">Lens Engage<span>Managed implementation</span></th></tr></thead>
+              <tbody>
+                <tr><th scope="row">Answers</th><td>Where do we stand, and who wins our buyers instead?</td><td>Is it moving, and why?</td><td>Get us into the answer.</td></tr>
+                <tr><th scope="row">You get</th><td>15 buyer situations, 3 turns each, 4 assistants: about 60 conversations, each read and classified by a person. A private report and a 30 to 40 minute walkthrough.</td><td>Your situations re-measured on a schedule, a live report, the sources behind every answer, and a fix plan with owners, checked at every rerun</td><td>Everything in Monitor, re-measured weekly, plus we write and place the fixes the plan calls for and verify each one against the next run</td></tr>
+                <tr><th scope="row">Fixes</th><td>Your call</td><td>Your team</td><td>Us, with your sign-off</td></tr>
+                <tr><th scope="row">Your evidence</th><td>The report and every conversation in it</td><td colspan="2">Included: connect your own AI assistant to the evidence through MCP and ask it about the conversations, sources and work items. Every answer comes with its engine, model and turn.</td></tr>
+                <tr><th scope="row">Minimum term</th><td>None</td><td>Three months</td><td>Six months</td></tr>
+                <tr><th scope="row">Price</th><td class="price">Free, selective</td><td class="price">Custom scope</td><td class="price">Custom scope</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="models-stack">
+            <section><h3>Baseline audit</h3><p class="meta">Measurement · free, selective</p><dl><dt>Answers</dt><dd>Where do we stand, and who wins our buyers instead?</dd><dt>You get</dt><dd>15 buyer situations, 3 turns each, 4 assistants: about 60 conversations, each read and classified by a person. A private report and a 30 to 40 minute walkthrough.</dd><dt>Fixes</dt><dd>Your call</dd></dl></section>
+            <section><h3>Lens Monitor</h3><p class="meta">Monitoring · custom scope · 3-month minimum</p><dl><dt>Answers</dt><dd>Is it moving, and why?</dd><dt>You get</dt><dd>Your situations re-measured on a schedule, a live report, the sources behind every answer, and a fix plan with owners, checked at every rerun. Your evidence through MCP, included.</dd><dt>Fixes</dt><dd>Your team</dd></dl></section>
+            <section><h3>Lens Engage</h3><p class="meta">Managed implementation · custom scope · 6-month minimum</p><dl><dt>Answers</dt><dd>Get us into the answer.</dd><dt>You get</dt><dd>Everything in Monitor, re-measured weekly, plus we write and place the fixes the plan calls for and verify each one against the next run. Your evidence through MCP, included.</dd><dt>Fixes</dt><dd>Us, with your sign-off</dd></dl></section>
+          </div>
+          <div class="advanced"><p class="meta">Outside the free criteria</p><p>A larger audit is available for teams outside the free criteria, credited to the first month if you continue. And if what you want is a dashboard for a few hundred dollars a month, a self-serve tool will do that well.</p></div>
+          <p class="foot">We take one company per competitive set. If we already work with a direct competitor of yours, we'll tell you before we run anything. Every report is checked by a person before it reaches you.</p>
+          <div class="after"><a class="btn" href="#request">Request a baseline audit</a><a class="link link-arrow" href="how-much-does-aeo-cost.html">How engagements are priced</a></div>
         </div>
       </div>
     </section>
 
-    <section id="partners" class="partners" aria-labelledby="partners-title">
-      <div class="wrap split">
-        <div>
-          <h2 id="partners-title">For agencies and firms with clients</h2>
-          <p>Offer AI search under your own brand. Your clients see your name on the audit, the report and the plan. We run the research, the conversations and the analysis behind it, and stay out of sight.</p>
+    <section class="section library" aria-labelledby="library-title">
+      <div class="cols">
+        <div class="section-label"><p class="meta">06</p><p class="meta">Library</p></div>
+        <div class="section-body">
+          <h2 id="library-title">Research from our own runs.</h2>
+          <p class="intro">What we learn about how AI assistants pick companies, from conversations we ran and graded ourselves. Client details removed; every number shows what it's out of.</p>
+          <div class="library-list">
+            <a class="teaser" href="how-ai-assistants-decide.html"><p class="meta">Guide · 2 Nov 2026</p><h3>How AI assistants decide which companies to recommend</h3><p>What decides the shortlist a buyer gets, and what a company can change.</p><span class="go">Read →</span></a>
+            <a class="teaser" href="how-much-does-aeo-cost.html"><p class="meta">Guide · 2 Nov 2026</p><h3>How much does AEO cost?</h3><p>Price bands in 2026, what sets the price, and how to decide what to buy.</p><span class="go">Read →</span></a>
+          </div>
         </div>
-        <a class="btn btn-ghost" href="partners.html">Partner with us</a>
       </div>
     </section>
 
-    <section id="audit" class="audit" aria-labelledby="audit-title">
-      <div class="audit-bg" data-parallax="0.15" aria-hidden="true"></div>
-      <div class="wrap narrow">
-        <h2 id="audit-title">Get your free AI search audit</h2>
-        <p>Tell us who you are and who you lose to. We'll come back within two working days.</p>
-        <form class="audit-form" action="https://formspree.io/f/__FORMSPREE_ID__" method="POST">
-          <label>Company website<input type="url" name="site" placeholder="https://" required></label>
-          <label>Work email<input type="email" name="email" placeholder="you@company.com" required></label>
-          <label>The competitor you lose to most<input type="text" name="rival" placeholder="Optional"></label>
-          <input type="text" name="_gotcha" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
-          <input type="hidden" name="_subject" value="FlintRay audit request">
-          <button class="btn" type="submit">Request my audit</button>
-          <p class="form-note" role="status" aria-live="polite">We only use these details to reply about your audit. <a href="privacy.html">Privacy</a></p>
-        </form>
+    <section class="section partners-home" aria-labelledby="partners-title">
+      <div class="cols">
+        <div class="section-label"><p class="meta">07</p><p class="meta">Partners</p></div>
+        <div class="section-body">
+          <h2 id="partners-title">Offer AI search research under your own name.</h2>
+          <p class="intro">Agencies and advisory firms use FlintRay to give clients the evidence and the plan in the firm's own brand. You own the relationship and the price. We do the research, the runs, the analysis and, if you want, the fixes. We stay invisible.</p>
+          <ol class="flow">
+            <li><span class="n">01</span><p>You pick a client or prospect.</p></li>
+            <li><span class="n">02</span><p>We run a baseline audit in your brand.</p></li>
+            <li><span class="n">03</span><p>You walk the call, with our prep.</p></li>
+            <li><span class="n">04</span><p>The client signs with you.</p></li>
+            <li><span class="n">05</span><p>We deliver under your name, every run.</p></li>
+          </ol>
+          <p class="rule-line">We never contact your clients. We never name partners or their clients. We take one client per competitive set across every partner.</p>
+          <p class="after"><a class="link link-arrow" href="partners.html">Talk to us about partnering</a></p>
+        </div>
+      </div>
+    </section>
+
+    <section class="closing" id="request" aria-labelledby="request-title">
+      <div class="cols">
+        <div class="closing-copy">
+          <h2 id="request-title">See your own market before you spend anything.</h2>
+          <p>The baseline audit runs 15 of your buyers' situations through all four engines, 60 conversations in all. You get a private report and a 30 to 40 minute walkthrough. It shows who AI puts forward instead of you, why, and what to fix first.</p>
+          <p class="qualifier">Free for companies that fit our scope and aren't direct competitors of a current client. If you're outside that scope, we'll tell you and offer a paid version.</p>
+        </div>
+        <div class="letter-sheet on-silt">
+          <h3>Request a baseline audit</h3>
+          <form class="audit-form letter" action="https://formspree.io/f/__FORMSPREE_ID__" method="POST">
+            <label>Company website<input type="url" name="site" placeholder="https://" required></label>
+            <label>Work email<input type="email" name="email" placeholder="you@company.com" required></label>
+            <label>The competitor you lose to most<input type="text" name="rival" placeholder="Optional"></label>
+            <input type="text" name="_gotcha" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+            <input type="hidden" name="_subject" value="FlintRay audit request">
+            <button class="btn" type="submit">Request my audit</button>
+            <p class="form-note" role="status" aria-live="polite">We reply within two working days, and only use these details to reply. <a href="privacy.html">Privacy</a></p>
+          </form>
+        </div>
       </div>
     </section>
   </main>
 
-  <footer class="footer">
-    <div class="wrap foot">
-      <a class="brand" href="#top"><img src="assets/manta-mark.png" alt="" width="46" height="21"><span>FlintRay</span></a>
-      <p>AI search visibility, measured and fixed.</p>
-      <p class="small"><a href="how-much-does-aeo-cost.html">AEO pricing</a> · <a href="how-ai-assistants-decide.html">How AI decides</a> · <a href="privacy.html">Privacy</a> · © 2026 FlintRay</p>
+  <footer class="site-footer">
+    <div class="foot-grid">
+      <div class="colophon">
+        <svg class="hallmark" viewBox="0 0 100 46" aria-hidden="true" focusable="false"><path d="M2 7C15 23 31 31 50 30"/><path d="M44 30C50 21 51 11 47 2C61 10 79 21 97 26C89 28 83 29 78 31C74 37 70 41 66 44C64 38 61 34 55 32C51 31 47 30.5 44 30Z"/><path d="M86 25.5h.01"/></svg>
+        <p>FlintRay is a managed research service. We measure what AI assistants tell your buyers, show why, and check every fix against the next run.</p>
+        <p class="meta">Every report is checked by a person before it reaches you.</p>
+      </div>
+      <div class="foot-col"><h2>Method</h2><ul><li><a href="how-it-works.html">How it works</a></li><li><a href="audit/sample/">Sample report</a></li><li><a href="audit.html">Free audit</a></li></ul></div>
+      <div class="foot-col"><h2>Library</h2><ul><li><a href="how-ai-assistants-decide.html">How AI assistants decide</a></li><li><a href="how-much-does-aeo-cost.html">How much AEO costs</a></li></ul></div>
+      <div class="foot-col"><h2>Company</h2><ul><li><a href="partners.html">Partners</a></li><li><a href="privacy.html">Privacy</a></li><li><a href="mailto:privacy@flintray.com">privacy@flintray.com</a></li></ul></div>
+      <div class="foot-key" id="evidence-key">
+        <p>Every number on this site carries one of these labels, so you always know what you're looking at.</p>
+        <div><span class="key key-measured">Measured</span><span class="key key-measured">Measured · anonymized</span><span class="key key-sample">Sample · fictional</span><span class="key key-view">Our view</span><span class="key key-public">Public source</span></div>
+      </div>
+      <div class="foot-legal meta"><span>© 2026 FlintRay</span><span>Sample data on this site is fictional and labelled as such.</span></div>
     </div>
   </footer>
 
-  <script src="main.js?v=7"></script>
+  <script src="site.js?v=7" defer></script>
 </body>
 </html>
