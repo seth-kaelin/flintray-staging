@@ -325,3 +325,6 @@ section { position: relative; }
 .guide:hover { border-color: rgba(126, 172, 210, 0.5); }
 .guide p { margin-top: 8px; color: var(--muted); font-size: 15px; }
 @media (max-width: 960px) { .guide-list { grid-template-columns: 1fr; } }
+
+.tier-note { margin-top: 20px; color: var(--muted); font-size: 15px; max-width: 72ch; }
+.tier-note strong { color: var(--ink); font-weight: 500; }
