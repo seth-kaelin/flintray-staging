@@ -1,15 +1,40 @@
-// FlintRay site script for pages on the new frame. No framework, no animation library.
+// FlintRay site script, loaded on every page. No framework, no animation library.
+
+// Phone menu: the header's Menu button opens a full-screen sheet with every route.
+(() => {
+  const toggle = document.querySelector(".menu-toggle");
+  const sheet = document.getElementById("site-menu");
+  if (!toggle || !sheet) return;
+  const close = sheet.querySelector(".menu-close");
+  const setOpen = (open) => {
+    sheet.hidden = !open;
+    toggle.setAttribute("aria-expanded", String(open));
+    document.documentElement.classList.toggle("menu-open", open);
+    (open ? sheet.querySelector("nav a") : toggle).focus();
+  };
+  toggle.addEventListener("click", () => setOpen(true));
+  close.addEventListener("click", () => setOpen(false));
+  sheet.addEventListener("keydown", (e) => { if (e.key === "Escape") setOpen(false); });
+  // An in-page link (Pricing on the home page) closes the sheet so the section is visible
+  sheet.querySelectorAll("nav a").forEach((a) => a.addEventListener("click", () => {
+    if (new URL(a.href).pathname === location.pathname) setOpen(false);
+  }));
+  matchMedia("(min-width: 1024px)").addEventListener("change", (m) => { if (m.matches && !sheet.hidden) setOpen(false); });
+})();
 
 // The audit form posts to Formspree. Until the publish step sets the form id,
 // the action holds a placeholder and the form says so instead of sending.
 for (const form of document.querySelectorAll(".audit-form")) {
   const note = form.querySelector(".form-note");
   const button = form.querySelector("button[type=submit]");
+  // Say so before anyone types, so an unconnected form never looks live
+  const unconnected = () => form.action.includes("__FORMSPREE_ID__") || form.action.endsWith("#preview-only");
+  if (unconnected()) note.textContent = "Preview only: this form isn't connected yet. Nothing you enter will be sent.";
 
   form.addEventListener("submit", async (event) => {
     event.preventDefault();
     note.classList.remove("is-ok", "is-error");
-    if (form.action.includes("__FORMSPREE_ID__")) {
+    if (unconnected()) {
       note.textContent = "Preview only: this form isn't connected yet, so nothing was sent.";
       return;
     }
@@ -42,18 +67,24 @@ for (const form of document.querySelectorAll(".audit-form")) {
   const $ = (s) => root.querySelector(s);
   const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
   const frozen = new URLSearchParams(location.search).get("t");
-  const MAX_LINES = Number(root.dataset.lines || 99);
+  const phone = matchMedia("(max-width: 760px)");
+  const maxLines = () => Number((phone.matches && root.dataset.linesPhone) || root.dataset.lines || 99);
   const CITED_ONLY = root.dataset.sources === "cited";
-  const ROLE = { recommended: "Put first", shortlisted: "Shortlisted", mentioned: "Mentioned", none: "Not named" };
+  // 'One more company is named further down the answer.' (build_site.more_named() says the same)
+  const moreNamed = (n) => `${["No", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine"][n] ?? n} more ${n === 1 ? "company is" : "companies are"} named further down the answer.`;
+  const ROLE = { recommended: "Recommended", shortlisted: "Shortlisted", mentioned: "Mentioned", none: "Not named" };
 
   // Beats (seconds): 0.25 question starts typing at 34 chars/s (capped 1.9 s); answer streams at
   // 26 words/s; each classification stamp lands 0.16 s apart; then the source line draws for 0.7 s.
   // The sheet shows the moment, not the whole conversation: the first lines and the source they cite.
   function view(e) {
-    const lines = e.lines.slice(0, MAX_LINES);
+    const lines = e.lines.slice(0, maxLines());
     const first = lines.find((l) => l.cites.length);
     const keep = CITED_ONLY ? (first ? [first.cites[0]] : []) : e.sources.map((_, i) => i + 1);
-    return { ...e, lines, sourceIds: keep };
+    // Stamp only the companies the visible lines name; count the ones named further down the answer
+    const shown = new Set(lines.flatMap((l) => l.names));
+    const named = e.named.filter((n) => shown.has(n.name));
+    return { ...e, lines, named, later: e.named.length - named.length, sourceIds: keep };
   }
 
   function plan(e) {
@@ -77,7 +108,7 @@ for (const form of document.querySelectorAll(".audit-form")) {
     root.querySelectorAll("[data-tab]").forEach((b) => b.setAttribute("aria-selected", String(b.dataset.tab === key)));
     root.querySelectorAll("[data-f=engine]").forEach((n) => (n.textContent = e.label));
     root.querySelectorAll("[data-f=model]").forEach((n) => (n.textContent = e.model));
-    root.querySelectorAll("[data-f=pos]").forEach((n) => (n.textContent = `${Object.keys(D.engines).indexOf(key) + 1}/${Object.keys(D.engines).length}`));
+    $("[data-f=ask-guide]").textContent = "\u201C" + e.ask + "\u201D";
     $("[data-f=ask]").textContent = "\u201C" + e.ask + "\u201D";
     $("[data-f=answer]").innerHTML = e.lines.map((l) => {
       let t = l.text.replace(/&/g, "&amp;").replace(/</g, "&lt;");
@@ -86,8 +117,9 @@ for (const form of document.querySelectorAll(".audit-form")) {
     }).join("") || `<li class="none">This engine named no company in its third answer.</li>`;
     const rows = e.named.map((n) => [n.role, n.name]);
     rows.push([e.subjectRole || "none", D.subject]);
+    const later = e.later ? `<li class="v-later">${moreNamed(e.later)}</li>` : "";
     $("[data-f=verdict]").innerHTML = rows.map(([role, name], i) =>
-      `<li class="v-row${name === D.subject ? " is-you" : ""}" data-i="${i}"><span class="v-name">${name}</span><span class="stamp stamp-${role}">${ROLE[role]}</span></li>`).join("");
+      `${name === D.subject ? later : ""}<li class="v-row${name === D.subject ? " is-you" : ""}" data-i="${i}"><span class="v-name">${name}</span><span class="stamp stamp-${role}">${ROLE[role]}</span></li>`).join("");
     $("[data-f=sources]").innerHTML = e.sourceIds.length
       ? e.sourceIds.map((i) => `<li data-src="${i}"><span class="n">[${i}]</span> ${e.sources[i - 1].domain} <span class="kind">${e.sources[i - 1].kind}</span></li>`).join("")
       : `<li class="none">${e.sources.length ? "No source cited in these lines." : "The app showed no sources for this answer."}</li>`;
@@ -136,6 +168,14 @@ for (const form of document.querySelectorAll(".audit-form")) {
     const q = Math.round(e.ask.length * clamp((t - P.qStart) / P.qDur));
     const qa = $("[data-f=ask]");
     qa.textContent = "\u201C" + e.ask.slice(0, q) + (q >= e.ask.length ? "\u201D" : "");
+    const caret = root.querySelector(".caret");
+    if (caret && qa.firstChild) {
+      const range = document.createRange();
+      range.selectNodeContents(qa);
+      const rects = [...range.getClientRects()];
+      const last = rects[rects.length - 1], parent = qa.parentElement.getBoundingClientRect();
+      if (last) caret.style.transform = `translate(${last.right - parent.left + 3}px, ${last.bottom - parent.top - last.height}px)`;
+    }
     root.classList.toggle("is-typing", t < P.aStart);
     let k = Math.round(P.total * clamp((t - P.aStart) / P.aDur));
     $("[data-f=answer]").querySelectorAll("li").forEach((li, i) => {
@@ -187,9 +227,95 @@ for (const form of document.querySelectorAll(".audit-form")) {
     if (reduced) renderAt(P.end); else play();
   }));
   addEventListener("resize", () => { measure(); renderAt(P.end); });
+  phone.addEventListener("change", () => { paint(engine); renderAt(P.end); });
 
   paint(engine);
   if (frozen !== null) { renderAt(Number(frozen)); document.fonts.ready.then(() => { measure(); renderAt(Number(frozen)); }); }
   else if (reduced) { renderAt(P.end); document.fonts.ready.then(() => { measure(); renderAt(P.end); }); }
   else document.fonts.ready.then(() => { measure(); play(); });
+})();
+
+// Section 02 evidence line. It is measured only after the typefaces settle, then drawn once
+// when the taken-apart conversation first enters the viewport.
+(() => {
+  const convo = document.querySelector("[data-takeapart]");
+  const svg = convo && convo.querySelector(".takeapart-trace");
+  const path = svg && svg.querySelector("path");
+  if (!convo || !svg || !path) return;
+  const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  let length = 0, started = false, raf = 0, start = null;
+  const clamp = (x) => Math.max(0, Math.min(1, x));
+  const ease = (x) => 1 - Math.pow(1 - x, 3);
+
+  function citationRect(row) {
+    const marker = row.querySelector(".record");
+    if (!marker) return null;
+    const walker = document.createTreeWalker(marker, NodeFilter.SHOW_TEXT);
+    const range = document.createRange(); let node;
+    while ((node = walker.nextNode())) {
+      const match = node.textContent.match(/\[(\d+)\]/);
+      if (match) {
+        range.setStart(node, match.index);
+        range.setEnd(node, match.index + match[0].length);
+        return range.getBoundingClientRect();
+      }
+    }
+    return null;
+  }
+
+  function measure() {
+    const quote = convo.querySelector(".quote-row");
+    const sources = convo.querySelector(".sources-row");
+    const citedId = sources && sources.querySelector("[data-cited-source]")?.dataset.citedSource;
+    const sourceList = sources && citedId && sources.querySelector(`[data-src="${citedId}"]`);
+    const cited = citationRect(quote);
+    const box = convo.getBoundingClientRect();
+    svg.setAttribute("viewBox", `0 0 ${box.width} ${box.height}`);
+    if (!quote || !sources || !sourceList || !cited) {
+      path.setAttribute("d", ""); length = 0; return;
+    }
+    const callout = quote.children[0].getBoundingClientRect();
+    const content = quote.children[1].getBoundingClientRect();
+    const quoteBox = quote.getBoundingClientRect();
+    const source = sourceList.getBoundingClientRect();
+    const gutter = callout.right - box.left + (content.left - callout.right) / 2;
+    const x1 = cited.right - box.left + 4;
+    const y1 = cited.top - box.top + cited.height / 2;
+    const x2 = source.left - box.left - 8;
+    const y2 = source.top - box.top + source.height / 2;
+    const safeRight = content.right - box.left + 10;
+    const clearY = quoteBox.bottom - box.top - 8;
+    path.setAttribute("d", `M${x1} ${y1} H${safeRight} V${clearY} H${gutter} V${y2} H${x2}`);
+    length = path.getTotalLength();
+    path.style.strokeDasharray = `${length}`;
+    path.style.strokeDashoffset = String(started ? 0 : length);
+  }
+
+  function renderAt(t) {
+    if (!length) return;
+    path.style.strokeDashoffset = String(length * (1 - ease(clamp(t / 0.7))));
+  }
+
+  function play() {
+    if (started) return;
+    started = true;
+    start = null;
+    const frame = (now) => {
+      if (start === null) start = now;
+      const t = (now - start) / 1000;
+      renderAt(Math.min(t, 0.7));
+      if (t < 0.7) raf = requestAnimationFrame(frame);
+    };
+    if (reduced) renderAt(0.7); else raf = requestAnimationFrame(frame);
+  }
+
+  addEventListener("resize", measure);
+  document.fonts.ready.then(measure);
+  measure();
+  new IntersectionObserver((entries, observer) => {
+    if (entries.some((entry) => entry.isIntersecting)) {
+      play();
+      observer.disconnect();
+    }
+  }, { threshold: 0.15 }).observe(convo);
 })();

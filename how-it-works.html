@@ -3,13 +3,13 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>How we measure what AI tells your buyers · FlintRay</title>
+  <title>How we measure what AI tells your buyers | FlintRay</title>
   <meta name="description" content="Your buyers&#x27; real situations as three-turn conversations in ChatGPT, Claude, Gemini and Perplexity, counted word for word, with fixes checked on the next run.">
   <meta name="robots" content="noindex, nofollow">
   <link rel="canonical" href="https://xvomiit.github.io/flintray-staging/how-it-works.html">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="FlintRay">
-  <meta property="og:title" content="How we measure what AI tells your buyers · FlintRay">
+  <meta property="og:title" content="How we measure what AI tells your buyers | FlintRay">
   <meta property="og:description" content="Your buyers&#x27; real situations as three-turn conversations in ChatGPT, Claude, Gemini and Perplexity, counted word for word, with fixes checked on the next run.">
   <meta property="og:url" content="https://xvomiit.github.io/flintray-staging/how-it-works.html">
   <meta property="og:image" content="https://xvomiit.github.io/flintray-staging/assets/og.jpg">
@@ -17,7 +17,9 @@
   <meta property="og:image:height" content="630">
   <meta name="twitter:card" content="summary_large_image">
   <link rel="preload" href="assets/fonts/geist-latin.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="styles.css?v=7">
+  <link rel="preload" href="assets/fonts/newsreader-italic-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="fr.css?v=8">
+  <link rel="icon" type="image/svg+xml" href="assets/hallmark.svg">
   <link rel="icon" type="image/png" href="assets/manta-mark.png">
   <script type="application/ld+json">
 {
@@ -29,7 +31,7 @@
    "name": "FlintRay",
    "url": "https://xvomiit.github.io/flintray-staging/",
    "logo": "https://xvomiit.github.io/flintray-staging/assets/manta-mark.png",
-   "description": "FlintRay shows companies what ChatGPT, Claude, Gemini and Perplexity tell their buyers, who gets recommended instead and why, then works the fixes.",
+   "description": "FlintRay shows companies what ChatGPT, Claude, Gemini and Perplexity tell their buyers, which companies get recommended and why, then works the fixes.",
    "contactPoint": {
     "@type": "ContactPoint",
     "contactType": "sales",
@@ -52,7 +54,7 @@
      "name": "Which AI assistants do you test?",
      "acceptedAnswer": {
       "@type": "Answer",
-      "text": "ChatGPT, Claude, Gemini and Perplexity, in the same apps your buyers use. We record the model behind every answer."
+      "text": "ChatGPT, Claude, Gemini and Perplexity, in the same consumer apps your buyers use. We record the model behind every answer."
      }
     },
     {
@@ -68,7 +70,7 @@
      "name": "What counts as being recommended?",
      "acceptedAnswer": {
       "@type": "Answer",
-      "text": "An assistant has to name you in its own words when the buyer asks which companies to contact. We quote it exactly, and if the quote isn't in the answer, it doesn't count."
+      "text": "The assistant has to tell the buyer to contact you, in its own words, when the buyer asks which companies to contact. We quote it exactly. If the quote isn't in the answer, it doesn't count."
      }
     },
     {
@@ -86,169 +88,178 @@
   </script>
 </head>
 <body>
-  <div class="draft-bar" role="note">Staging · not live</div>
+  <div class="hairlines" aria-hidden="true"></div>
 
-  <header class="nav">
-    <a class="brand" href="index.html" aria-label="FlintRay home">
-      <img src="assets/manta-mark.png" alt="" width="46" height="21">
-      <span>FlintRay</span>
-    </a>
-    <nav aria-label="Main">
-      <a href="how-it-works.html" aria-current="page">How it works</a>
-      <a href="index.html#proof">Proof</a>
-      <a href="index.html#pricing">Pricing</a>
-      <a href="partners.html">Partners</a>
-    </nav>
-    <a class="btn btn-small" href="audit.html">Free audit</a>
+  <header class="site-nav">
+    <a class="wordmark" href="index.html">FlintRay</a><div class="draft-bar" role="note">Staging</div>
+    <nav class="nav-links" aria-label="Main"><a href="how-it-works.html" aria-current="page">How it works</a><a href="index.html#pricing">Pricing</a><a href="partners.html">Partners</a><a href="guides.html">Guides</a></nav>
+    <a class="nav-cta" href="sample-report.html">Sample report</a>
+    <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-menu"><span class="menu-icon" aria-hidden="true"></span>Menu</button>
+    <div class="menu-sheet" id="site-menu" role="dialog" aria-modal="true" aria-label="Menu" hidden>
+      <div class="menu-sheet-head"><a class="wordmark" href="index.html" tabindex="-1">FlintRay</a><button class="menu-close" type="button">Close</button></div>
+      <nav aria-label="Main"><a href="how-it-works.html" aria-current="page">How it works</a><a href="index.html#pricing">Pricing</a><a href="partners.html">Partners</a><a href="guides.html">Guides</a><a href="sample-report.html">Sample report</a></nav>
+    </div>
   </header>
 
-  <main>
-    <section class="page-hero" aria-labelledby="page-title">
-      <div class="page-hero-bg" aria-hidden="true"></div>
-      <div class="wrap narrow">
-        <h1 id="page-title">How FlintRay works</h1>
-        <p class="lede">We ask the AI assistants your buyers use the questions your buyers ask. Then we show you who they recommend, why, and what to change. Every fix is checked on the next run.</p>
-      </div>
-    </section>
+  <main class="hiw">
+    <header class="page-head">
+      <h1>How FlintRay works</h1>
+      <p class="lede">We ask the AI assistants your buyers use the questions your buyers ask. Then we show you who they recommend, why, and what to change. Every fix is checked on the next run.</p>
+    </header>
 
-    <section class="chapter" aria-labelledby="c1">
-      <div class="wrap chapter-grid">
-        <div class="chapter-head"><span class="num">1</span><h2 id="c1">Your buyers' real situations</h2></div>
-        <div class="chapter-body">
-          <p>We start from who buys from you, not from keywords. We research your segments and rank them by what they're worth to you. Then we write the situations those buyers are in: who they are, where they are, what they need, and what rules options out.</p>
-          <ul class="ticks">
-            <li>Situations cover your main service, the services you offer but may not be winning, and partners who refer buyers to you.</li>
-            <li>National and local situations, because local is often where a smaller company can win.</li>
-            <li>In the languages your buyers use.</li>
-            <li>We never name you in a question. We want to see whether the AI finds you on its own.</li>
-            <li>Before anything runs, someone reads every situation as your team would and asks: could you actually win this one?</li>
+    <section class="section" aria-labelledby="situations">
+      <div class="cols">
+        <div class="section-body">
+          <h2 id="situations">Your buyers' real situations</h2>
+          <p class="intro">We start from who buys from you. We research your segments and order them by what each is worth to you. Then we write the situations those buyers are in: who they are, where they are, what they need, and what rules options out.</p>
+          <ul class="ledger">
+            <li><h3>Your whole offer</h3><p>Situations cover your main service, the services you offer but may not be winning, and the partners who refer buyers to you.</p></li>
+            <li><h3>National and local</h3><p>Local is often where a smaller company can win, so we test both.</p></li>
+            <li><h3>Your buyers' languages</h3><p>Each situation runs in the language your buyers use.</p></li>
+            <li><h3>Your name stays out</h3><p>We never name you in a question. We want to see whether the assistant finds you on its own.</p></li>
+            <li><h3>Read before it runs</h3><p>Someone reads every situation as your team would and asks one question: could you actually win this one?</p></li>
           </ul>
         </div>
       </div>
     </section>
 
-    <section class="chapter" aria-labelledby="c2">
-      <div class="wrap chapter-grid">
-        <div class="chapter-head"><span class="num">2</span><h2 id="c2">Three turns, like a real conversation</h2></div>
-        <div class="chapter-body">
-          <p>People don't ask an assistant one keyword. They explain, add constraints, then ask for names. So every situation is a three-turn conversation:</p>
-          <ol class="turns">
-            <li><span class="turn-label">The problem</span><p>Who I am, what's happening, and the general question.</p></li>
-            <li><span class="turn-label">The constraints</span><p>Budget, timing, location, compliance, language. The things that rule options out.</p></li>
-            <li><span class="turn-label">The ask</span><p>"Which specific companies would you contact? I'd like names I can call this week."</p></li>
-          </ol>
-          <p class="small-note">The third turn is where the shortlist forms. It's the answer we measure.</p>
-        </div>
-      </div>
-    </section>
-
-    <section class="chapter" aria-labelledby="c3">
-      <div class="wrap chapter-grid">
-        <div class="chapter-head"><span class="num">3</span><h2 id="c3">Four AIs, the way people use them</h2></div>
-        <div class="chapter-body">
-          <p>Each conversation runs in ChatGPT, Claude, Gemini and Perplexity, in the same apps your buyers use. We record the model behind every answer, because the same assistant can answer differently on a different model.</p>
-          <p>Then we run it again, every week or every two weeks. One answer is a snapshot; repeated runs show you a trend, and what moved it.</p>
-        </div>
-      </div>
-    </section>
-
-    <section class="chapter" aria-labelledby="c4">
-      <div class="wrap chapter-grid">
-        <div class="chapter-head"><span class="num">4</span><h2 id="c4">What we count, and how</h2></div>
-        <div class="chapter-body">
-          <dl class="defs">
-            <div><dt><span class="tag tag-go">Recommended</span></dt><dd>The AI tells the buyer to contact you.</dd></div>
-            <div><dt><span class="tag tag-yield">Shortlisted</span></dt><dd>You're on the list it suggests comparing.</dd></div>
-            <div><dt><span class="tag tag-neutral">Mentioned</span></dt><dd>You're named, but not put forward.</dd></div>
-            <div><dt><span class="tag tag-stop">Not named</span></dt><dd>You're not in the answer at all.</dd></div>
-          </dl>
-          <p>We only count a company when the AI's own words name it, quoted exactly. If the quote isn't in the answer, it doesn't count. Only complete conversations count, and every number shows what it's out of: "put forward in 7 of 40", never a bare percentage.</p>
-        </div>
-      </div>
-    </section>
-
-    <section class="chapter" aria-labelledby="c5">
-      <div class="wrap chapter-grid">
-        <div class="chapter-head"><span class="num">5</span><h2 id="c5">Why each answer happened</h2></div>
-        <div class="chapter-body">
-          <p>Assistants read pages before they answer. We record which ones: your site, your competitors' sites, directories, review sites, publishers. You see which pages decided each shortlist, which of them mention you, and where you need to be. <a href="how-ai-assistants-decide.html">What we see deciding those shortlists</a>.</p>
-        </div>
-      </div>
-    </section>
-
-    <section class="chapter" aria-labelledby="c6">
-      <div class="wrap chapter-grid">
-        <div class="chapter-head"><span class="num">6</span><h2 id="c6">Fixes, checked against the next run</h2></div>
-        <div class="chapter-body">
-          <p>The evidence turns into a plan of specific work, each item with an owner:</p>
-          <ul class="ticks">
-            <li><strong>A page for every situation you're losing.</strong> AI answers specific questions with specific pages.</li>
-            <li><strong>Honest comparison pages</strong> for the names AI already trusts.</li>
-            <li><strong>One consistent story</strong> across your own pages. AI repeats contradictions, or skips you.</li>
-            <li><strong>Facts AI can read</strong>: coverage, pricing, integrations and credentials, stated plainly and marked up.</li>
-            <li><strong>Listings and mentions</strong> on the sites AI uses to build shortlists.</li>
+    <section class="section" aria-labelledby="turns">
+      <div class="cols">
+        <div class="section-body">
+          <h2 id="turns">Three turns in four assistants</h2>
+          <p class="intro">People explain their problem to an assistant, add constraints, then ask for names. So every situation is a three-turn conversation, run in ChatGPT, Claude, Gemini and Perplexity.</p>
+          <ul class="ledger">
+            <li><h3>The problem</h3><p>Who I am, what's happening, and the general question.</p></li>
+            <li><h3>The constraints</h3><p>Budget, timing, location, compliance and language: the things that rule options out.</p></li>
+            <li><h3>The ask</h3><p class="hiw-quote" data-quote>"Which specific companies would you contact? I'd like names I can call this week."</p></li>
           </ul>
-          <p>Your team can do the work, or we can (Lens Engage). Either way, the next run shows whether each fix moved the answer.</p>
+          <p class="note hiw-after">The shortlist forms on the third turn. That answer is the one we measure.</p>
         </div>
       </div>
     </section>
 
-    <section class="chapter" aria-labelledby="c7">
-      <div class="wrap chapter-grid">
-        <div class="chapter-head"><span class="num">7</span><h2 id="c7">A live report, and your AI can read it</h2></div>
-        <div class="chapter-body">
-          <p>Your whole team gets a live report with every conversation saved. You can also connect your own AI assistant to the data and ask it questions: which situations did we lose this week, and to whom?</p>
+    <section class="section" aria-labelledby="recorded">
+      <div class="cols">
+        <div class="section-body">
+          <h2 id="recorded">What we record for every answer</h2>
+          <p class="intro">The same assistant can answer differently on a different model, so the model is part of the record.</p>
+          <ul class="ledger">
+            <li><h3>The answer and its model</h3><p>For every answer we record the assistant, the model label the app showed, and the turn. The model is checked before each question and after each answer; an answer given on the wrong model is discarded and never counted.</p></li>
+            <li><h3>Where it ran</h3><p>Conversations run in the same consumer apps buyers use, on paid plans, signed in, in a private session with memory and personalization off.</p></li>
+            <li><h3>The exact words</h3><p>We quote every answer word for word. A company counts only when the assistant's own words name it. If the quote isn't in the answer, it doesn't count.</p></li>
+          </ul>
         </div>
       </div>
     </section>
 
-    <section class="chapter faq" aria-labelledby="faq-title">
-      <div class="wrap chapter-grid">
-        <div class="chapter-head"><h2 id="faq-title">Questions</h2></div>
-        <div class="chapter-body faq-list">
-          <div class="faq-item">
-            <h3>Do you name my company in the questions?</h3>
-            <p>No. We want to see whether an assistant finds and recommends you on its own, the way it would for a real buyer.</p>
-          </div>
-          <div class="faq-item">
-            <h3>Which AI assistants do you test?</h3>
-            <p>ChatGPT, Claude, Gemini and Perplexity, in the same apps your buyers use. We record the model behind every answer.</p>
-          </div>
-          <div class="faq-item">
-            <h3>How often do you rerun the questions?</h3>
-            <p>Every two weeks on Lens Monitor and every week on Lens Engage. Reruns show whether a change you made moved the answer.</p>
-          </div>
-          <div class="faq-item">
-            <h3>What counts as being recommended?</h3>
-            <p>An assistant has to name you in its own words when the buyer asks which companies to contact. We quote it exactly, and if the quote isn't in the answer, it doesn't count.</p>
-          </div>
-          <div class="faq-item">
-            <h3>Can my team read the conversations?</h3>
-            <p>Yes. Every conversation is saved in your live report, and you can connect your own AI assistant to the data to ask questions about it.</p>
+    <section class="section on-silt" aria-labelledby="classified">
+      <div class="cols">
+        <div class="section-body">
+          <h2 id="classified">How each answer is classified</h2>
+          <p class="intro">Every company in a third-turn answer gets one of four labels. "Put forward" means recommended or shortlisted.</p>
+          <ul class="ledger">
+            <li><h3><span class="stamp stamp-recommended">Recommended</span></h3><p>The assistant tells the buyer to contact you.</p></li>
+            <li><h3><span class="stamp stamp-shortlisted">Shortlisted</span></h3><p>You're on the list it suggests comparing.</p></li>
+            <li><h3><span class="stamp stamp-mentioned">Mentioned</span></h3><p>You're named, but the assistant doesn't put you forward.</p></li>
+            <li><h3><span class="stamp stamp-none">Not named</span></h3><p>You're absent from the answer.</p></li>
+          </ul>
+          <p class="note hiw-after">Only complete conversations count. Every number shows its base, as in "put forward in 7 of 40".</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="sources">
+      <div class="cols">
+        <div class="section-body">
+          <h2 id="sources">The sources behind each answer</h2>
+          <p class="intro">Assistants read pages before they answer. We record which ones: your site, your competitors' sites, directories, review sites and publishers.</p>
+          <p class="hiw-body">You see which pages decided each shortlist, which of them mention you, and where you need to be.</p>
+          <p class="hiw-body"><a class="link link-arrow" href="how-ai-assistants-decide.html">What we see deciding those shortlists</a></p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="plan">
+      <div class="cols">
+        <div class="section-body">
+          <h2 id="plan">The fix plan</h2>
+          <p class="intro">The evidence becomes a plan of specific work, each item with an owner. Your team can do the work, or we can on Lens Engage.</p>
+          <ul class="ledger">
+            <li><h3>A page for each situation you lose</h3><p>Assistants answer specific questions with specific pages.</p></li>
+            <li><h3>Honest comparison pages</h3><p>For the names the assistants already trust.</p></li>
+            <li><h3>One consistent story</h3><p>Across your own pages. Assistants repeat contradictions, or skip you.</p></li>
+            <li><h3>Facts an assistant can read</h3><p>Coverage, pricing, integrations and credentials, stated plainly and marked up.</p></li>
+            <li><h3>Listings and mentions</h3><p>On the sites assistants use to build shortlists.</p></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="rerun">
+      <div class="cols">
+        <div class="section-body">
+          <h2 id="rerun">The rerun that checks each fix</h2>
+          <p class="intro">We run your situations again every two weeks on Lens Monitor and every week on Lens Engage. One answer is a snapshot. Repeated runs show the trend, and what moved it.</p>
+          <p class="hiw-body">Each rerun shows whether a fix moved the answer. Your team gets a live report with every conversation saved, and you can connect your own AI assistant to the data to ask which situations you lost this week, and to whom.</p>
+          <p class="hiw-body"><a class="link link-arrow" href="sample-report.html">Read the sample report</a></p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="faq-title">
+      <div class="cols">
+        <div class="section-body">
+          <h2 id="faq-title">Questions</h2>
+          <div class="hiw-faq">
+            <div class="faq-item">
+              <h3>Do you name my company in the questions?</h3>
+              <p>No. We want to see whether an assistant finds and recommends you on its own, the way it would for a real buyer.</p>
+            </div>
+            <div class="faq-item">
+              <h3>Which AI assistants do you test?</h3>
+              <p>ChatGPT, Claude, Gemini and Perplexity, in the same consumer apps your buyers use. We record the model behind every answer.</p>
+            </div>
+            <div class="faq-item">
+              <h3>How often do you rerun the questions?</h3>
+              <p>Every two weeks on Lens Monitor and every week on Lens Engage. Reruns show whether a change you made moved the answer.</p>
+            </div>
+            <div class="faq-item">
+              <h3>What counts as being recommended?</h3>
+              <p>The assistant has to tell the buyer to contact you, in its own words, when the buyer asks which companies to contact. We quote it exactly. If the quote isn't in the answer, it doesn't count.</p>
+            </div>
+            <div class="faq-item">
+              <h3>Can my team read the conversations?</h3>
+              <p>Yes. Every conversation is saved in your live report, and you can connect your own AI assistant to the data to ask questions about it.</p>
+            </div>
           </div>
         </div>
       </div>
     </section>
 
-    <section class="cta-band" aria-labelledby="cta-title">
-      <div class="wrap split">
-        <div>
+    <section class="cta-band on-silt" aria-labelledby="cta-title">
+      <div class="cols">
+        <div class="section-body">
           <h2 id="cta-title">See it on your own market</h2>
-          <p>The free audit runs 15 of your buyers' situations through all four AIs and walks you through the results.</p>
+          <p>The free audit runs 15 of your buyers' situations through all four assistants and walks you through the results.</p>
+          <a class="btn" href="audit.html">Request a free audit</a>
         </div>
-        <a class="btn" href="index.html#audit">Get your free AI search audit</a>
       </div>
     </section>
   </main>
 
-  <footer class="footer">
-    <div class="wrap foot">
-      <a class="brand" href="index.html"><img src="assets/manta-mark.png" alt="" width="46" height="21"><span>FlintRay</span></a>
-      <p>AI search visibility, measured and fixed.</p>
-      <p class="small"><a href="how-much-does-aeo-cost.html">AEO pricing</a> · <a href="how-ai-assistants-decide.html">How AI decides</a> · <a href="privacy.html">Privacy</a> · © 2026 FlintRay</p>
+  <footer class="site-footer">
+    <div class="foot-grid">
+      <div class="colophon">
+        <svg class="hallmark" viewBox="0 0 100 46" aria-hidden="true" focusable="false"><path d="M2 7C15 23 31 31 50 30"/><path d="M44 30C50 21 51 11 47 2C61 10 79 21 97 26C89 28 83 29 78 31C74 37 70 41 66 44C64 38 61 34 55 32C51 31 47 30.5 44 30Z"/><path d="M86 25.5h.01"/></svg>
+        <p>FlintRay is a managed research service. We measure what AI assistants tell your buyers, show why, and check every fix against the next run.</p>
+      </div>
+      <div class="foot-col"><h2>FlintRay</h2><ul><li><a href="index.html">Home</a></li><li><a href="how-it-works.html">How it works</a></li><li><a href="index.html#pricing">Pricing</a></li><li><a href="audit.html">Free audit</a></li><li><a href="sample-report.html">Sample report</a></li></ul></div>
+      <div class="foot-col"><h2>Guides</h2><ul><li><a href="guides.html">All guides</a></li><li><a href="how-much-does-aeo-cost.html">How much AEO costs</a></li><li><a href="how-ai-assistants-decide.html">How AI assistants decide</a></li></ul></div>
+      <div class="foot-col"><h2>Company</h2><ul><li><a href="partners.html">Partners</a></li><li><a href="privacy.html">Privacy</a></li><li><a href="mailto:privacy@flintray.com">privacy@flintray.com</a></li></ul></div>
+      <div class="foot-legal meta"><span>© 2026 FlintRay</span></div>
     </div>
   </footer>
 
-  <script src="main.js?v=7"></script>
+  <script src="site.js?v=8" defer></script>
 </body>
 </html>

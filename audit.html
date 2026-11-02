@@ -3,13 +3,13 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Free AI search audit: see who AI recommends instead of you</title>
+  <title>Free AI search audit: see which companies AI recommends to your buyers</title>
   <meta name="description" content="15 of your buyers&#x27; situations, three turns each, in ChatGPT, Claude, Gemini and Perplexity, with a private report and a walkthrough call. Free.">
   <meta name="robots" content="noindex, nofollow">
   <link rel="canonical" href="https://xvomiit.github.io/flintray-staging/audit.html">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="FlintRay">
-  <meta property="og:title" content="Free AI search audit: see who AI recommends instead of you">
+  <meta property="og:title" content="Free AI search audit: see which companies AI recommends to your buyers">
   <meta property="og:description" content="15 of your buyers&#x27; situations, three turns each, in ChatGPT, Claude, Gemini and Perplexity, with a private report and a walkthrough call. Free.">
   <meta property="og:url" content="https://xvomiit.github.io/flintray-staging/audit.html">
   <meta property="og:image" content="https://xvomiit.github.io/flintray-staging/assets/og.jpg">
@@ -17,7 +17,9 @@
   <meta property="og:image:height" content="630">
   <meta name="twitter:card" content="summary_large_image">
   <link rel="preload" href="assets/fonts/geist-latin.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="styles.css?v=7">
+  <link rel="preload" href="assets/fonts/newsreader-italic-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="fr.css?v=8">
+  <link rel="icon" type="image/svg+xml" href="assets/hallmark.svg">
   <link rel="icon" type="image/png" href="assets/manta-mark.png">
   <script type="application/ld+json">
 {
@@ -29,7 +31,7 @@
    "name": "FlintRay",
    "url": "https://xvomiit.github.io/flintray-staging/",
    "logo": "https://xvomiit.github.io/flintray-staging/assets/manta-mark.png",
-   "description": "FlintRay shows companies what ChatGPT, Claude, Gemini and Perplexity tell their buyers, who gets recommended instead and why, then works the fixes.",
+   "description": "FlintRay shows companies what ChatGPT, Claude, Gemini and Perplexity tell their buyers, which companies get recommended and why, then works the fixes.",
    "contactPoint": {
     "@type": "ContactPoint",
     "contactType": "sales",
@@ -92,129 +94,153 @@
   </script>
 </head>
 <body>
-  <div class="draft-bar" role="note">Staging · not live</div>
+  <div class="hairlines" aria-hidden="true"></div>
 
-  <header class="nav">
-    <a class="brand" href="index.html" aria-label="FlintRay home">
-      <img src="assets/manta-mark.png" alt="" width="46" height="21">
-      <span>FlintRay</span>
-    </a>
-    <nav aria-label="Main">
-      <a href="how-it-works.html">How it works</a>
-      <a href="index.html#proof">Proof</a>
-      <a href="index.html#pricing">Pricing</a>
-      <a href="partners.html">Partners</a>
-    </nav>
-    <a class="btn btn-small" href="audit.html" aria-current="page">Free audit</a>
+  <header class="site-nav">
+    <a class="wordmark" href="index.html">FlintRay</a><div class="draft-bar" role="note">Staging</div>
+    <nav class="nav-links" aria-label="Main"><a href="how-it-works.html">How it works</a><a href="index.html#pricing">Pricing</a><a href="partners.html">Partners</a><a href="guides.html">Guides</a></nav>
+    <a class="nav-cta" href="sample-report.html">Sample report</a>
+    <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-menu"><span class="menu-icon" aria-hidden="true"></span>Menu</button>
+    <div class="menu-sheet" id="site-menu" role="dialog" aria-modal="true" aria-label="Menu" hidden>
+      <div class="menu-sheet-head"><a class="wordmark" href="index.html" tabindex="-1">FlintRay</a><button class="menu-close" type="button">Close</button></div>
+      <nav aria-label="Main"><a href="how-it-works.html">How it works</a><a href="index.html#pricing">Pricing</a><a href="partners.html">Partners</a><a href="guides.html">Guides</a><a href="sample-report.html">Sample report</a></nav>
+    </div>
   </header>
 
-  <main>
-    <section class="page-hero" aria-labelledby="page-title">
-      <div class="page-hero-bg" aria-hidden="true"></div>
-      <div class="wrap narrow">
-        <h1 id="page-title">Your free AI search audit</h1>
-        <p class="lede">We ask ChatGPT, Claude, Gemini and Perplexity the questions your buyers ask, and show you who they recommend instead of you, and why. Then we walk you through it on a call.</p>
-        <div class="cta-row">
-          <a class="btn" href="#request">Request your audit</a>
-          <a class="btn btn-ghost" href="audit/sample/" target="_blank" rel="noopener">Open the sample report</a>
-        </div>
-      </div>
-    </section>
+  <main class="aud">
+    <header class="page-head">
+      <h1>Your free AI search audit</h1>
+      <p class="lede">We ask ChatGPT, Claude, Gemini and Perplexity the questions your buyers ask. We show you who they put forward, and why. Then we walk you through it on a call.</p>
+      <p class="aud-actions"><a class="btn" href="#request">Request your audit</a><a class="link link-arrow" href="sample-report.html">Read the sample report</a></p>
+    </header>
 
-    <section class="chapter" aria-labelledby="a1">
-      <div class="wrap chapter-grid">
-        <div class="chapter-head"><h2 id="a1">What's in it</h2></div>
-        <div class="chapter-body">
-          <ul class="ticks">
-            <li><strong>15 of your buyers' situations,</strong> written from research into who buys from you. Each is a three-turn conversation that ends in "which companies would you contact?"</li>
-            <li><strong>All four AIs,</strong> about 60 conversations in the apps your buyers use.</li>
-            <li><strong>Who gets put forward instead of you,</strong> how often, and in which AI.</li>
-            <li><strong>Every conversation, saved,</strong> so you can read exactly what each AI said.</li>
-            <li><strong>The pages behind the answers:</strong> which sites each AI read, and which of them mention you.</li>
-            <li><strong>A first plan:</strong> the specific pages and listings most likely to change the answer.</li>
+    <section class="section" aria-labelledby="included">
+      <div class="cols">
+        <div class="section-body">
+          <h2 id="included">What the audit includes</h2>
+          <p class="intro">Free for companies that fit our scope. We write 15 of your buyers' situations and run each as a three-turn conversation in four assistants: 60 conversations in all. You get a private report and a 30 to 40 minute walkthrough.</p>
+          <ul class="ledger">
+            <li><h3>Your buyers' situations</h3><p>Written from research into who buys from you. Each conversation ends with the buyer asking which companies to contact.</p></li>
+            <li><h3>All four assistants</h3><p>ChatGPT, Claude, Gemini and Perplexity, in the same consumer apps your buyers use.</p></li>
+            <li><h3>Who gets put forward</h3><p>The companies the assistants put forward in your place, how often, and in which assistant.</p></li>
+            <li><h3>Every conversation, saved</h3><p>Read exactly what each assistant said.</p></li>
+            <li><h3>The pages behind the answers</h3><p>Which sites each assistant read, and which of them mention you.</p></li>
+            <li><h3>A first plan</h3><p>The specific pages and listings most likely to change the answer.</p></li>
           </ul>
-          <p>It arrives as a private, unindexed report link. Your team can keep it.</p>
+          <p class="note aud-after">The report arrives as a private, unindexed link. Your team can keep it.</p>
         </div>
       </div>
     </section>
 
-    <section id="sample" class="chapter" aria-labelledby="a2">
-      <div class="wrap">
-        <a class="sample-card" href="audit/sample/" target="_blank" rel="noopener">
-          <div>
-            <h2 id="a2">See a sample report</h2>
-            <p>A complete audit for a fictional solar installer: the replayed answer, who AI puts forward, every conversation, the sources and the plan. Every company, website and conversation in it is invented.</p>
-          </div>
-          <span class="btn btn-ghost" aria-hidden="true">Open the sample</span>
-        </a>
-      </div>
-    </section>
-
-    <section class="chapter" aria-labelledby="a3">
-      <div class="wrap chapter-grid">
-        <div class="chapter-head"><h2 id="a3">What happens next</h2></div>
-        <div class="chapter-body">
-          <ol class="turns">
-            <li><span class="turn-label">You ask</span><p>Tell us your website and the competitor you lose to most.</p></li>
-            <li><span class="turn-label">We research</span><p>We study your buyers and write the 15 situations. We never name you in the questions.</p></li>
-            <li><span class="turn-label">We run it</span><p>Every situation goes through all four AIs, and every answer is checked word for word.</p></li>
-            <li><span class="turn-label">We walk you through it</span><p>A 30 to 40 minute call. You see who wins your buyers and why, and what to fix first.</p></li>
-          </ol>
-          <p class="small-note">We run one client per competitive set. If we already work with a direct competitor of yours, we'll tell you up front.</p>
+    <section class="section" aria-labelledby="who">
+      <div class="cols">
+        <div class="section-body">
+          <h2 id="who">Who it's for</h2>
+          <p class="intro">Marketing leads and founders at B2B software and services companies of 20 to 500 people, whose bigger rival gets named by AI when they don't.</p>
+          <p class="aud-body">The audit is free for companies that fit our scope and aren't direct competitors of a current client. We run one client per competitive set. If we already work with a direct competitor of yours, we'll tell you up front. If you're outside our scope, we'll say so and offer a paid version.</p>
         </div>
       </div>
     </section>
 
-    <section class="chapter faq" aria-labelledby="faq-title">
-      <div class="wrap chapter-grid">
-        <div class="chapter-head"><h2 id="faq-title">Questions</h2></div>
-        <div class="chapter-body faq-list">
-          <div class="faq-item">
-            <h3>Is the audit really free?</h3>
-            <p>Yes. There is no charge and no commitment. We walk you through the results on a call and you keep the report.</p>
-          </div>
-          <div class="faq-item">
-            <h3>What do you need from me?</h3>
-            <p>Your website and the competitor you lose to most. We do the research and write the buyer situations ourselves.</p>
-          </div>
-          <div class="faq-item">
-            <h3>Will you contact my customers or competitors?</h3>
-            <p>No. We only ask AI assistants questions and read public pages.</p>
-          </div>
-          <div class="faq-item">
-            <h3>Do you work with my competitors?</h3>
-            <p>We work with one company per competitive set. If we already work with a direct competitor of yours, we'll tell you before we run anything.</p>
+    <section class="section" aria-labelledby="sample">
+      <div class="cols">
+        <div class="section-body">
+          <h2 id="sample">See a sample report</h2>
+          <p class="intro">A complete audit for a fictional solar installer: the replayed answer, who the assistants put forward, every conversation, the sources and the plan.</p>
+          <p class="aud-body"><a class="link link-arrow" href="sample-report.html">Read the sample report</a></p>
+          <p class="note aud-after">Illustrative sample. Companies and sources are fictional.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="next">
+      <div class="cols">
+        <div class="section-body">
+          <h2 id="next">What happens next</h2>
+          <ul class="ledger">
+            <li><h3>You ask</h3><p>Tell us your website and the competitor you lose to most.</p></li>
+            <li><h3>We research</h3><p>We study your buyers and write the situations. We never name you in the questions.</p></li>
+            <li><h3>We run it</h3><p>Every situation goes through all four assistants, and every answer is checked word for word.</p></li>
+            <li><h3>We walk you through it</h3><p>On the call you see who wins your buyers, why, and what to fix first.</p></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="after">
+      <div class="cols">
+        <div class="section-body">
+          <h2 id="after">After the audit</h2>
+          <p class="intro">If you want to keep going, there are two ongoing services. Both are custom scope.</p>
+          <ul class="ledger">
+            <li><h3>Lens Monitor</h3><p>Custom scope, 3-month minimum. Your situations rerun every two weeks, with a live report, the pages behind every answer, and a fix plan your team works through.</p></li>
+            <li><h3>Lens Engage</h3><p>Custom scope, 6-month minimum. Monitor rerun weekly, plus we write and place the fixes and review the results with you each month.</p></li>
+          </ul>
+          <p class="aud-body"><a class="link link-arrow" href="how-it-works.html">How the method works</a></p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="faq-title">
+      <div class="cols">
+        <div class="section-body">
+          <h2 id="faq-title">Questions</h2>
+          <div class="aud-faq">
+            <div class="faq-item">
+              <h3>Is the audit really free?</h3>
+              <p>Yes. There is no charge and no commitment. We walk you through the results on a call and you keep the report.</p>
+            </div>
+            <div class="faq-item">
+              <h3>What do you need from me?</h3>
+              <p>Your website and the competitor you lose to most. We do the research and write the buyer situations ourselves.</p>
+            </div>
+            <div class="faq-item">
+              <h3>Will you contact my customers or competitors?</h3>
+              <p>No. We only ask AI assistants questions and read public pages.</p>
+            </div>
+            <div class="faq-item">
+              <h3>Do you work with my competitors?</h3>
+              <p>We work with one company per competitive set. If we already work with a direct competitor of yours, we'll tell you before we run anything.</p>
+            </div>
           </div>
         </div>
       </div>
     </section>
 
-    <section id="request" class="audit" aria-labelledby="request-title">
-      <div class="audit-bg" aria-hidden="true"></div>
-      <div class="wrap narrow">
-        <h2 id="request-title">Request your audit</h2>
-        <p>Tell us who you are and who you lose to. We'll come back within two working days.</p>
-        <form class="audit-form" action="https://formspree.io/f/__FORMSPREE_ID__" method="POST">
-          <label>Company website<input type="url" name="site" placeholder="https://" required></label>
-          <label>Work email<input type="email" name="email" placeholder="you@company.com" required></label>
-          <label>The competitor you lose to most<input type="text" name="rival" placeholder="Optional"></label>
-          <input type="text" name="_gotcha" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
-          <input type="hidden" name="_subject" value="FlintRay audit request">
-          <button class="btn" type="submit">Request my audit</button>
-          <p class="form-note" role="status" aria-live="polite">We only use these details to reply about your audit. <a href="privacy.html">Privacy</a></p>
-        </form>
+    <section id="request" class="section on-silt" aria-labelledby="request-title">
+      <div class="cols">
+        <div class="aud-copy">
+          <h2 id="request-title">Request your audit</h2>
+          <p class="intro">Tell us who you are and who you lose to. We'll come back within two working days.</p>
+        </div>
+        <div class="aud-sheet">
+          <form class="audit-form letter" action="#preview-only" method="POST">
+            <label>Company website<input type="url" name="site" placeholder="https://" required></label>
+            <label>Work email<input type="email" name="email" placeholder="you@company.com" required></label>
+            <label>The competitor you lose to most<input type="text" name="rival" placeholder="Optional"></label>
+            <input type="text" name="_gotcha" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+            <input type="hidden" name="_subject" value="FlintRay audit request">
+            <button class="btn" type="submit">Request my audit</button>
+            <p class="form-note" role="status" aria-live="polite">Preview only: this form isn't connected yet. Nothing you enter will be sent.</p>
+          </form>
+        </div>
       </div>
     </section>
   </main>
 
-  <footer class="footer">
-    <div class="wrap foot">
-      <a class="brand" href="index.html"><img src="assets/manta-mark.png" alt="" width="46" height="21"><span>FlintRay</span></a>
-      <p>AI search visibility, measured and fixed.</p>
-      <p class="small"><a href="how-much-does-aeo-cost.html">AEO pricing</a> · <a href="how-ai-assistants-decide.html">How AI decides</a> · <a href="privacy.html">Privacy</a> · © 2026 FlintRay</p>
+  <footer class="site-footer">
+    <div class="foot-grid">
+      <div class="colophon">
+        <svg class="hallmark" viewBox="0 0 100 46" aria-hidden="true" focusable="false"><path d="M2 7C15 23 31 31 50 30"/><path d="M44 30C50 21 51 11 47 2C61 10 79 21 97 26C89 28 83 29 78 31C74 37 70 41 66 44C64 38 61 34 55 32C51 31 47 30.5 44 30Z"/><path d="M86 25.5h.01"/></svg>
+        <p>FlintRay is a managed research service. We measure what AI assistants tell your buyers, show why, and check every fix against the next run.</p>
+      </div>
+      <div class="foot-col"><h2>FlintRay</h2><ul><li><a href="index.html">Home</a></li><li><a href="how-it-works.html">How it works</a></li><li><a href="index.html#pricing">Pricing</a></li><li><a href="audit.html">Free audit</a></li><li><a href="sample-report.html">Sample report</a></li></ul></div>
+      <div class="foot-col"><h2>Guides</h2><ul><li><a href="guides.html">All guides</a></li><li><a href="how-much-does-aeo-cost.html">How much AEO costs</a></li><li><a href="how-ai-assistants-decide.html">How AI assistants decide</a></li></ul></div>
+      <div class="foot-col"><h2>Company</h2><ul><li><a href="partners.html">Partners</a></li><li><a href="privacy.html">Privacy</a></li><li><a href="mailto:privacy@flintray.com">privacy@flintray.com</a></li></ul></div>
+      <div class="foot-legal meta"><span>© 2026 FlintRay</span></div>
     </div>
   </footer>
 
-  <script src="main.js?v=7"></script>
+  <script src="site.js?v=8" defer></script>
 </body>
 </html>
