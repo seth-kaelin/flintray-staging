@@ -7,11 +7,11 @@
 - Lens Monitor: custom scope. Situations rerun on a schedule, a live report, sources, a fix plan.
 - Lens Engage: custom scope. Monitor rerun weekly, plus FlintRay writes and places the fixes.
 - Data access: for qualified teams, the evidence can be connected to the client's own AI assistant through MCP. Scoped per client.
-- Partners: white-label delivery under a partner's brand. Pricing on request.
+- Partners: white-label delivery under a partner's brand. Private quote.
 
 ## Pages
 
-- [FlintRay](https://xvomiit.github.io/flintray-staging/): What FlintRay does, proof, pricing and the free audit.
+- [FlintRay](https://xvomiit.github.io/flintray-staging/): What FlintRay does, proof, operating models and the free audit.
 - [How we measure what AI tells your buyers](https://xvomiit.github.io/flintray-staging/how-it-works.html): The method: buyer situations, three-turn conversations, four assistants, what we count, sources, fixes.
 - [Free AI search audit: see who AI recommends instead of you](https://xvomiit.github.io/flintray-staging/audit.html): What the free audit includes, a sample report, and how to request one.
 - [How much does AEO cost? Prices in 2026](https://xvomiit.github.io/flintray-staging/how-much-does-aeo-cost.html): AEO pricing in 2026: price bands, what sets the price, what each band buys, how to decide.

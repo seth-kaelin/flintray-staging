@@ -3,12 +3,11 @@
 for (const form of document.querySelectorAll(".audit-form")) {
   const note = form.querySelector(".form-note");
   const button = form.querySelector("button[type=submit]");
-  const connected = !form.action.includes("__FORMSPREE_ID__");
 
   form.addEventListener("submit", async (event) => {
     event.preventDefault();
     note.classList.remove("is-ok", "is-error");
-    if (!connected) {
+    if (form.action.includes("__FORMSPREE_ID__")) {
       note.textContent = "Preview only: this form isn't connected yet, so nothing was sent.";
       return;
     }

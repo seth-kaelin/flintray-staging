@@ -1,3 +1,4 @@
+/* tokens: fonts and design tokens (colour, layout, spacing, type, motion, layers). Built into ../../styles.css by tools/build_site.py; edit here, never there. */
 /* Geist and Geist Mono, self-hosted (SIL OFL 1.1, assets/fonts/OFL.txt). Latin subset. */
 @font-face { font-family: "Geist"; font-style: normal; font-weight: 300 600; font-display: swap; src: url("assets/fonts/geist-latin.woff2") format("woff2"); }
 @font-face { font-family: "Geist Mono"; font-style: normal; font-weight: 400 500; font-display: swap; src: url("assets/fonts/geist-mono-latin.woff2") format("woff2"); }
@@ -26,8 +27,36 @@
   --radius-sm: 9px;
   --font: "Geist", ui-sans-serif, system-ui, sans-serif;
   --mono: "Geist Mono", ui-monospace, monospace;
+
+  /* Text tiers on dark ground */
+  --ink-soft: #C3D2E4;
+
+  /* Layout */
+  --page-max: 1160px;
+  --measure: 720px;
+  --gutter: 24px;
+
+  /* Spacing scale (4px base) */
+  --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px; --space-5: 24px;
+  --space-6: 32px; --space-7: 48px; --space-8: 64px; --space-9: 96px; --space-10: 128px;
+
+  /* Type scale */
+  --text-xs: 12px; --text-sm: 14px; --text-base: 17px; --text-lg: 19px;
+  --text-xl: 24px; --text-2xl: 34px; --text-display: clamp(40px, 5.2vw, 68px);
+
+  /* Motion: interface responses only. Reduced motion collapses these to 0. */
+  --dur-fast: 150ms; --dur-base: 200ms; --dur-slow: 400ms; --dur-entrance: 1800ms;
+  --ease-out: cubic-bezier(0.215, 0.61, 0.355, 1);
+
+  /* Layers */
+  --z-nav: 20; --z-banner: 30; --z-overlay: 40;
 }
 
+@media (prefers-reduced-motion: reduce) {
+  :root { --dur-fast: 0ms; --dur-base: 0ms; --dur-slow: 0ms; --dur-entrance: 0ms; }
+}
+
+/* base: element defaults and layout primitives. Built into ../../styles.css by tools/build_site.py; edit here, never there. */
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
 body {
@@ -47,6 +76,12 @@ p { margin: 0; }
 .wrap { width: min(1160px, 100% - 48px); margin-inline: auto; }
 .narrow { width: min(720px, 100% - 48px); }
 
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+}
+
+/* components: shared UI used on every page (banner, nav, buttons). Built into ../../styles.css by tools/build_site.py; edit here, never there. */
 /* Draft markers (review build only) */
 .draft-bar {
   position: relative; z-index: 30;
@@ -89,12 +124,13 @@ p { margin: 0; }
 }
 .btn:hover { background: #fff; box-shadow: 0 0 0 6px rgba(126, 172, 210, 0.14); }
 .btn:active { transform: translateY(1px); }
-.btn:focus-visible, a:focus-visible, input:focus-visible { outline: 2px solid var(--ray); outline-offset: 3px; }
+.btn:focus-visible, a:focus-visible, input:focus-visible, [tabindex]:focus-visible { outline: 2px solid var(--ray); outline-offset: 3px; }
 .btn-ghost { background: transparent; color: var(--ink); box-shadow: inset 0 0 0 1px var(--line-strong); }
 .btn-ghost:hover { background: rgba(218, 235, 252, 0.06); box-shadow: inset 0 0 0 1px rgba(218, 235, 252, 0.32); }
 .btn-small { height: 38px; padding: 0 16px; font-size: 14px; }
 .btn[disabled] { opacity: .55; cursor: not-allowed; }
 
+/* pages: page sections and page-specific components. Built into ../../styles.css by tools/build_site.py; edit here, never there. */
 /* Hero */
 .hero { position: relative; overflow: hidden; min-height: min(860px, 100svh); display: grid; align-items: center; isolation: isolate; }
 .hero-bg {
@@ -121,7 +157,7 @@ p { margin: 0; }
   padding: 96px 0 88px;
 }
 .hero h1 { font-size: clamp(40px, 5.2vw, 68px); font-weight: 500; letter-spacing: -0.035em; max-width: 15ch; }
-.lede { margin-top: 24px; font-size: 19px; color: #C3D2E4; max-width: 54ch; }
+.lede { margin-top: 24px; font-size: 19px; color: var(--ink-soft); max-width: 54ch; }
 .cta-row { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 36px; }
 
 /* Illustration card: plainly an illustration, not a copy of any product's UI */
@@ -176,7 +212,7 @@ section { position: relative; }
 .stat { display: flex; align-items: baseline; gap: 10px; }
 .big { font-size: 64px; font-weight: 400; letter-spacing: -0.04em; line-height: 1; color: var(--foam); font-variant-numeric: tabular-nums; }
 .of { font: 400 16px/1 var(--mono); color: var(--ray); }
-.case h3 { margin-top: 10px; color: #C3D2E4; font-weight: 400; }
+.case h3 { margin-top: 10px; color: var(--ink-soft); font-weight: 400; }
 .case p:last-child { margin-top: 18px; color: var(--muted); font-size: 15.5px; }
 
 .pricing { padding: 60px 0 100px; }
@@ -186,7 +222,7 @@ section { position: relative; }
 .tier-main { border-color: rgba(126, 172, 210, 0.45); background: linear-gradient(180deg, rgba(24, 43, 69, 0.7), rgba(11, 29, 55, 0.35)); box-shadow: 0 0 0 1px rgba(126, 172, 210, 0.12), 0 30px 80px -40px rgba(126, 172, 210, 0.35); }
 .price { margin-top: 14px; font-size: 34px; letter-spacing: -0.03em; }
 .price span { font-size: 16px; color: var(--muted); margin-left: 2px; }
-.tier ul { list-style: none; padding: 0; margin: 22px 0 28px; display: grid; gap: 10px; color: #C3D2E4; font-size: 15.5px; }
+.tier ul { list-style: none; padding: 0; margin: 22px 0 28px; display: grid; gap: 10px; color: var(--ink-soft); font-size: 15.5px; }
 .tier li { padding-left: 22px; position: relative; }
 .tier li::before { content: ""; position: absolute; left: 2px; top: 10px; width: 8px; height: 8px; border-radius: 50%; box-shadow: inset 0 0 0 1.5px var(--ray); }
 .tier .btn { margin-top: auto; }
@@ -259,10 +295,10 @@ section { position: relative; }
 .chapter-head { display: flex; flex-direction: column; gap: 18px; }
 .chapter-head .num { margin-bottom: 0; }
 .chapter-head h2 { font-size: clamp(26px, 2.6vw, 34px); }
-.chapter-body { display: grid; gap: 18px; color: #C3D2E4; }
+.chapter-body { display: grid; gap: 18px; color: var(--ink-soft); }
 .chapter-body > p { max-width: 62ch; }
 .ticks { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
-.ticks li { position: relative; padding-left: 24px; color: #C3D2E4; }
+.ticks li { position: relative; padding-left: 24px; color: var(--ink-soft); }
 .ticks li::before { content: ""; position: absolute; left: 2px; top: 10px; width: 8px; height: 8px; border-radius: 50%; box-shadow: inset 0 0 0 1.5px var(--ray); }
 .ticks strong { color: var(--ink); font-weight: 500; }
 .turns { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; counter-reset: turn; }
@@ -272,7 +308,7 @@ section { position: relative; }
 .small-note { font-size: 14px; color: var(--muted); }
 .defs { margin: 0; display: grid; gap: 10px; }
 .defs div { display: grid; grid-template-columns: 140px 1fr; gap: 16px; align-items: center; }
-.defs dd { margin: 0; color: #C3D2E4; }
+.defs dd { margin: 0; color: var(--ink-soft); }
 .tag-neutral { color: var(--muted); background: rgba(154, 171, 194, 0.12); }
 .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 32px; }
 .panel { padding: 28px; border-radius: var(--radius); border: 1px solid var(--line); background: rgba(11, 29, 55, 0.3); }
@@ -289,7 +325,7 @@ section { position: relative; }
 .page-hero-plain .small-note { margin-top: 14px; }
 .legal { padding: 24px 0 110px; }
 .legal h2 { font-size: 22px; margin: 40px 0 12px; }
-.legal p { color: #C3D2E4; max-width: 66ch; }
+.legal p { color: var(--ink-soft); max-width: 66ch; }
 .legal p + p, .legal p + ul, .legal ul + p { margin-top: 12px; }
 .legal a, .foot a:not(.brand), .form-note a, .answer-card figcaption a { color: var(--ray); text-underline-offset: 3px; }
 
@@ -310,10 +346,10 @@ section { position: relative; }
 /* FAQ and articles */
 .faq-list { gap: 26px; }
 .faq-item h3 { font-size: 18px; color: var(--ink); }
-.faq-item p { margin-top: 8px; color: #C3D2E4; max-width: 62ch; }
+.faq-item p { margin-top: 8px; color: var(--ink-soft); max-width: 62ch; }
 .prose .table-wrap { overflow-x: auto; margin: 18px 0 6px; border: 1px solid var(--line); border-radius: var(--radius-sm); }
 .prose table { width: 100%; border-collapse: collapse; font-size: 15px; }
-.prose th, .prose td { text-align: left; vertical-align: top; padding: 12px 14px; border-bottom: 1px solid var(--line); color: #C3D2E4; }
+.prose th, .prose td { text-align: left; vertical-align: top; padding: 12px 14px; border-bottom: 1px solid var(--line); color: var(--ink-soft); }
 .prose thead th { color: var(--ink); font-weight: 500; background: rgba(24, 43, 69, 0.45); }
 .prose tbody th { color: var(--ink); font-weight: 500; white-space: nowrap; }
 .prose tr:last-child td, .prose tr:last-child th { border-bottom: 0; }
