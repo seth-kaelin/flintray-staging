@@ -73,28 +73,29 @@
 
   <header class="site-nav">
     <a class="wordmark" href="index.html">FlintRay</a><div class="draft-bar" role="note">Staging</div>
-    <nav class="nav-links" aria-label="Main"><a href="how-it-works.html">How it works</a><a href="index.html#pricing">Pricing</a><a href="partners.html">Partners</a><a href="guides.html">Guides</a></nav>
-    <a class="nav-cta" href="sample-report.html">Sample report</a>
-    <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-menu"><span class="menu-icon" aria-hidden="true"></span>Menu</button>
+    <nav class="nav-links" aria-label="Main"><a href="how-it-works.html">How it works</a><a href="index.html#pricing">Pricing</a><a href="partners.html">Partners</a><a href="insights.html">Insights</a><a href="sample-report.html">Sample report</a></nav>
+    <a class="nav-cta" href="audit.html">Free audit</a>
+    <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-menu"><span class="menu-icon" aria-hidden="true"></span><span class="menu-word">Menu</span></button>
     <div class="menu-sheet" id="site-menu" role="dialog" aria-modal="true" aria-label="Menu" hidden>
       <div class="menu-sheet-head"><a class="wordmark" href="index.html" tabindex="-1">FlintRay</a><button class="menu-close" type="button">Close</button></div>
-      <nav aria-label="Main"><a href="how-it-works.html">How it works</a><a href="index.html#pricing">Pricing</a><a href="partners.html">Partners</a><a href="guides.html">Guides</a><a href="sample-report.html">Sample report</a></nav>
+      <nav aria-label="Main"><a href="how-it-works.html">How it works</a><a href="index.html#pricing">Pricing</a><a href="partners.html">Partners</a><a href="insights.html">Insights</a><a href="sample-report.html">Sample report</a><a href="audit.html">Free audit</a></nav>
     </div>
   </header>
 
   <main id="top">
     <section class="hero" aria-labelledby="hero-title">
-      <h1 id="hero-title"><span>Why AI recommends</span><span>your competitor<em>.</em></span></h1>
+      <h1 id="hero-title"><span>Why AI recommends</span> <span>your competitor<em>.</em></span></h1>
       <div class="hero-mobile-proposition">
-        <p>Managed, human-reviewed research on what AI tells your buyers.</p>
+        <p>When a buyer asks AI who to call, the answer lands like a referral. We show you who gets it, and work to make it you.</p>
+        <a class="btn hero-mobile-cta" href="audit.html">Request a free audit</a>
       </div>
       <div class="hero-copy">
-        <p><strong class="lede-continues">…and what will change it.</strong> See the buyer's question, the exact answer, who was put forward and the sources behind it, checked by a person before it reaches you. Then rerun after the fix.</p>
-        <a class="link link-arrow lede-link" href="sample-report.html">Open the sample report</a>
+        <p><strong class="lede-continues">…and what will change it.</strong> We run your buyers' conversations through ChatGPT, Claude, Gemini and Perplexity and show you every turn, who got put forward and the sources behind it, read by a person before it reaches you. Then we rerun it after the fix.</p>
+        <div class="hero-actions"><a class="btn" href="audit.html">Request a free audit</a><a class="link link-arrow lede-link" href="sample-report.html">Open the sample report</a></div>
       </div>
       <section class="evidence" aria-label="Sample conversation B006, Canada" data-specimen data-lines="1" data-sources="cited" data-route="gutter">
         <svg class="trace" aria-hidden="true" focusable="false"><path d=""/><circle r="3" cx="-9" cy="-9"/></svg>
-        <p class="corner c-tr"><span class="who"><b data-f="engine">Perplexity</b>, model <b data-f="model">Best</b></span><button class="next" type="button" data-next>Next assistant</button></p>
+        <p class="corner c-tr"><span class="who"><b data-f="engine">Perplexity</b>'s answer</span><button class="next" type="button" data-next>Next assistant</button></p>
         <article class="sheet">
           <p class="truth-label">Illustrative sample. Companies and sources are fictional.</p>
           <p class="ask-wrap" data-quote><q class="ask-guide" data-f="ask-guide" aria-hidden="true">“Which specific compliance platforms or managed services should I contact for a company moving off spreadsheets with an audit six months out?”</q><q class="ask" data-f="ask">“Which specific compliance platforms or managed services should I contact for a company moving off spreadsheets with an audit six months out?”</q><span class="caret" aria-hidden="true"></span></p>
@@ -102,7 +103,7 @@
           <ol class="verdict" data-f="verdict"><li class="v-row" data-on><span class="v-name">Trellisec</span><span class="stamp stamp-recommended">Recommended</span></li><li class="v-row" data-on><span class="v-name">Kontrolo</span><span class="stamp stamp-shortlisted">Shortlisted</span></li><li class="v-row" data-on><span class="v-name">Proofwell</span><span class="stamp stamp-shortlisted">Shortlisted</span></li><li class="v-row is-you" data-on><span class="v-name">Corvane<span class="v-who">the sample client</span></span><span class="stamp stamp-none">Not named</span></li></ol>
           <ol class="sources" data-f="sources"><li data-src="1"><span class="n">[1]</span> trellisec.example <span class="kind">Trellisec (competitor)</span></li></ol>
           <div class="sheet-footer">
-            <p class="base"><span class="figure">6 <small>of 60</small></span><span class="label">conversations put Corvane forward</span></p>
+            <p class="base"><span class="figure"><span class="count" data-count="6" style="--digits:1">6</span> <small>of 60</small></span><span class="label">conversations in the whole sample put Corvane forward</span></p>
             <div class="sheet-actions"><a class="btn" href="sample-report.html">Open the sample report</a><a class="link link-arrow" href="#request">Request a free audit</a></div>
           </div>
         </article>
@@ -115,9 +116,18 @@
     <section class="section problem" aria-labelledby="problem-title">
       <div class="cols">
         <div class="section-body">
-          <h2 id="problem-title">The shortlist forms before anyone visits your site</h2>
-          <p class="intro">A buyer describes their situation to an AI assistant, adds the constraints that rule options out, then asks which companies to contact. The assistant answers with a few names and its reasons. Those companies get the first call. A company that isn't named never learns the deal existed, and nothing shows up in its analytics.</p>
-          <p class="view">The companies named early in a conversation set the frame for the rest of it. So we measure the whole conversation, from the first question to the last.</p>
+          <h2 id="problem-title">An AI recommendation is word of mouth</h2>
+          <p class="intro">When a buyer asks ChatGPT which companies to call, the answer lands the way a tip from a trusted colleague does. It gives a few names and a reason for each, and the one named first carries the most weight. A company that never gets named doesn't learn the deal existed, and nothing shows up in its analytics.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section early" aria-labelledby="early-title">
+      <div class="cols">
+        <div class="section-body">
+          <h2 id="early-title">The decision starts forming in the first question</h2>
+          <p class="intro">Buyers usually describe the problem first, then add what rules options out, and only ask for names at the end. By then the assistant may already have named a few companies. So we measure the whole conversation, every turn, and note who gets named at each step.</p>
+          <p class="view">Across 712 buyer conversations in four AI assistants, a company that came up in the buyer's first questions and made the final shortlist was the top pick 1.7 times as often as one that only appeared at the shortlist, 113 of 888 against 241 of 3,144. It's a correlation, so we use the next run to check what actually moved.</p>
         </div>
       </div>
     </section>
@@ -125,10 +135,10 @@
     <section class="section on-silt takeapart" aria-labelledby="takeapart-title">
       <div class="cols">
         <div class="section-body">
-          <h2 id="takeapart-title">What one answer looks like when you take it apart</h2>
-          <p class="intro">Every conversation we run is saved in full. For each one, the report shows the situation, the exact questions, the assistant and the model the app showed, every company named and how, and the sources the app displayed.</p>
+          <h2 id="takeapart-title">What one conversation looks like when you take it apart</h2>
+          <p class="intro">Every conversation we run is saved in full. For each one, the report shows the situation, each turn the buyer typed, the assistant and the model that answered, every company named and how, and the sources the answer cited.</p>
           <p class="note">Illustrative sample. Companies and sources are fictional.</p>
-          <div class="convo" data-takeapart><svg class="takeapart-trace" aria-hidden="true" focusable="false"><path d=""/></svg><div class="convo-row"><p class="callout"><b>Situation</b>Written from research into who buys. The questions never name the company being measured.</p><div class=""><p class="meta-line">Leaving spreadsheets and a consultant, Canada</p></div></div><div class="convo-row"><p class="callout"><b>The problem</b>The buyer's own framing, in the first turn.</p><div class=""><p class="record buyer" data-quote>I&#x27;m the operations lead at a 140-person analytics company. For two years we&#x27;ve maintained SOC 2 with a part-time consultant and a giant spreadsheet. The consultant is retiring next quarter, and honestly the spreadsheet only works because she understood it. Our next audit window opens in six months. I need to understand what my options are for replacing this setup before it collapses.</p></div></div><div class="convo-row"><p class="callout"><b>The constraints</b>What rules options out, in the second turn.</p><div class=""><p class="record buyer" data-quote>I&#x27;m not technical, and our engineers resent every compliance request. I&#x27;m afraid of losing history and evidence during a switch, or picking something that needs a full-time admin we don&#x27;t have. Leadership wants costs roughly flat compared to the consultant. What should I compare between software, managed services and finding another consultant, and how do I judge migration risk?</p></div></div><div class="convo-row"><p class="callout"><b>The ask</b>The third turn. Its answer is the one we grade.</p><div class=""><p class="record buyer" data-quote>Thanks. Which specific compliance platforms or managed services should I contact for a company moving off spreadsheets with an audit six months out? What should I ask about migrating existing policies and evidence, how much onboarding help they give someone non-technical, and how they keep engineering requests to a minimum? I&#x27;d also like to know whether to keep our current auditor or reconsider.</p></div></div><div class="convo-row"><p class="callout"><b>Model</b>Recorded from the app at the time of the answer, because the same assistant answers differently on different models.</p><div class=""><p class="meta-line">Perplexity, model Best, in a fresh chat</p></div></div><div class="convo-row quote-row"><p class="callout"><b>Quote</b>A company counts only if this exact text appears in the answer.</p><div class="record"><p data-quote>Start with <b>Trellisec</b> [1]. <b>Kontrolo</b> and <b>Proofwell</b> are also worth a look.</p><p data-quote><b>Trellisec</b>: The best-known platform, with broad integrations that reduce manual evidence requests to engineers [1].</p><p data-quote><b>Kontrolo</b>: Strong multi-framework support. It leans toward larger companies, so confirm pricing at your size [2].</p><p data-quote><b>Proofwell</b>: Automated evidence collection at lower prices, which helps keep costs flat [3].</p></div></div><div class="convo-row"><p class="callout"><b>Order</b>Who was recommended, who was shortlisted, and who was left out.</p><div class=""><ul class="names"><li><span>Trellisec</span><span class="stamp stamp-recommended">Recommended</span></li><li><span>Kontrolo</span><span class="stamp stamp-shortlisted">Shortlisted</span></li><li><span>Proofwell</span><span class="stamp stamp-shortlisted">Shortlisted</span></li><li><span>Corvane</span><span class="stamp stamp-none">Not named</span></li></ul></div></div><div class="convo-row sources-row"><p class="callout"><b>Sources</b>The pages the answer drew on, classified by type.</p><div class=""><ul class="names srcs meta-line" data-cited-source="1"><li data-src="1"><span class="n">[1]</span> trellisec.example, trellisec (competitor)</li><li data-src="2"><span class="n">[2]</span> kontrolo.example, kontrolo (competitor)</li><li data-src="3"><span class="n">[3]</span> proofwell.example, proofwell (competitor)</li></ul></div></div><div class="convo-row"><p class="callout"><b>Next run</b>The same situation, rerun after the fix.</p><div class=""><p>The sample has one run. In an engagement, this row shows the rerun and marks the result moved, no change yet, or worse.</p></div></div></div>
+          <div class="takeapart-pin"><div class="convo" data-takeapart><svg class="takeapart-trace" aria-hidden="true" focusable="false"><path d=""/></svg><div class="convo-row"><p class="callout"><b>Situation</b>Written from research into who buys. The questions never name the company being measured.</p><div class=""><p class="meta-line">Leaving spreadsheets and a consultant, Canada</p></div></div><div class="convo-row"><p class="callout"><b>The problem</b>The buyer's own framing, in the first turn.</p><div class=""><p class="record buyer" data-quote>I&#x27;m the operations lead at a 140-person analytics company. For two years we&#x27;ve maintained SOC 2 with a part-time consultant and a giant spreadsheet. The consultant is retiring next quarter, and honestly the spreadsheet only works because she understood it. Our next audit window opens in six months. I need to understand what my options are for replacing this setup before it collapses.</p></div></div><div class="convo-row"><p class="callout"><b>The constraints</b>What rules options out, in the second turn.</p><div class=""><p class="record buyer" data-quote>I&#x27;m not technical, and our engineers resent every compliance request. I&#x27;m afraid of losing history and evidence during a switch, or picking something that needs a full-time admin we don&#x27;t have. Leadership wants costs roughly flat compared to the consultant. What should I compare between software, managed services and finding another consultant, and how do I judge migration risk?</p></div></div><div class="convo-row"><p class="callout"><b>The ask</b>The third turn, where the buyer asks for names. We note who was named at every turn before it.</p><div class=""><p class="record buyer" data-quote>Thanks. Which specific compliance platforms or managed services should I contact for a company moving off spreadsheets with an audit six months out? What should I ask about migrating existing policies and evidence, how much onboarding help they give someone non-technical, and how they keep engineering requests to a minimum? I&#x27;d also like to know whether to keep our current auditor or reconsider.</p></div></div><div class="convo-row"><p class="callout"><b>Model</b>Every answer is tied to the exact model that gave it, and we check that model on every answer.</p><div class=""><p class="meta-line">Perplexity, Best</p></div></div><div class="convo-row quote-row"><p class="callout"><b>Quote</b>A company counts only if this exact text appears in the answer.</p><div class="record"><p data-quote>Start with <b>Trellisec</b> [1]. <b>Kontrolo</b> and <b>Proofwell</b> are also worth a look.</p><p data-quote><b>Trellisec</b>: The best-known platform, with broad integrations that reduce manual evidence requests to engineers [1].</p><p data-quote><b>Kontrolo</b>: Strong multi-framework support. It leans toward larger companies, so confirm pricing at your size [2].</p><p data-quote><b>Proofwell</b>: Automated evidence collection at lower prices, which helps keep costs flat [3].</p></div></div><div class="convo-row"><p class="callout"><b>Order</b>Who was recommended, who was shortlisted, and who was left out.</p><div class=""><ul class="names order"><li><span>Trellisec</span><span class="stamp stamp-recommended">Recommended</span></li><li><span>Kontrolo</span><span class="stamp stamp-shortlisted">Shortlisted</span></li><li><span>Proofwell</span><span class="stamp stamp-shortlisted">Shortlisted</span></li><li class="is-you"><span>Corvane</span><span class="stamp stamp-none">Not named</span></li></ul></div></div><div class="convo-row sources-row"><p class="callout"><b>Sources</b>The pages the answer drew on, classified by type.</p><div class=""><ul class="names srcs meta-line" data-cited-source="1"><li data-src="1"><span class="n">[1]</span> trellisec.example, trellisec (competitor)</li><li data-src="2"><span class="n">[2]</span> kontrolo.example, kontrolo (competitor)</li><li data-src="3"><span class="n">[3]</span> proofwell.example, proofwell (competitor)</li></ul></div></div><div class="convo-row"><p class="callout"><b>Next run</b>The same situation, rerun after the fix.</p><div class=""><p>The sample has one run. In an engagement, this row shows the rerun and marks the result moved, no change yet, or worse.</p></div></div></div></div>
           <div class="after">
             <a class="btn" href="sample-report.html">Open the full sample report</a>
           </div>
@@ -136,39 +146,40 @@
       </div>
     </section>
 
-    <section class="section method" aria-labelledby="method-title">
+    <section class="section proof" id="proof" aria-labelledby="proof-title">
       <div class="cols">
         <div class="section-body">
-          <h2 id="method-title">Measured the way buyers actually ask</h2>
+          <h2 id="proof-title">Named a lot, and almost never the top pick</h2>
+          <p class="note">Measured for one B2B services company we track, anonymized. The same 74 buyer situations, run twice in October 2026 in all four assistants.</p>
+          <div class="proof-figures">
+            <p class="figure-block"><span class="eng">Conversations that named it</span><span class="big">205<small>of 592</small></span></p>
+            <p class="figure-block"><span class="eng">Conversations where it was the top pick</span><span class="big">30<small>of 592</small></span></p>
+            <p class="claim">In most of the conversations that named it, the assistant put another company on top, and that's the name a buyer is likely to call first.</p>
+          </div>
           <ul class="ledger">
-            <li><h3>Buyer situation</h3><p>A real buyer type with a real problem, a budget, a deadline and constraints. Reviewed by someone who asks whether the client could actually win it.</p></li>
-            <li><h3>Three turns</h3><p>The problem, then the constraints, then "which companies would you contact?" The third answer is the one we grade.</p></li>
-            <li><h3>Four assistants</h3><p>ChatGPT, Claude, Gemini and Perplexity, in the apps buyers use, each in a fresh chat with no history. The model behind every answer is recorded.</p></li>
-            <li><h3>Classification</h3><p>Recommended, shortlisted, mentioned or not named. Every call is backed by an exact quote.</p></li>
-            <li><h3>Sources</h3><p>Every cited source, classified: your site, a competitor's, a directory, a review site, a publisher or a forum.</p></li>
-            <li><h3>Fixes</h3><p>Specific pages, comparisons and listings, each with an owner.</p></li>
-            <li><h3>Rerun</h3><p>The same situations, run again. Each fix is marked moved, no change yet, or worse.</p></li>
+            <li><div><p class="stat">ChatGPT put it forward in 75 of 148 conversations, and Perplexity in 25 of 148.</p><p class="meta src">The same company and the same two runs, October 2026.</p></div><p>So one assistant put it forward three times as often as another. Each one reads different pages and needs its own fix, and a single blended score would hide the gap.</p></li>
+            <li><div><p class="stat">Put forward in 8 of 16 conversations in its home state, and 5 of 44 everywhere else.</p><p class="meta src">A company that serves all 50 states, anonymized. One audit, November 2026.</p></div><p>Assistants knew it at home, but everywhere else they mostly sent buyers to competitors, and in 40 of 44 conversations they cited a competitor's own page for the buyer's specific need.</p></li>
+            <li><div><p class="stat">Named in none of 60 conversations. The category leader was put forward in 47.</p><p class="meta src">A software company, anonymized. One audit, November 2026.</p></div><p>Competitors' own pages were the biggest single source, at 976 of the 2,169 links AI cited and 7 of the 10 most-read sites. None of the 60 cited the company's site.</p></li>
           </ul>
-          <p class="after-link"><a class="link link-arrow" href="how-it-works.html">How it works, in full</a></p>
+          <div class="after"><a class="btn" href="#request">Request a free audit</a></div>
         </div>
       </div>
     </section>
 
-    <section class="section proof" id="proof" aria-labelledby="proof-title">
+    <section class="section method" aria-labelledby="method-title">
       <div class="cols">
         <div class="section-body">
-          <h2 id="proof-title">Each assistant gives a different answer</h2>
-          <p class="note">Measured for one B2B services company and anonymized. The same 74 buyer situations, run twice in October 2026.</p>
-          <div class="proof-figures">
-            <p class="figure-block"><span class="eng">ChatGPT recommended it</span><span class="big">75<small>of 148</small></span></p>
-            <p class="figure-block"><span class="eng">Perplexity recommended it</span><span class="big">25<small>of 148</small></span></p>
-          </div>
-          <p class="claim">Each assistant reads different pages, so each one needs its own fix. A single blended score would hide this.</p>
+          <h2 id="method-title">We work to get you named early</h2>
+          <p class="intro">We work on the pages and sources assistants lean on while the buyer is still describing the problem, so you're named and cited in the questions buyers ask before they ask for names. Then the next run shows whether it moved.</p>
           <ul class="ledger">
-            <li><div><p class="stat">Named in 205 of 592 conversations, recommended in 191, and named first in 30.</p><p class="meta src">The same B2B services company and the same two runs, October 2026.</p></div><p>ChatGPT named it first in 22 of those 30. Gemini never named it first in 148. Being mentioned, being recommended and being named first are different results.</p></li>
-            <li><div><p class="stat">Put forward in 7 of 14 conversations in its home state, and 2 of 39 everywhere else.</p><p class="meta src">A company that serves all 50 states, anonymized. One audit, November 2026.</p></div><p>Assistants knew it locally and sent buyers everywhere else to competitors with a page for each situation.</p></li>
-            <li><div><p class="stat">Named in none of 56 conversations. The category leader was put forward in 39.</p><p class="meta src">A software company, anonymized. One audit, November 2026.</p></div><p>Shortlists were built largely from competitors' own pages. None of the 56 cited the company's site.</p></li>
+            <li><h3>Your buyers' situations</h3><p>Written from research into who buys from you, and read by a person who asks whether you could actually win each one. Your name never appears in the questions.</p></li>
+            <li><h3>Three turns in four assistants</h3><p>The buyer sets out the problem, then the constraints, then asks which companies to contact, in ChatGPT, Claude, Gemini and Perplexity. Every answer is tied to the exact model that gave it, and we check that model on every answer.</p></li>
+            <li><h3>Every turn, read by a person</h3><p>We note who's named at each step. In the final answer every company is Recommended, Shortlisted, Mentioned, Named negatively or Not named, and each call rests on an exact quote.</p></li>
+            <li><h3>Sources</h3><p>Every cited source is sorted by type, whether it's your site, a competitor's, a directory, a review site, a publisher or a forum.</p></li>
+            <li><h3>Fixes</h3><p>Specific pages, comparisons and listings aimed at the early questions, each with an owner.</p></li>
+            <li><h3>Rerun</h3><p>The same situations, run again. Each fix is marked moved, no change yet, or worse.</p></li>
           </ul>
+          <div class="after"><a class="btn" href="#request">Request a free audit</a><a class="link link-arrow" href="how-it-works.html">How it works, in full</a></div>
         </div>
       </div>
     </section>
@@ -177,28 +188,30 @@
       <div class="cols">
         <div class="section-body">
           <h2 id="models-title">Choose how much of the work you want us to own</h2>
-          <p class="intro">Every engagement starts with measurement. After that, you choose who does the work and how often it is measured again.</p>
+          <p class="intro">Every engagement starts with measurement. After that, you choose who does the work and how often it's measured again. Lens is our measurement product, and it runs behind every option here.</p>
           <div class="models-wrap" role="region" aria-label="Operating models" tabindex="0">
             <table class="models-table">
-              <thead><tr><td></td><th scope="col">Free audit<span>Measurement</span></th><th scope="col">Lens Monitor<span>Monitoring</span></th><th scope="col">Lens Engage<span>Managed implementation</span></th></tr></thead>
+              <thead><tr><td></td><th scope="col" class="is-start">Free audit<span>A first look at your market</span><a class="btn" href="#request">Request a free audit</a></th><th scope="col">Audit and fix<span>One-time project</span></th><th scope="col">Lens Monitor<span>We measure, your team fixes</span></th><th scope="col">Lens Engage<span>We measure and fix</span></th></tr></thead>
               <tbody>
-                <tr><th scope="row">Answers</th><td>Where do we stand, and who wins our buyers?</td><td>Is it moving, and why?</td><td>Get us into the answer.</td></tr>
-                <tr><th scope="row">You get</th><td>Fifteen buyer situations, three turns each, in four assistants: about 60 conversations, each read and classified by a person. A private report and a 30 to 40 minute walkthrough.</td><td>Your situations measured again on a schedule, a live report, the sources behind every answer, and a fix plan with owners, checked at every rerun.</td><td>Everything in Monitor, measured weekly, plus we write and place the fixes the plan calls for and verify each one against the next run.</td></tr>
-                <tr><th scope="row">Fixes</th><td>Your call</td><td>Your team</td><td>Us, with your sign-off</td></tr>
-                <tr><th scope="row">Your evidence</th><td>The report and every conversation in it</td><td colspan="2">Included: your team's AI assistants can read the data directly, through MCP. Ask them about the conversations, sources and work items. Every answer comes with its assistant, model and turn.</td></tr>
-                <tr><th scope="row">Minimum term</th><td>None</td><td>Three months</td><td>Six months</td></tr>
-                <tr><th scope="row">Price</th><td class="price">Free if you fit our scope</td><td class="price">Custom scope</td><td class="price">Custom scope</td></tr>
+                <tr><th scope="row">The question it answers</th><td class="is-start">Where do we stand, and who wins our buyers?</td><td>Fix it once, and show us it worked.</td><td>Is it moving, and why?</td><td>Get us into the answer.</td></tr>
+                <tr><th scope="row">You get</th><td class="is-start">A sample of 15 buyer situations, three turns each, in four assistants, about 60 conversations in all, each read and classified by a person. A private report and a 30 to 40 minute walkthrough.</td><td>Your full set of buyer situations, a fix plan, the fixes made by us, and a rerun of the same situations to prove them.</td><td>Your situations measured again every two weeks, a live report, the sources behind every answer, and a fix plan with owners, checked at every rerun.</td><td>Everything in Monitor, measured weekly, plus we write and place the fixes the plan calls for and verify each one against the next run.</td></tr>
+                <tr><th scope="row">Fixes</th><td class="is-start">Yours to make, with our first plan</td><td>Us, with your sign-off</td><td>Your team</td><td>Us, with your sign-off</td></tr>
+                <tr><th scope="row">Your evidence</th><td class="is-start">The report and every conversation in it</td><td>The report, every conversation and the rerun</td><td colspan="2">Your team's AI assistants can read the report data directly, and it's included. Ask them about the conversations, sources and work items. Every answer comes with its assistant, model and turn.</td></tr>
+                <tr><th scope="row">Term</th><td class="is-start">None</td><td>One project</td><td>Three-month minimum</td><td>Six-month minimum</td></tr>
+                <tr><th scope="row">Price</th><td class="is-start price">Free and selective</td><td class="price">Custom scope</td><td class="price">Custom scope</td><td class="price">Custom scope</td></tr>
               </tbody>
             </table>
           </div>
           <div class="models-stack">
-            <section><h3>Free audit</h3><p class="meta">Measurement. Free if you fit our scope.</p><dl><dt>Answers</dt><dd>Where do we stand, and who wins our buyers?</dd><dt>You get</dt><dd>Fifteen buyer situations, three turns each, in four assistants: about 60 conversations, each read and classified by a person. A private report and a 30 to 40 minute walkthrough.</dd><dt>Fixes</dt><dd>Your call</dd></dl></section>
-            <section><h3>Lens Monitor</h3><p class="meta">Monitoring. Custom scope, three-month minimum.</p><dl><dt>Answers</dt><dd>Is it moving, and why?</dd><dt>You get</dt><dd>Your situations measured again on a schedule, a live report, the sources behind every answer, and a fix plan with owners, checked at every rerun. You can connect your own AI assistant to the evidence.</dd><dt>Fixes</dt><dd>Your team</dd></dl></section>
-            <section><h3>Lens Engage</h3><p class="meta">Managed implementation. Custom scope, six-month minimum.</p><dl><dt>Answers</dt><dd>Get us into the answer.</dd><dt>You get</dt><dd>Everything in Monitor, measured weekly, plus we write and place the fixes the plan calls for and verify each one against the next run. You can connect your own AI assistant to the evidence.</dd><dt>Fixes</dt><dd>Us, with your sign-off</dd></dl></section>
+            <section class="is-start"><h3>Free audit</h3><p class="meta">A first look at your market. Free and selective.</p><dl><dt>The question it answers</dt><dd>Where do we stand, and who wins our buyers?</dd><dt>You get</dt><dd>A sample of 15 buyer situations, three turns each, in four assistants, about 60 conversations in all, each read and classified by a person. A private report and a 30 to 40 minute walkthrough.</dd><dt>Fixes</dt><dd>Yours to make, with our first plan</dd></dl><a class="btn" href="#request">Request a free audit</a></section>
+            <section><h3>Audit and fix</h3><p class="meta">A one-time project. Custom scope.</p><dl><dt>The question it answers</dt><dd>Fix it once, and show us it worked.</dd><dt>You get</dt><dd>Your full set of buyer situations, a fix plan, the fixes made by us, and a rerun of the same situations to prove them.</dd><dt>Fixes</dt><dd>Us, with your sign-off</dd></dl></section>
+            <section><h3>Lens Monitor</h3><p class="meta">We measure, your team fixes. Custom scope, three-month minimum.</p><dl><dt>The question it answers</dt><dd>Is it moving, and why?</dd><dt>You get</dt><dd>Your situations measured again every two weeks, a live report, the sources behind every answer, and a fix plan with owners, checked at every rerun. You can connect your own AI assistant to the evidence.</dd><dt>Fixes</dt><dd>Your team</dd></dl></section>
+            <section><h3>Lens Engage</h3><p class="meta">We measure and fix. Custom scope, six-month minimum.</p><dl><dt>The question it answers</dt><dd>Get us into the answer.</dd><dt>You get</dt><dd>Everything in Monitor, measured weekly, plus we write and place the fixes the plan calls for and verify each one against the next run. You can connect your own AI assistant to the evidence.</dd><dt>Fixes</dt><dd>Us, with your sign-off</dd></dl></section>
           </div>
-          <p class="advanced">A larger paid audit is available for teams outside the free criteria, credited to the first month if you continue. If what you want is a dashboard for a few hundred dollars a month, a self-serve tool will do that well.</p>
-          <p class="foot">We take one company per competitive set. If we already work with a direct competitor of yours, we'll tell you before we run anything. Every report is checked by a person before it reaches you.</p>
-          <div class="after"><a class="btn" href="#request">Request a free audit</a><a class="link link-arrow" href="how-much-does-aeo-cost.html">How engagements are priced</a></div>
+          <p class="policy">When we make the fixes, in Audit and fix or Lens Engage, we never post under fake names, buy reviews or invent quotes.</p>
+          <p class="advanced">If all you want is a dashboard, a self-serve tracking tool from about $30 to $1,000 a month will do that well. Agencies and advisory firms can offer any of this under their own name, on a private quote. <a class="link" href="partners.html">White-label for partners</a></p>
+          <p class="foot">Every report is checked by a person before it reaches you.</p>
+          <div class="after"><a class="btn" href="#request">Request a free audit</a><a class="link link-arrow" href="insights/how-much-does-aeo-cost.html">What AEO costs across the market</a></div>
         </div>
       </div>
     </section>
@@ -209,10 +222,10 @@
           <h2 id="library-title">Research from our own runs</h2>
           <p class="intro">What we learn about how AI assistants pick companies, from conversations we ran and graded ourselves. Client details are removed, and every number shows what it's out of.</p>
           <div class="library-list">
-            <a class="teaser" href="how-ai-assistants-decide.html"><p class="meta">Guide, 2 November 2026</p><h3>How AI assistants decide which companies to recommend</h3><p>What decides the shortlist a buyer gets, and what a company can change.</p><span class="go">Read the guide</span></a>
-            <a class="teaser" href="how-much-does-aeo-cost.html"><p class="meta">Guide, 2 November 2026</p><h3>How much does AEO cost?</h3><p>Price bands in 2026, what sets the price, and how to decide what to buy.</p><span class="go">Read the guide</span></a>
+            <a class="teaser" href="insights/how-ai-assistants-decide.html"><p class="meta">Guide, 2 November 2026</p><h3>How AI assistants decide which companies to recommend</h3><p>What decides the shortlist a buyer gets, and what a company can change.</p><span class="go">Read the guide</span></a>
+            <a class="teaser" href="insights/how-much-does-aeo-cost.html"><p class="meta">Guide, 2 November 2026</p><h3>How much does AEO cost?</h3><p>Price bands in 2026, what sets the price, and how to decide what to buy.</p><span class="go">Read the guide</span></a>
           </div>
-          <p class="after-link"><a class="link link-arrow" href="guides.html">All guides</a></p>
+          <p class="after-link"><a class="link link-arrow" href="insights.html">All guides</a></p>
         </div>
       </div>
     </section>
@@ -229,7 +242,7 @@
             <li><p>The client signs with you.</p></li>
             <li><p>We deliver under your name, every run.</p></li>
           </ol>
-          <p class="rule-line">We never contact your clients. We never name partners or their clients. We take one client per competitive set across every partner.</p>
+          <p class="rule-line">We never contact your clients. We never name partners or their clients.</p>
           <p class="after"><a class="link link-arrow" href="partners.html">Talk to us about partnering</a></p>
         </div>
       </div>
@@ -239,8 +252,8 @@
       <div class="cols">
         <div class="closing-copy">
           <h2 id="request-title">See your own market before you spend anything</h2>
-          <p>The free audit runs 15 of your buyers' situations through all four assistants, 60 conversations in all. You get a private report and a 30 to 40 minute walkthrough. It shows which companies AI puts forward in your place, why, and what to fix first.</p>
-          <p class="qualifier">Free for companies that fit our scope and aren't direct competitors of a current client. If you're outside that scope, we'll tell you and offer a paid version.</p>
+          <p>The free audit runs 15 of your buyers' situations, three turns each, in ChatGPT, Claude, Gemini and Perplexity, about 60 conversations in all, with a private report and a 30 to 40 minute walkthrough. You'll see every conversation, who the assistants pick first in your place, and what to fix first.</p>
+          <p class="qualifier">It's free and selective, for B2B software and services companies with 20 to 500 people, and there's no obligation after the walkthrough. It covers one real slice of your market, and the paid work covers the rest.</p>
         </div>
         <div class="letter-sheet on-silt">
           <p class="letter-to">To FlintRay</p>
@@ -266,7 +279,7 @@
         <p>FlintRay is a managed research service. We measure what AI assistants tell your buyers, show why, and check every fix against the next run.</p>
       </div>
       <div class="foot-col"><h2>FlintRay</h2><ul><li><a href="index.html">Home</a></li><li><a href="how-it-works.html">How it works</a></li><li><a href="index.html#pricing">Pricing</a></li><li><a href="audit.html">Free audit</a></li><li><a href="sample-report.html">Sample report</a></li></ul></div>
-      <div class="foot-col"><h2>Guides</h2><ul><li><a href="guides.html">All guides</a></li><li><a href="how-much-does-aeo-cost.html">How much AEO costs</a></li><li><a href="how-ai-assistants-decide.html">How AI assistants decide</a></li></ul></div>
+      <div class="foot-col"><h2>Insights</h2><ul><li><a href="insights.html">All insights</a></li><li><a href="insights/how-ai-assistants-decide.html">How AI assistants decide</a></li><li><a href="insights/how-much-does-aeo-cost.html">How much AEO costs</a></li></ul></div>
       <div class="foot-col"><h2>Company</h2><ul><li><a href="partners.html">Partners</a></li><li><a href="privacy.html">Privacy</a></li><li><a href="mailto:privacy@flintray.com">privacy@flintray.com</a></li></ul></div>
       <div class="foot-legal meta"><span>© 2026 FlintRay</span></div>
     </div>

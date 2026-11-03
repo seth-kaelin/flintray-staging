@@ -3,19 +3,20 @@
 > FlintRay shows companies what ChatGPT, Claude, Gemini and Perplexity tell their buyers, which companies get recommended and why, then works the fixes until the company is in the answer.
 
 - Method: each buyer situation runs as a three-turn conversation (the problem, the constraints, then "which companies would you contact?") in all four assistants, in the apps buyers use. The model behind every answer and the pages it read are recorded. A company counts as recommended only when the assistant's own words name it.
-- Free audit: 15 buyer situations, three turns each, four assistants, a private report and a walkthrough call.
-- Lens Monitor: custom scope. Situations rerun on a schedule, a live report, sources, a fix plan.
-- Lens Engage: custom scope. Monitor rerun weekly, plus FlintRay writes and places the fixes.
+- Free audit: a selective sample of the buyer's market. 15 buyer situations, three turns each, four assistants, a private report and a walkthrough call.
+- Audit and fix: a one-time project. The full set of buyer situations, a fix plan, FlintRay makes the fixes, and a rerun shows whether they worked. Priced as a project.
+- Lens Monitor: self-serve, custom scope. FlintRay reruns the situations on a schedule and keeps a live report with sources and a fix plan; the client's team makes the changes.
+- Lens Engage: managed, custom scope. Weekly reruns, and FlintRay writes and places the fixes.
 - Data access: included with Lens Monitor and Lens Engage. The client connects their own AI assistant to the evidence (through MCP).
 - Partners: white-label delivery under a partner's brand. Private quote.
 
 ## Pages
 
-- [FlintRay | Get recommended when buyers ask AI](https://xvomiit.github.io/flintray-staging/): What FlintRay does, proof, operating models and the free audit.
-- [How we measure what AI tells your buyers | FlintRay](https://xvomiit.github.io/flintray-staging/how-it-works.html): The method: buyer situations, three-turn conversations, four assistants, what we count, sources, fixes.
+- [FlintRay](https://xvomiit.github.io/flintray-staging/): What FlintRay does, proof, operating models and the free audit.
+- [How we measure what AI tells your buyers](https://xvomiit.github.io/flintray-staging/how-it-works.html): The method: buyer situations, three-turn conversations, four assistants, what we count, sources, fixes.
 - [Free AI search audit: see which companies AI recommends to your buyers](https://xvomiit.github.io/flintray-staging/audit.html): What the free audit includes, a sample report, and how to request one.
-- [Guides to AI search for B2B companies | FlintRay](https://xvomiit.github.io/flintray-staging/guides.html): Index of FlintRay's guides to AI search.
-- [How much does AEO cost? Prices in 2026 | FlintRay](https://xvomiit.github.io/flintray-staging/how-much-does-aeo-cost.html): AEO pricing in 2026: price bands, what sets the price, what each band buys, how to decide.
-- [How AI assistants decide which companies to recommend](https://xvomiit.github.io/flintray-staging/how-ai-assistants-decide.html): What decides which companies AI assistants recommend, and what to change.
-- [White-label AEO for agencies | FlintRay](https://xvomiit.github.io/flintray-staging/partners.html): White-label AEO for agencies and firms with clients.
-- [Privacy | FlintRay](https://xvomiit.github.io/flintray-staging/privacy.html): Privacy notice.
+- [Insights on AI search for B2B companies](https://xvomiit.github.io/flintray-staging/insights.html): Index of FlintRay's insights on AI search.
+- [White-label AEO for agencies](https://xvomiit.github.io/flintray-staging/partners.html): White-label AEO for agencies and firms with clients.
+- [Privacy](https://xvomiit.github.io/flintray-staging/privacy.html): Privacy notice.
+- [How AI assistants decide which companies to recommend](https://xvomiit.github.io/flintray-staging/insights/how-ai-assistants-decide.html): What decides the short list of companies an AI assistant gives a buyer, and what a company can change.
+- [How much does AEO cost?](https://xvomiit.github.io/flintray-staging/insights/how-much-does-aeo-cost.html): What it costs in 2026 to find out where you stand in AI answers and to fix it, and what each price buys.

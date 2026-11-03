@@ -54,6 +54,23 @@ for (const form of document.querySelectorAll(".audit-form")) {
   });
 }
 
+// Motion helpers, shared by the hero and the take-apart. Pure functions: no clocks, no state.
+const FR = (() => {
+  const clamp = (x) => Math.max(0, Math.min(1, x));
+  // CSS cubic-bezier(x1, y1, x2, y2) as a function of progress (bisection on x, so it is exact and deterministic)
+  const bezier = (x1, y1, x2, y2) => {
+    const at = (a, b, u) => 3 * a * u * (1 - u) * (1 - u) + 3 * b * u * u * (1 - u) + u * u * u;
+    return (x) => {
+      if (x <= 0) return 0;
+      if (x >= 1) return 1;
+      let lo = 0, hi = 1, u = x;
+      for (let i = 0; i < 24; i++) { u = (lo + hi) / 2; if (at(x1, x2, u) < x) lo = u; else hi = u; }
+      return at(y1, y2, u);
+    };
+  };
+  return { clamp, bezier, easeOut: (x) => 1 - Math.pow(1 - x, 3), land: bezier(0.2, 0.8, 0.2, 1) };
+})();
+
 // The live specimen in the home hero. The server HTML holds the final frame; on load it replays once:
 // the buyer's question types, the answer line arrives, each classification stamp lands, the source line
 // draws. "next" replays it with the next engine's answer.
@@ -72,10 +89,22 @@ for (const form of document.querySelectorAll(".audit-form")) {
   const CITED_ONLY = root.dataset.sources === "cited";
   // 'One more company is named further down the answer.' (build_site.more_named() says the same)
   const moreNamed = (n) => `${["No", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine"][n] ?? n} more ${n === 1 ? "company is" : "companies are"} named further down the answer.`;
-  const ROLE = { recommended: "Recommended", shortlisted: "Shortlisted", mentioned: "Mentioned", none: "Not named" };
+  const ROLE = { recommended: "Recommended", shortlisted: "Shortlisted", mentioned: "Mentioned", cautioned: "Named negatively", none: "Not named" };
 
-  // Beats (seconds): 0.25 question starts typing at 34 chars/s (capped 1.9 s); answer streams at
-  // 26 words/s; each classification stamp lands 0.16 s apart; then the source line draws for 0.7 s.
+  // Beats (seconds; plan() computes them per engine, figures are for the opening answer, Perplexity):
+  //   0.00  FRAME 1  the sheet, the faint question, every company name in the verdict and "0 of 60" are on
+  //                  the page; the answer line, the stamps and the source line wait. It reads as a form
+  //                  about to be filled, never blank.
+  //   0.10  COUNT    "6 of 60" counts up over 0.5 s in tabular Geist Mono; the box is fixed, nothing moves
+  //   0.25  ASK      the question types at 34 chars/s (capped 1.9 s), the orange caret leading
+  //   2.40  ANSWER   (aStart: question end + 0.25) the answer streams at 26 words/s (capped 1.6 s); its source fades up
+  //   2.86  TRACE    (lStart: answer end) the source line draws from the end of the [1] line to its source, 0.7 s
+  //   3.01  STAMPS   (sStart: answer end + 0.15) each named company's stamp lands, 140 ms apart: 220 ms,
+  //                  cubic-bezier(.2,.8,.2,1), scale 1.06 to 1, fading up
+  //   3.73  YOU      (yStart) a 300 ms beat after the last stamp's slot (and after the trace ends) the sample
+  //                  client's stamp lands last; "Not named" then throws a 1px orange ring that grows
+  //                  0 to 6px and fades, 3.86 to 4.26
+  //   4.26  HOLD     (end) the final frame, identical to the server HTML and to the reduced-motion state
   // The sheet shows the moment, not the whole conversation: the first lines and the source they cite.
   function view(e) {
     const lines = e.lines.slice(0, maxLines());
@@ -87,18 +116,24 @@ for (const form of document.querySelectorAll(".audit-form")) {
     return { ...e, lines, named, later: e.named.length - named.length, sourceIds: keep };
   }
 
+  const STAMP_GAP = 0.14, STAMP_DUR = 0.22, BEAT = 0.3, RING = 0.4, COUNT = [0.1, 0.5];
   function plan(e) {
     const qStart = 0.25, qDur = Math.min(1.9, e.ask.length / 34);
     const words = e.lines.map((l) => l.text.split(" "));
     const total = words.reduce((a, w) => a + w.length, 0);
     const aStart = qStart + qDur + 0.25, aDur = Math.min(1.6, total / 26);
     const rows = e.named.length + 1;
-    const sStart = aStart + aDur + 0.15;
-    const lStart = sStart + rows * 0.16 + 0.1;
-    return { qStart, qDur, words, total, aStart, aDur, rows, sStart, lStart, end: lStart + 0.7 };
+    const lStart = aStart + aDur;
+    const sStart = lStart + 0.15;
+    const yStart = Math.max(sStart + (rows - 1) * STAMP_GAP + BEAT, lStart + 0.7 + 0.15);
+    const ringStart = yStart + STAMP_DUR * 0.6;
+    return { qStart, qDur, words, total, aStart, aDur, rows, lStart, sStart, yStart, ringStart, end: ringStart + RING };
   }
-  const clamp = (x) => Math.max(0, Math.min(1, x));
-  const ease = (x) => 1 - Math.pow(1 - x, 3);
+  const { clamp, easeOut: ease, land } = FR;
+  const countEl = root.querySelector(".base .count");
+  const countTo = countEl ? Number(countEl.dataset.count) : 0;
+  // The headline figure is the same for every assistant, so it counts up on the opening replay only
+  let counting = true;
 
   let engine = Object.keys(D.engines)[0], P = null, start = null, raf = 0, geom = null;
 
@@ -189,14 +224,22 @@ for (const form of document.querySelectorAll(".audit-form")) {
       k -= n;
       li.style.opacity = n ? String(show / n) : "1";
     });
-    // Names are on the page from the start; each classification stamp lands in turn.
-    $("[data-f=verdict]").querySelectorAll(".v-row").forEach((row, i) => {
-      const p = ease(clamp((t - P.sStart - i * 0.16) / 0.24));
-      row.toggleAttribute("data-on", p > 0.5);
+    // Names are on the page from the start; each classification stamp lands in turn, the sample client's last.
+    const vrows = $("[data-f=verdict]").querySelectorAll(".v-row");
+    vrows.forEach((row, i) => {
+      const last = i === vrows.length - 1;
+      const k = clamp((t - (last ? P.yStart : P.sStart + i * STAMP_GAP)) / STAMP_DUR);
+      const p = land(k);
+      row.toggleAttribute("data-on", k > 0);
       const st = row.querySelector(".stamp");
       st.style.opacity = String(p);
-      st.style.transform = `translateY(${(1 - p) * 4}px)`;
+      st.style.transform = k >= 1 ? "" : `scale(${1.06 - 0.06 * p})`;
+      // "Not named": a 1px orange ring leaves the stamp, growing to 6px as it fades
+      const r = last && st.classList.contains("stamp-none") ? clamp((t - P.ringStart) / RING) : 0;
+      st.style.outline = r > 0 && r < 1 ? `1px solid rgb(232 116 59 / ${(1 - r).toFixed(3)})` : "";
+      st.style.outlineOffset = r > 0 && r < 1 ? `${(6 * ease(r)).toFixed(2)}px` : "";
     });
+    if (countEl) countEl.textContent = String(counting ? Math.round(countTo * ease(clamp((t - COUNT[0]) / COUNT[1]))) : countTo);
     // The cited source arrives with the answer; the trace dot waits for its line.
     const aProg = clamp((t - P.aStart) / P.aDur);
     $("[data-f=sources]").querySelectorAll("li").forEach((li) => (li.style.opacity = String(0.45 + 0.55 * aProg)));
@@ -215,18 +258,20 @@ for (const form of document.querySelectorAll(".audit-form")) {
       if (start === null) start = now;
       const t = (now - start) / 1000;
       renderAt(Math.min(t, P.end));
-      if (t < P.end) raf = requestAnimationFrame(frame); else root.dataset.done = "";
+      if (t < P.end) raf = requestAnimationFrame(frame); else { root.dataset.done = ""; counting = false; }
     };
     raf = requestAnimationFrame(frame);
   }
 
   const order = Object.keys(D.engines);
   root.querySelectorAll("[data-next]").forEach((b) => b.addEventListener("click", () => {
+    counting = false;
     engine = order[(order.indexOf(engine) + 1) % order.length];
     paint(engine);
     if (reduced) renderAt(P.end); else play();
   }));
   root.querySelectorAll("[data-tab]").forEach((b) => b.addEventListener("click", () => {
+    counting = false;
     engine = b.dataset.tab;
     paint(engine);
     if (reduced) renderAt(P.end); else play();
@@ -240,17 +285,31 @@ for (const form of document.querySelectorAll(".audit-form")) {
   else document.fonts.ready.then(() => { measure(); play(); });
 })();
 
-// Section 02 evidence line. It is measured only after the typefaces settle, then drawn once
-// when the taken-apart conversation first enters the viewport.
+// The take-apart record on home. At 1024 and up, with motion allowed, the record pins (page-motion.css:
+// .takeapart-pin adds a 100vh spacer to its track and the record sticks with its foot near the viewport's), and scroll
+// position alone draws it. No timers: render() is a pure function of where the record sits in the viewport.
+//   approach  the record scrolls up into view; each buyer turn brightens (opacity .35 to 1) as its top
+//             rises from 85% to 40% of the viewport, so it brightens while it is being read
+//   pin, by pin progress q (0 when the record's foot reaches its sticky line, 1 when the track ends):
+//     0.00-0.40  the order stamps land, 0.06 apart over 0.10 each, cubic-bezier(.2,.8,.2,1), scale 1.06
+//                to 1; the subject's "Not named" lands last, after a beat of 0.08
+//     0.42-0.74  the source line draws from the end of the [1] marker's visual line to its source row
+//     0.78-0.90  the subject's row takes its 1px orange outline (offset settles 8px to 3px)
+//     0.90-1.00  hold the final state, then the record scrolls on
+// Anywhere else (track below the viewport, phones, reduced motion, no JS) the record shows its final state.
 (() => {
-  const convo = document.querySelector("[data-takeapart]");
-  const svg = convo && convo.querySelector(".takeapart-trace");
+  const track = document.querySelector(".takeapart-pin");
+  const convo = track && track.querySelector("[data-takeapart]");
+  if (!convo) return;
+  const svg = convo.querySelector(".takeapart-trace");
   const path = svg && svg.querySelector("path");
-  if (!convo || !svg || !path) return;
-  const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
-  let length = 0, started = false, raf = 0, start = null;
-  const clamp = (x) => Math.max(0, Math.min(1, x));
-  const ease = (x) => 1 - Math.pow(1 - x, 3);
+  const turns = [...convo.querySelectorAll(".record.buyer")];
+  const stamps = [...convo.querySelectorAll(".order .stamp")];
+  const you = convo.querySelector(".order li.is-you");
+  const pinning = matchMedia("(min-width: 1024px) and (prefers-reduced-motion: no-preference)");
+  const { clamp, easeOut, land } = FR;
+  const span = (q, a, b) => clamp((q - a) / (b - a));
+  let length = 0, raf = 0;
 
   function citationRect(row) {
     const marker = row.querySelector(".record");
@@ -272,17 +331,17 @@ for (const form of document.querySelectorAll(".audit-form")) {
     return null;
   }
 
+  // Geometry only, relative to the record, so it holds wherever the sticky record sits
   function measure() {
+    if (!svg || !path) return;
     const quote = convo.querySelector(".quote-row");
     const sources = convo.querySelector(".sources-row");
     const citedId = sources && sources.querySelector("[data-cited-source]")?.dataset.citedSource;
     const sourceList = sources && citedId && sources.querySelector(`[data-src="${citedId}"]`);
-    const cited = citationRect(quote);
+    const cited = quote && citationRect(quote);
     const box = convo.getBoundingClientRect();
     svg.setAttribute("viewBox", `0 0 ${box.width} ${box.height}`);
-    if (!quote || !sources || !sourceList || !cited) {
-      path.setAttribute("d", ""); length = 0; return;
-    }
+    if (!quote || !sources || !sourceList || !cited) { path.setAttribute("d", ""); length = 0; return; }
     const callout = quote.children[0].getBoundingClientRect();
     const content = quote.children[1].getBoundingClientRect();
     const quoteBox = quote.getBoundingClientRect();
@@ -297,34 +356,46 @@ for (const form of document.querySelectorAll(".audit-form")) {
     path.setAttribute("d", `M${x1} ${y1} H${safeRight} V${clearY} H${gutter} V${y2} H${x2}`);
     length = path.getTotalLength();
     path.style.strokeDasharray = `${length}`;
-    path.style.strokeDashoffset = String(started ? 0 : length);
   }
 
-  function renderAt(t) {
-    if (!length) return;
-    path.style.strokeDashoffset = String(length * (1 - ease(clamp(t / 0.7))));
-  }
-
-  function play() {
-    if (started) return;
-    started = true;
-    start = null;
-    const frame = (now) => {
-      if (start === null) start = now;
-      const t = (now - start) / 1000;
-      renderAt(Math.min(t, 0.7));
-      if (t < 0.7) raf = requestAnimationFrame(frame);
+  // The scroll state: where the track and the buyer turns sit in the viewport, read from layout
+  function state() {
+    const vh = innerHeight, t = track.getBoundingClientRect();
+    const pad = parseFloat(getComputedStyle(track, "::before").height) || 0;
+    const foot = vh - (parseFloat(getComputedStyle(convo).bottom) || 0);
+    return {
+      engaged: pinning.matches && t.top < vh && t.bottom > 0,
+      // pin progress: 0 when the record's foot reaches its sticky line, 1 when the track runs out
+      q: pad ? clamp((foot - t.bottom + pad) / pad) : 1,
+      turns: turns.map((el) => clamp((0.85 * vh - el.getBoundingClientRect().top) / (0.45 * vh))),
     };
-    if (reduced) renderAt(0.7); else raf = requestAnimationFrame(frame);
   }
 
-  addEventListener("resize", measure);
-  document.fonts.ready.then(measure);
-  measure();
-  new IntersectionObserver((entries, observer) => {
-    if (entries.some((entry) => entry.isIntersecting)) {
-      play();
-      observer.disconnect();
+  // Pure: the record's look for one scroll state. Final state when not engaged.
+  function render(s) {
+    const live = s.engaged;
+    turns.forEach((el, i) => (el.style.opacity = live ? String(0.35 + 0.65 * easeOut(s.turns[i])) : ""));
+    stamps.forEach((st, i) => {
+      const at = i === stamps.length - 1 ? Math.max(0, i - 1) * 0.06 + 0.1 + 0.08 : i * 0.06;
+      const k = live ? span(s.q, at, at + 0.1) : 1;
+      const p = land(k);
+      st.style.opacity = k >= 1 ? "" : String(p);
+      st.style.transform = k >= 1 ? "" : `scale(${1.06 - 0.06 * p})`;
+    });
+    if (path && length) path.style.strokeDashoffset = String(live ? length * (1 - easeOut(span(s.q, 0.42, 0.74))) : 0);
+    if (you) {
+      const o = live ? easeOut(span(s.q, 0.78, 0.9)) : 1;
+      you.style.setProperty("--o", o.toFixed(3));
+      you.style.setProperty("--oo", `${(8 - 5 * o).toFixed(2)}px`);
     }
-  }, { threshold: 0.15 }).observe(convo);
+  }
+
+  const update = () => { raf = 0; render(state()); };
+  const schedule = () => { if (!raf) raf = requestAnimationFrame(update); };
+  const relayout = () => { measure(); update(); };
+  addEventListener("scroll", schedule, { passive: true });
+  addEventListener("resize", () => { cancelAnimationFrame(raf); relayout(); });
+  pinning.addEventListener("change", relayout);
+  document.fonts.ready.then(relayout);
+  relayout();
 })();

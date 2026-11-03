@@ -43,6 +43,14 @@
    "mainEntity": [
     {
      "@type": "Question",
+     "name": "Why measure every turn?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Across 712 buyer conversations, a company that came up in the buyer's first questions and made the final shortlist was the top pick 1.7 times as often as one that only appeared at the shortlist. It's a correlation, so we track every turn and use the next run to check whether early work moved the final answer."
+     }
+    },
+    {
+     "@type": "Question",
      "name": "Do you name my company in the questions?",
      "acceptedAnswer": {
       "@type": "Answer",
@@ -54,7 +62,7 @@
      "name": "Which AI assistants do you test?",
      "acceptedAnswer": {
       "@type": "Answer",
-      "text": "ChatGPT, Claude, Gemini and Perplexity, in the same consumer apps your buyers use. We record the model behind every answer."
+      "text": "ChatGPT, Claude, Gemini and Perplexity. Every answer is tied to the exact model that gave it."
      }
     },
     {
@@ -92,33 +100,28 @@
 
   <header class="site-nav">
     <a class="wordmark" href="index.html">FlintRay</a><div class="draft-bar" role="note">Staging</div>
-    <nav class="nav-links" aria-label="Main"><a href="how-it-works.html" aria-current="page">How it works</a><a href="index.html#pricing">Pricing</a><a href="partners.html">Partners</a><a href="guides.html">Guides</a></nav>
-    <a class="nav-cta" href="sample-report.html">Sample report</a>
-    <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-menu"><span class="menu-icon" aria-hidden="true"></span>Menu</button>
+    <nav class="nav-links" aria-label="Main"><a href="how-it-works.html" aria-current="page">How it works</a><a href="index.html#pricing">Pricing</a><a href="partners.html">Partners</a><a href="insights.html">Insights</a><a href="sample-report.html">Sample report</a></nav>
+    <a class="nav-cta" href="audit.html">Free audit</a>
+    <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-menu"><span class="menu-icon" aria-hidden="true"></span><span class="menu-word">Menu</span></button>
     <div class="menu-sheet" id="site-menu" role="dialog" aria-modal="true" aria-label="Menu" hidden>
       <div class="menu-sheet-head"><a class="wordmark" href="index.html" tabindex="-1">FlintRay</a><button class="menu-close" type="button">Close</button></div>
-      <nav aria-label="Main"><a href="how-it-works.html" aria-current="page">How it works</a><a href="index.html#pricing">Pricing</a><a href="partners.html">Partners</a><a href="guides.html">Guides</a><a href="sample-report.html">Sample report</a></nav>
+      <nav aria-label="Main"><a href="how-it-works.html" aria-current="page">How it works</a><a href="index.html#pricing">Pricing</a><a href="partners.html">Partners</a><a href="insights.html">Insights</a><a href="sample-report.html">Sample report</a><a href="audit.html">Free audit</a></nav>
     </div>
   </header>
 
   <main class="hiw">
     <header class="page-head">
       <h1>How FlintRay works</h1>
-      <p class="lede">We ask the AI assistants your buyers use the questions your buyers ask. Then we show you who they recommend, why, and what to change. Every fix is checked on the next run.</p>
+      <p class="lede">We run your buyers' conversations through ChatGPT, Claude, Gemini and Perplexity and read every turn, so you can see who the assistants bring up early and who they pick first when the buyer asks for names. Then we check every fix on the next run.</p>
+<p class="page-cta"><a class="btn" href="audit.html">Request a free audit</a></p>
     </header>
 
     <section class="section" aria-labelledby="situations">
       <div class="cols">
         <div class="section-body">
           <h2 id="situations">Your buyers' real situations</h2>
-          <p class="intro">We start from who buys from you. We research your segments and order them by what each is worth to you. Then we write the situations those buyers are in: who they are, where they are, what they need, and what rules options out.</p>
-          <ul class="ledger">
-            <li><h3>Your whole offer</h3><p>Situations cover your main service, the services you offer but may not be winning, and the partners who refer buyers to you.</p></li>
-            <li><h3>National and local</h3><p>Local is often where a smaller company can win, so we test both.</p></li>
-            <li><h3>Your buyers' languages</h3><p>Each situation runs in the language your buyers use.</p></li>
-            <li><h3>Your name stays out</h3><p>We never name you in a question. We want to see whether the assistant finds you on its own.</p></li>
-            <li><h3>Read before it runs</h3><p>Someone reads every situation as your team would and asks one question: could you actually win this one?</p></li>
-          </ul>
+          <p class="intro">We start from research into who buys from you, and write the situations those buyers are really in. Before anything runs, a person reads each one the way your team would and asks whether you could actually win it.</p>
+          <p class="hiw-body">Your name never appears in a question. We want to see whether the assistant finds you on its own, the way it would for a real buyer.</p>
         </div>
       </div>
     </section>
@@ -127,13 +130,8 @@
       <div class="cols">
         <div class="section-body">
           <h2 id="turns">Three turns in four assistants</h2>
-          <p class="intro">People explain their problem to an assistant, add constraints, then ask for names. So every situation is a three-turn conversation, run in ChatGPT, Claude, Gemini and Perplexity.</p>
-          <ul class="ledger">
-            <li><h3>The problem</h3><p>Who I am, what's happening, and the general question.</p></li>
-            <li><h3>The constraints</h3><p>Budget, timing, location, compliance and language: the things that rule options out.</p></li>
-            <li><h3>The ask</h3><p class="hiw-quote" data-quote>"Which specific companies would you contact? I'd like names I can call this week."</p></li>
-          </ul>
-          <p class="note hiw-after">The shortlist forms on the third turn. That answer is the one we measure.</p>
+          <p class="intro">People explain their problem to an assistant, add what rules options out, and only then ask for names. So every situation runs as a three-turn conversation in ChatGPT, Claude, Gemini and Perplexity. The buyer sets out the problem, then the constraints, then asks which companies they'd contact.</p>
+          <p class="hiw-body">By the time the buyer asks for names, the assistant may already have brought up a few companies. So we track who's named at every turn, and classify the final answer, the one the buyer acts on.</p>
         </div>
       </div>
     </section>
@@ -144,9 +142,9 @@
           <h2 id="recorded">What we record for every answer</h2>
           <p class="intro">The same assistant can answer differently on a different model, so the model is part of the record.</p>
           <ul class="ledger">
-            <li><h3>The answer and its model</h3><p>For every answer we record the assistant, the model label the app showed, and the turn. The model is checked before each question and after each answer; an answer given on the wrong model is discarded and never counted.</p></li>
-            <li><h3>Where it ran</h3><p>Conversations run in the same consumer apps buyers use, on paid plans, signed in, in a private session with memory and personalization off.</p></li>
-            <li><h3>The exact words</h3><p>We quote every answer word for word. A company counts only when the assistant's own words name it. If the quote isn't in the answer, it doesn't count.</p></li>
+            <li><h3>The answer and its model</h3><p>Every answer is tied to the exact model that gave it, and we check that model on every answer.</p></li>
+            <li><h3>The turn it came in</h3><p>Each answer keeps its place in the conversation, so you can see when a company first came up.</p></li>
+            <li><h3>The exact words</h3><p>We quote every answer word for word. A company counts only when the assistant's own words name it.</p></li>
           </ul>
         </div>
       </div>
@@ -156,11 +154,12 @@
       <div class="cols">
         <div class="section-body">
           <h2 id="classified">How each answer is classified</h2>
-          <p class="intro">Every company in a third-turn answer gets one of four labels. "Put forward" means recommended or shortlisted.</p>
+          <p class="intro">When the buyer asks for names, every company in the answer gets one of five labels. "Put forward" means recommended or shortlisted.</p>
           <ul class="ledger">
             <li><h3><span class="stamp stamp-recommended">Recommended</span></h3><p>The assistant tells the buyer to contact you.</p></li>
             <li><h3><span class="stamp stamp-shortlisted">Shortlisted</span></h3><p>You're on the list it suggests comparing.</p></li>
             <li><h3><span class="stamp stamp-mentioned">Mentioned</span></h3><p>You're named, but the assistant doesn't put you forward.</p></li>
+            <li><h3><span class="stamp stamp-negative">Named negatively</span></h3><p>You're named, but with a warning to the buyer.</p></li>
             <li><h3><span class="stamp stamp-none">Not named</span></h3><p>You're absent from the answer.</p></li>
           </ul>
           <p class="note hiw-after">Only complete conversations count. Every number shows its base, as in "put forward in 7 of 40".</p>
@@ -172,9 +171,9 @@
       <div class="cols">
         <div class="section-body">
           <h2 id="sources">The sources behind each answer</h2>
-          <p class="intro">Assistants read pages before they answer. We record which ones: your site, your competitors' sites, directories, review sites and publishers.</p>
-          <p class="hiw-body">You see which pages decided each shortlist, which of them mention you, and where you need to be.</p>
-          <p class="hiw-body"><a class="link link-arrow" href="how-ai-assistants-decide.html">What we see deciding those shortlists</a></p>
+          <p class="intro">Assistants read pages before they answer, and we record every one, whether it's your site, a competitor's, a directory, a review site or a publisher.</p>
+          <p class="hiw-body">You see which pages each shortlist was built from, which of them mention you, and where you need to be.</p>
+          <p class="hiw-body"><a class="link link-arrow" href="insights/how-ai-assistants-decide.html">What we see deciding those shortlists</a></p>
         </div>
       </div>
     </section>
@@ -183,14 +182,9 @@
       <div class="cols">
         <div class="section-body">
           <h2 id="plan">The fix plan</h2>
-          <p class="intro">The evidence becomes a plan of specific work, each item with an owner. Your team can do the work, or we can on Lens Engage.</p>
-          <ul class="ledger">
-            <li><h3>A page for each situation you lose</h3><p>Assistants answer specific questions with specific pages.</p></li>
-            <li><h3>Honest comparison pages</h3><p>For the names the assistants already trust.</p></li>
-            <li><h3>One consistent story</h3><p>Across your own pages. Assistants repeat contradictions, or skip you.</p></li>
-            <li><h3>Facts an assistant can read</h3><p>Coverage, pricing, integrations and credentials, stated plainly and marked up.</p></li>
-            <li><h3>Listings and mentions</h3><p>On the sites assistants use to build shortlists.</p></li>
-          </ul>
+          <p class="intro">The evidence becomes a plan of specific work, each item with an owner, and it goes after the early questions first. Your team does the work on Lens Monitor, and we do it on Audit and fix or Lens Engage.</p>
+          <p class="hiw-body">Each item names the page, comparison or listing to change, and the situations it should move.</p>
+          <p class="hiw-body"><a class="link link-arrow" href="audit.html">Start with a free audit of your market</a></p>
         </div>
       </div>
     </section>
@@ -199,7 +193,7 @@
       <div class="cols">
         <div class="section-body">
           <h2 id="rerun">The rerun that checks each fix</h2>
-          <p class="intro">We run your situations again every two weeks on Lens Monitor and every week on Lens Engage. One answer is a snapshot. Repeated runs show the trend, and what moved it.</p>
+          <p class="intro">We run your situations again every two weeks on Lens Monitor and every week on Lens Engage. A single answer is only a snapshot, so it's the repeated runs that show the trend and what moved it.</p>
           <p class="hiw-body">Each rerun shows whether a fix moved the answer. Your team gets a live report with every conversation saved, and you can connect your own AI assistant to the data to ask which situations you lost this week, and to whom.</p>
           <p class="hiw-body"><a class="link link-arrow" href="sample-report.html">Read the sample report</a></p>
         </div>
@@ -212,12 +206,16 @@
           <h2 id="faq-title">Questions</h2>
           <div class="hiw-faq">
             <div class="faq-item">
+              <h3>Why measure every turn?</h3>
+              <p>Across 712 buyer conversations, a company that came up in the buyer's first questions and made the final shortlist was the top pick 1.7 times as often as one that only appeared at the shortlist. It's a correlation, so we track every turn and use the next run to check whether early work moved the final answer.</p>
+            </div>
+            <div class="faq-item">
               <h3>Do you name my company in the questions?</h3>
               <p>No. We want to see whether an assistant finds and recommends you on its own, the way it would for a real buyer.</p>
             </div>
             <div class="faq-item">
               <h3>Which AI assistants do you test?</h3>
-              <p>ChatGPT, Claude, Gemini and Perplexity, in the same consumer apps your buyers use. We record the model behind every answer.</p>
+              <p>ChatGPT, Claude, Gemini and Perplexity. Every answer is tied to the exact model that gave it.</p>
             </div>
             <div class="faq-item">
               <h3>How often do you rerun the questions?</h3>
@@ -240,7 +238,7 @@
       <div class="cols">
         <div class="section-body">
           <h2 id="cta-title">See it on your own market</h2>
-          <p>The free audit runs 15 of your buyers' situations through all four assistants and walks you through the results.</p>
+          <p>The free audit runs 15 of your buyers' situations, three turns each, in all four assistants, about 60 conversations. You get a private report, and we walk you through it on a 30 to 40 minute call.</p>
           <a class="btn" href="audit.html">Request a free audit</a>
         </div>
       </div>
@@ -254,7 +252,7 @@
         <p>FlintRay is a managed research service. We measure what AI assistants tell your buyers, show why, and check every fix against the next run.</p>
       </div>
       <div class="foot-col"><h2>FlintRay</h2><ul><li><a href="index.html">Home</a></li><li><a href="how-it-works.html">How it works</a></li><li><a href="index.html#pricing">Pricing</a></li><li><a href="audit.html">Free audit</a></li><li><a href="sample-report.html">Sample report</a></li></ul></div>
-      <div class="foot-col"><h2>Guides</h2><ul><li><a href="guides.html">All guides</a></li><li><a href="how-much-does-aeo-cost.html">How much AEO costs</a></li><li><a href="how-ai-assistants-decide.html">How AI assistants decide</a></li></ul></div>
+      <div class="foot-col"><h2>Insights</h2><ul><li><a href="insights.html">All insights</a></li><li><a href="insights/how-ai-assistants-decide.html">How AI assistants decide</a></li><li><a href="insights/how-much-does-aeo-cost.html">How much AEO costs</a></li></ul></div>
       <div class="foot-col"><h2>Company</h2><ul><li><a href="partners.html">Partners</a></li><li><a href="privacy.html">Privacy</a></li><li><a href="mailto:privacy@flintray.com">privacy@flintray.com</a></li></ul></div>
       <div class="foot-legal meta"><span>© 2026 FlintRay</span></div>
     </div>
