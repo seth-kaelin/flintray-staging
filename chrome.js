@@ -61,7 +61,8 @@
         const res = await fetch(form.action, { method: "POST", body: new FormData(form), headers: { Accept: "application/json" } });
         if (!res.ok) throw new Error(String(res.status));
         form.reset();
-        say("Thanks. We'll be in touch, and your results arrive within two working days.", "is-ok");
+        // The two-working-day promise is for the free audit only, never partner or paid work (Seth, 2026-11-04)
+        say(form.classList.contains("partner-letter") ? "Thanks. We'll be in touch." : "Thanks. We'll be in touch, and your results arrive within two working days.", "is-ok");
       } catch {
         say("That didn't send. Please try again in a moment.", "is-error");
       } finally {
