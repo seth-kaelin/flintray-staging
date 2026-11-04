@@ -683,6 +683,13 @@ html.menu-open { overflow: hidden; }
   .fa .fa-preview .fa-first dd { font-size: 15px; }
   .fa .fa-preview .fa-open { display: flex; justify-content: space-between; margin-top: 12px; min-height: 48px; }
 }
+/* r9.1: the restored second hero paragraph is longer, so on laptops the type steps down and both buttons stay above the fold */
+@media (min-width: 1024px) {
+  .fa-hero { padding-top: 48px; }
+  .fa-hero h1 { font-size: clamp(56px, 7.6vw, 112px); }
+  .fa-lede { margin-top: 26px; }
+  .fa-actions { margin-top: 28px; }
+}
 
 /* Inner-page exhibits, shared by audit, how it works and partners: a Silt sheet of sample evidence lying on
    the measurement grid, in the hero sheet's language (pages.css .evidence), scoped to those pages' <main>.
