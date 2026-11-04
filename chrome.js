@@ -61,7 +61,7 @@
         const res = await fetch(form.action, { method: "POST", body: new FormData(form), headers: { Accept: "application/json" } });
         if (!res.ok) throw new Error(String(res.status));
         form.reset();
-        say("Thanks. Seth will be in touch, and your results arrive within two working days.", "is-ok");
+        say("Thanks. We'll be in touch, and your results arrive within two working days.", "is-ok");
       } catch {
         say("That didn't send. Please try again in a moment.", "is-error");
       } finally {
