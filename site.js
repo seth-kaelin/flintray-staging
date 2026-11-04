@@ -22,38 +22,6 @@
   matchMedia("(min-width: 1024px)").addEventListener("change", (m) => { if (m.matches && !sheet.hidden) setOpen(false); });
 })();
 
-// The audit form posts to Formspree. Until the publish step sets the form id,
-// the action holds a placeholder and the form says so instead of sending.
-for (const form of document.querySelectorAll(".audit-form")) {
-  const note = form.querySelector(".form-note");
-  const button = form.querySelector("button[type=submit]");
-  // Say so before anyone types, so an unconnected form never looks live
-  const unconnected = () => form.action.includes("__FORMSPREE_ID__") || form.action.endsWith("#preview-only");
-  if (unconnected()) note.textContent = "Preview only: this form isn't connected yet. Nothing you enter will be sent.";
-
-  form.addEventListener("submit", async (event) => {
-    event.preventDefault();
-    note.classList.remove("is-ok", "is-error");
-    if (unconnected()) {
-      note.textContent = "Preview only: this form isn't connected yet, so nothing was sent.";
-      return;
-    }
-    button.disabled = true;
-    try {
-      const res = await fetch(form.action, { method: "POST", body: new FormData(form), headers: { Accept: "application/json" } });
-      if (!res.ok) throw new Error(String(res.status));
-      form.reset();
-      note.textContent = "Thanks. We'll be in touch within two working days.";
-      note.classList.add("is-ok");
-    } catch {
-      note.textContent = "That didn't send. Please try again in a moment.";
-      note.classList.add("is-error");
-    } finally {
-      button.disabled = false;
-    }
-  });
-}
-
 // Motion helpers, shared by the hero and the take-apart. Pure functions: no clocks, no state.
 const FR = (() => {
   const clamp = (x) => Math.max(0, Math.min(1, x));
@@ -276,8 +244,10 @@ const FR = (() => {
     paint(engine);
     if (reduced) renderAt(P.end); else play();
   }));
-  addEventListener("resize", () => { measure(); renderAt(P.end); });
-  phone.addEventListener("change", () => { paint(engine); renderAt(P.end); });
+  // A resize re-lays the sheet and shows the frame it should be on: the frozen ?t= frame if there is one, else the end
+  const settled = () => (frozen !== null ? Number(frozen) : P.end);
+  addEventListener("resize", () => { measure(); renderAt(settled()); });
+  phone.addEventListener("change", () => { paint(engine); renderAt(settled()); });
 
   paint(engine);
   if (frozen !== null) { renderAt(Number(frozen)); document.fonts.ready.then(() => { measure(); renderAt(Number(frozen)); }); }
@@ -290,13 +260,20 @@ const FR = (() => {
 // position alone draws it. No timers: render() is a pure function of where the record sits in the viewport.
 //   approach  the record scrolls up into view; each buyer turn brightens (opacity .35 to 1) as its top
 //             rises from 85% to 40% of the viewport, so it brightens while it is being read
-//   pin, by pin progress q (0 when the record's foot reaches its sticky line, 1 when the track ends):
-//     0.00-0.40  the order stamps land, 0.06 apart over 0.10 each, cubic-bezier(.2,.8,.2,1), scale 1.06
-//                to 1; the subject's "Not named" lands last, after a beat of 0.08
-//     0.42-0.74  the source line draws from the end of the [1] marker's visual line to its source row
-//     0.78-0.90  the subject's row takes its 1px orange outline (offset settles 8px to 3px)
-//     0.90-1.00  hold the final state, then the record scrolls on
-// Anywhere else (track below the viewport, phones, reduced motion, no JS) the record shows its final state.
+//   pin, by pin progress q (0 when the record's foot reaches its sticky line, 1 when the track ends).
+//   While a beat plays, the rows it isn't about dim to 0.3, so the eye goes to the row that is changing:
+//     0.00-0.05  FOCUS    every row except Order dims (1 to 0.3)
+//     0.00-0.40  STAMPS   the order stamps land, 0.06 apart over 0.10 each, cubic-bezier(.2,.8,.2,1), scale
+//                         1.06 to 1; the subject's "Not named" lands last, after a beat of 0.08
+//     0.38-0.44  HANDOFF  Order dims; Quote and Sources come up (0.3 to 1)
+//     0.42-0.74  TRACE    the source line draws from the end of the [1] marker's visual line to its source row;
+//                         the cited source's underline arrives as the line reaches it, 0.70-0.76
+//     0.74-0.78  JOIN     Order comes back up beside Quote and Sources, so the three rows the payoff needs are lit
+//     0.78-0.90  OUTLINE  the subject's row takes its 1px orange outline (offset settles 8px to 3px)
+//     0.90-0.96  RELEASE  the other rows come back up (0.3 to 1)
+//     0.96-1.00  HOLD     the final state: the trace, the underlined source and the "Not named" outline together,
+//                         every row at full strength; then the record scrolls on
+// Anywhere else (track below the viewport, phones, reduced motion, no JS) the record shows that final state.
 (() => {
   const track = document.querySelector(".takeapart-pin");
   const convo = track && track.querySelector("[data-takeapart]");
@@ -306,6 +283,14 @@ const FR = (() => {
   const turns = [...convo.querySelectorAll(".record.buyer")];
   const stamps = [...convo.querySelectorAll(".order .stamp")];
   const you = convo.querySelector(".order li.is-you");
+  const srcList = convo.querySelector(".sources-row [data-cited-source]");
+  const cited = srcList && srcList.querySelector(`[data-src="${srcList.dataset.citedSource}"]`);
+  if (cited) cited.classList.add("is-cited");
+  // Each row's part in the beats: the order row, the two rows the trace joins, or context
+  const rows = [...convo.querySelectorAll(".convo-row")].map((el) => ({
+    el, part: el.querySelector(".order") ? "order" : el.matches(".quote-row, .sources-row") ? "trace" : "context",
+  }));
+  const DIM = 0.3;
   const pinning = matchMedia("(min-width: 1024px) and (prefers-reduced-motion: no-preference)");
   const { clamp, easeOut, land } = FR;
   const span = (q, a, b) => clamp((q - a) / (b - a));
@@ -322,8 +307,10 @@ const FR = (() => {
         range.setStart(node, match.index);
         range.setEnd(node, match.index + match[0].length);
         const at = range.getBoundingClientRect();
-        // Leave from the end of the marker's visual line, so the trace never crosses the words after it
-        range.selectNodeContents(marker);
+        // Leave from the end of the marker's visual line, so the trace never crosses the words after it.
+        // Measure inside the marker's own paragraph: a range over the whole record would count each
+        // paragraph's block box, which runs to the column's right edge.
+        range.selectNodeContents(node.parentElement.closest("p") || marker);
         const row = [...range.getClientRects()].filter((r) => Math.abs(r.top + r.height / 2 - (at.top + at.height / 2)) < at.height / 2);
         return row.length ? { top: at.top, height: at.height, right: Math.max(...row.map((r) => r.right)) } : at;
       }
@@ -383,6 +370,16 @@ const FR = (() => {
       st.style.transform = k >= 1 ? "" : `scale(${1.06 - 0.06 * p})`;
     });
     if (path && length) path.style.strokeDashoffset = String(live ? length * (1 - easeOut(span(s.q, 0.42, 0.74))) : 0);
+    if (cited) cited.style.setProperty("--lit", live ? easeOut(span(s.q, 0.7, 0.76)).toFixed(3) : "1");
+    // Focus: how far each row is dimmed (0 lit, 1 at DIM), from the beats above
+    const focus = easeOut(span(s.q, 0, 0.05)) * (1 - easeOut(span(s.q, 0.9, 0.96)));
+    const handoff = easeOut(span(s.q, 0.38, 0.44));
+    const dim = {
+      context: focus,
+      order: focus * handoff * (1 - easeOut(span(s.q, 0.74, 0.78))),
+      trace: focus * (1 - handoff),
+    };
+    rows.forEach(({ el, part }) => (el.style.opacity = live && dim[part] > 0 ? String(1 - (1 - DIM) * dim[part]) : ""));
     if (you) {
       const o = live ? easeOut(span(s.q, 0.78, 0.9)) : 1;
       you.style.setProperty("--o", o.toFixed(3));

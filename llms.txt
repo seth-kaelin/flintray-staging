@@ -14,6 +14,7 @@
 
 - [FlintRay](https://xvomiit.github.io/flintray-staging/): What FlintRay does, proof, operating models and the free audit.
 - [How we measure what AI tells your buyers](https://xvomiit.github.io/flintray-staging/how-it-works.html): The method: buyer situations, three-turn conversations, four assistants, what we count, sources, fixes.
+- [The FlintRay measurement standard](https://xvomiit.github.io/flintray-staging/measurement-standard.html): The public measurement standard: situations, turns, engines and models, classification, citations, retests, limitations.
 - [Free AI search audit: see which companies AI recommends to your buyers](https://xvomiit.github.io/flintray-staging/audit.html): What the free audit includes, a sample report, and how to request one.
 - [Insights on AI search for B2B companies](https://xvomiit.github.io/flintray-staging/insights.html): Index of FlintRay's insights on AI search.
 - [White-label AEO for agencies](https://xvomiit.github.io/flintray-staging/partners.html): White-label AEO for agencies and firms with clients.

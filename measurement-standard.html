@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The FlintRay measurement standard | FlintRay</title>
+  <meta name="description" content="How FlintRay builds buyer situations, runs three-turn conversations, records engine and model, classifies answers, captures citations and retests, with its limitations.">
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="canonical" href="https://xvomiit.github.io/flintray-staging/measurement-standard.html">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="FlintRay">
+  <meta property="og:title" content="The FlintRay measurement standard | FlintRay">
+  <meta property="og:description" content="How FlintRay builds buyer situations, runs three-turn conversations, records engine and model, classifies answers, captures citations and retests, with its limitations.">
+  <meta property="og:url" content="https://xvomiit.github.io/flintray-staging/measurement-standard.html">
+  <meta property="og:image" content="https://xvomiit.github.io/flintray-staging/assets/og.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="preload" href="assets/fonts/geist-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/newsreader-italic-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="fr.css?v=9">
+  <link rel="icon" type="image/svg+xml" href="assets/hallmark.svg">
+  <link rel="icon" type="image/png" href="assets/manta-mark.png">
+  <script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@graph": [
+  {
+   "@type": "Organization",
+   "@id": "https://xvomiit.github.io/flintray-staging/#org",
+   "name": "FlintRay",
+   "url": "https://xvomiit.github.io/flintray-staging/",
+   "logo": "https://xvomiit.github.io/flintray-staging/assets/manta-mark.png",
+   "description": "FlintRay shows companies what ChatGPT, Claude, Gemini and Perplexity tell their buyers, which companies get recommended and why, then works the fixes.",
+   "founder": {
+    "@type": "Person",
+    "name": "Seth Kaelin",
+    "jobTitle": "Founder",
+    "email": "mailto:seth@flintray.com"
+   },
+   "contactPoint": {
+    "@type": "ContactPoint",
+    "contactType": "sales",
+    "email": "seth@flintray.com",
+    "url": "https://xvomiit.github.io/flintray-staging/audit.html"
+   }
+  }
+ ]
+}
+  </script>
+</head>
+<body>
+  <div class="hairlines" aria-hidden="true"></div>
+
+  <header class="site-nav">
+    <a class="wordmark" href="index.html">FlintRay</a>
+    <nav class="nav-links" aria-label="Main"><a href="how-it-works.html">How it works</a><a href="measurement-standard.html" aria-current="page">Method</a><a href="sample-report.html">Sample report</a><a href="insights.html">Insights</a></nav>
+    <a class="nav-book" href="https://calendar.app.google/9M8xRZvibsCU6EeSA">Book a call</a><a class="nav-cta" href="audit.html#request">Free audit</a>
+    <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-menu"><span class="menu-icon" aria-hidden="true"></span><span class="menu-word">Menu</span></button>
+    <div class="menu-sheet" id="site-menu" role="dialog" aria-modal="true" aria-label="Menu" hidden>
+      <div class="menu-sheet-head"><a class="wordmark" href="index.html" tabindex="-1">FlintRay</a><button class="menu-close" type="button">Close</button></div>
+      <nav aria-label="Main"><a href="how-it-works.html">How it works</a><a href="measurement-standard.html" aria-current="page">Method</a><a href="sample-report.html">Sample report</a><a href="insights.html">Insights</a><a class="sheet-book" href="https://calendar.app.google/9M8xRZvibsCU6EeSA">Book a call</a><a class="sheet-cta" href="audit.html#request">Free audit</a></nav>
+    </div>
+  </header>
+
+  <main class="ms">
+    <header class="page-head ms-head">
+      <h1>The FlintRay measurement standard</h1>
+      <p class="lede">This is how we measure which companies AI assistants put in front of your buyers, and how we report what we find. Every FlintRay report follows it, so you can hold our work to it.</p>
+      <p class="meta">Version 1.0, published November 2026.</p>
+      <section class="ms-setup" aria-labelledby="setup">
+        <h2 id="setup">The test setup</h2>
+        <dl class="ms-spec">
+          <div><dt>Assistants</dt><dd>ChatGPT, Claude, Gemini and Perplexity. Every situation runs in all four.</dd></div>
+          <div><dt>Conversations</dt><dd>Three turns: the problem, the constraints, then which companies the buyer would contact. Every assistant gets the same words.</dd></div>
+          <div><dt>Where it runs</dt><dd>Every conversation runs in the assistant's own web app, in a fresh session.</dd></div>
+          <div><dt>The model</dt><dd>Every answer is tied to the assistant that gave it, with the exact model wherever it's shown.</dd></div>
+          <div><dt>Reading</dt><dd>A person reads every answer before it counts.</dd></div>
+          <div><dt>Dates</dt><dd>Every run is dated, and each report gives the dates its conversations ran.</dd></div>
+          <div><dt>Reruns</dt><dd>After a fix, the same situations run again in the same four assistants, word for word.</dd></div>
+        </dl>
+      </section>
+    </header>
+
+    <section class="section" aria-labelledby="measurement">
+      <div class="cols">
+        <div class="section-body">
+          <h2 id="measurement">What one measurement is</h2>
+          <p class="intro">One measurement is one buyer situation, asked as a three-turn conversation in ChatGPT, Claude, Gemini and Perplexity. Your name never appears in it, because what we want to know is whether the assistant finds you on its own.</p>
+          <ul class="ledger">
+            <li><h3>The buyer situation</h3><p>Who the buyer is, what's happening, what they need and what rules options out. We write it from research into who buys from you, and a person reads each one before it runs and asks whether you could actually win it.</p></li>
+            <li><h3>A run</h3><p>One pass through every situation in every assistant is a run. The free audit's <span class="num">15</span> situations make <span class="num">60</span> conversations.</p></li>
+            <li><h3>Which model answered</h3><p>Claude and Gemini show the exact model, and we record it. ChatGPT and Perplexity don't say which model answered, so their answers show the assistant alone.</p></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="counts">
+      <div class="cols">
+        <div class="section-body">
+          <h2 id="counts">What counts as a mention</h2>
+          <p class="intro">A company counts only when the assistant names it in its own words. We quote those words exactly, and if the quote isn't in the saved answer, the company doesn't count for that answer.</p>
+          <ul class="ledger">
+            <li><h3>The final answer decides the outcome</h3><p>Companies can come up early in a conversation, so we track who's named at every turn. The outcome comes from the third answer, the one the buyer acts on.</p></li>
+            <li><h3>A person reads every answer</h3><p>Anything unclear, like a name two companies share or a pick with conditions attached, is settled by that person before it counts.</p></li>
+            <li><h3>Sources are what the assistant showed</h3><p>We record every source an assistant displayed with its answer and sort it by type: your site, a competitor's, a directory, a review site, a publisher or a forum. If an assistant read a page without showing it, we can't see that, and we don't guess.</p></li>
+            <li><h3>Only complete conversations count</h3><p>A conversation that fails or gets cut short is reported as missing, and it's never filled in or estimated. Each report says how many conversations were planned and how many completed.</p></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="section on-silt" aria-labelledby="outcomes">
+      <div class="cols">
+        <div class="section-body">
+          <h2 id="outcomes">Five outcomes</h2>
+          <p class="intro">When the buyer asks for names, every company in the answer gets one of five outcomes. Each one describes what happened in that single conversation.</p>
+          <ul class="ledger">
+            <li><h3><span class="stamp stamp-recommended">Recommended</span></h3><p>The assistant tells the buyer to contact you.</p></li>
+            <li><h3><span class="stamp stamp-shortlisted">Shortlisted</span></h3><p>You're on the list it suggests comparing.</p></li>
+            <li><h3><span class="stamp stamp-mentioned">Mentioned</span></h3><p>You're named, but the assistant doesn't put you forward.</p></li>
+            <li><h3><span class="stamp stamp-negative">Named negatively</span></h3><p>You're named, but with a warning to the buyer.</p></li>
+            <li><h3><span class="stamp stamp-none">Not named</span></h3><p>You're absent from the answer.</p></li>
+          </ul>
+          <p class="note ms-after">"Put forward" means recommended or shortlisted, and the top pick is the first company an assistant recommends without conditions when the buyer asks for a shortlist. We report named, put forward, recommended and top pick separately, because being named and being chosen are different results.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="numbers">
+      <div class="cols">
+        <div class="section-body">
+          <h2 id="numbers">How numbers are reported</h2>
+          <p class="intro">Every number shows what it's out of, as in "put forward in 7 of 40", so you can see the base it stands on.</p>
+          <ul class="ledger">
+            <li><h3>A base on every number we measure</h3><p>Our own figures never appear as a bare percentage. The count and the base come with them, and each one says which runs it comes from and when they ran.</p></li>
+            <li><h3>Each assistant on its own</h3><p>Assistants disagree with each other, so reports show each one separately. For one B2B services company, ChatGPT put it forward in <span class="num">75 of 148</span> conversations and Perplexity in <span class="num">25 of 148</span>.</p></li>
+            <li><h3>Sources with their base too</h3><p>Some assistants show sources far more often than others. For that same company, ChatGPT showed at least one source in <span class="num">147 of 148</span> conversations and Gemini in <span class="num">115 of 148</span>, so every source figure says how many conversations had sources at all.</p></li>
+            <li><h3>Correlations are called correlations</h3><p>When two things move together, we say it's a correlation, in that word. A source that keeps appearing beside a recommendation shows what the assistant drew on, and we call it a cause only once changing it moves the next run.</p></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="reruns">
+      <div class="cols">
+        <div class="section-body">
+          <h2 id="reruns">Reruns and verdicts</h2>
+          <p class="intro">Each fix in the plan names the situations it should move. Once it ships, we run those same situations again in the same four assistants, and the fix gets one of three verdicts.</p>
+          <ul class="ledger">
+            <li><h3>Moved</h3><p>The answers changed the way the fix was meant to change them.</p></li>
+            <li><h3>No change yet</h3><p>The answers haven't moved. Some changes take more than one run to show up.</p></li>
+            <li><h3>Worse</h3><p>The answers moved against you, and the report says so plainly.</p></li>
+          </ul>
+          <p class="ms-body">Every verdict comes with the conversations from before and after, so you can read the change yourself.</p>
+          <p class="ms-body">Answers also vary from one run to the next on their own. Research published by SparkToro found less than a 1-in-100 chance that an assistant gives the same list of brands twice<span class="fn"><a href="#fn-sparktoro" id="ref-sparktoro" aria-label="Source 1">1</a></span>, and researchers at the University of St. Gallen found about <span class="num">65%</span> of cited sources change from one day to the next<span class="fn"><a href="#fn-stgallen" id="ref-stgallen" aria-label="Source 2">2</a></span>. So one situation flipping once proves nothing. We report a rate only with its base, and we call something a trend only once reruns back it up.</p>
+          <div class="footnotes ms-sources">
+            <p class="ms-sources-title">Sources</p>
+            <ol>
+              <li id="fn-sparktoro">SparkToro, research on how consistently AI assistants recommend brands, <span class="num">January 2026</span>. <a href="https://sparktoro.com/blog/new-research-ais-are-highly-inconsistent-when-recommending-brands-or-products-marketers-should-take-care-when-tracking-ai-visibility/">sparktoro.com</a> <a class="fn-back" href="#ref-sparktoro" aria-label="Back to the text">&#8617;</a></li>
+              <li id="fn-stgallen">University of St. Gallen, <cite>Don't Measure Once</cite>, arXiv 2604.07585, <span class="num">April 2026</span>. <a href="https://arxiv.org/html/2604.07585v1">arxiv.org</a> <a class="fn-back" href="#ref-stgallen" aria-label="Back to the text">&#8617;</a></li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="evidence-key">
+      <div class="cols">
+        <div class="section-body">
+          <h2 id="evidence-key">How to read the evidence on this site</h2>
+          <p class="intro">Evidence on this site comes with a plain sentence that says where it came from. Here's what each kind means.</p>
+          <ul class="ledger">
+            <li><h3>Measured</h3><p>From conversations we ran and graded ourselves, in the four assistants. It always comes with its runs, its dates and its base.</p></li>
+            <li><h3>Anonymized</h3><p>Measured for a client we don't name. We remove anything that could identify them, such as their name, niche, location and buyers, and we never show a competitor's domain. The label says the number is ours and anonymized, and gives the runs and dates.</p></li>
+            <li><h3>Fictional sample</h3><p>Built to show what a report looks like. Every company, site and conversation in it is invented, and it never goes into a measured figure. The line reads: <span class="ms-line">"Illustrative sample. Companies and sources are fictional."</span></p></li>
+            <li><h3>Public source</h3><p>Someone else's published figure. We cite the publisher and the date, and where the publisher sells something the figure supports, we say that too.</p></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="limits">
+      <div class="cols">
+        <div class="section-body">
+          <h2 id="limits">What a run can't tell you</h2>
+          <p class="intro">A measurement is only as useful as its limits are clear, and these are ours.</p>
+          <ul class="ledger">
+            <li><h3>A run is a sample</h3><p>Answers change as models, apps and the web change. A run describes what happened on its dates, and trends need repeated runs.</p></li>
+            <li><h3>Situations are our model of your buyers</h3><p>They come from research and review, and real buyers will phrase things their own way.</p></li>
+            <li><h3>Sources stop at what's shown</h3><p>Some assistants show few sources or none, and a page an assistant read without showing it stays invisible to us.</p></li>
+            <li><h3>Outcomes involve judgement</h3><p>Code checks every quote, but whether a quote recommends a company or only mentions it is a judgement call, so a person reads every answer and settles the unclear ones.</p></li>
+            <li><h3>Four assistants cover part of AI search</h3><p>Assistants we don't run aren't in the figures, and each report says which ones ran.</p></li>
+            <li><h3>Your pipeline is outside the run</h3><p>We measure what assistants tell buyers. We don't see your traffic, pipeline or deals unless you share them.</p></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="corrections">
+      <div class="cols">
+        <div class="section-body">
+          <h2 id="corrections">Versions and corrections</h2>
+          <p class="intro">This is version 1.0. When the standard changes, the version number changes and this page says what changed.</p>
+          <p class="ms-body">If you find an error in anything we've published, write to <a class="link" href="mailto:privacy@flintray.com">privacy@flintray.com</a>. We'll correct the page and note the correction on it.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta-band on-silt" aria-labelledby="cta-title">
+      <div class="cols">
+        <div class="section-body">
+          <h2 id="cta-title">See the standard applied to your market</h2>
+          <p>The free audit runs <span class="num">15</span> of your buyers' situations, three turns each, in all four assistants, about <span class="num">60</span> conversations. You get a private report and a <span class="num">30 to 40</span> minute walkthrough. It's free and selective, for B2B software and services companies with <span class="num">20 to 500</span> people.</p>
+          <a class="btn" href="audit.html#request">Request a free audit</a>
+          <p class="ms-also"><a class="link link-arrow" href="sample-report.html">Or read the sample report first</a></p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="foot-grid">
+      <div class="colophon">
+        <svg class="hallmark" viewBox="0 0 100 46" aria-hidden="true" focusable="false"><path d="M2 7C15 23 31 31 50 30"/><path d="M44 30C50 21 51 11 47 2C61 10 79 21 97 26C89 28 83 29 78 31C74 37 70 41 66 44C64 38 61 34 55 32C51 31 47 30.5 44 30Z"/><path d="M86 25.5h.01"/></svg>
+        <p>FlintRay is a managed research service. We measure what AI assistants tell your buyers, show why, and check every fix against the next run.</p>
+      </div>
+      <div class="foot-col"><h2>FlintRay</h2><ul><li><a href="index.html">Home</a></li><li><a href="how-it-works.html">How it works</a></li><li><a href="measurement-standard.html">Method</a></li><li><a href="sample-report.html">Sample report</a></li><li><a href="audit.html">Free audit</a></li></ul></div>
+      <div class="foot-col"><h2>Insights</h2><ul><li><a href="insights.html">All insights</a></li><li><a href="insights/how-ai-assistants-decide.html">How AI assistants decide</a></li><li><a href="insights/how-much-does-aeo-cost.html">How much AEO costs</a></li></ul></div>
+      <div class="foot-col"><h2>Company</h2><ul><li><a href="partners.html">Partners</a></li><li><a href="https://calendar.app.google/9M8xRZvibsCU6EeSA">Book a call</a></li><li><a href="privacy.html">Privacy</a></li><li><a href="mailto:seth@flintray.com">seth@flintray.com</a></li><li><a href="mailto:privacy@flintray.com">privacy@flintray.com</a></li></ul></div>
+      <div class="foot-legal meta"><span>© 2026 FlintRay</span></div>
+    </div>
+  </footer>
+
+  <div class="cta-bar" data-cta-bar><a class="cta-bar-main" href="audit.html#request">Request a free audit</a><a class="cta-bar-book" href="https://calendar.app.google/9M8xRZvibsCU6EeSA">Book a call</a></div>
+  <div class="draft-bar" role="note">Staging</div>
+  <script src="chrome.js?v=9" defer></script>
+
+  <script src="site.js?v=9" defer></script>
+</body>
+</html>
