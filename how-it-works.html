@@ -35,8 +35,7 @@
    "founder": {
     "@type": "Person",
     "name": "Seth Kaelin",
-    "jobTitle": "Founder",
-    "email": "mailto:seth@flintray.com"
+    "jobTitle": "Founder"
    },
    "contactPoint": {
     "@type": "ContactPoint",
@@ -53,7 +52,7 @@
      "name": "Why measure every turn?",
      "acceptedAnswer": {
       "@type": "Answer",
-      "text": "Across 712 conversations we counted every company that made the final shortlist, 4,032 in all. Those first named in the buyer's opening questions were the top pick 113 times in 888, and those first named only at the shortlist were the top pick 241 times in 3,144. That's 1.7 times as often. It's a correlation, and being named early did nothing for getting onto the shortlist, so we track every turn and use the next run to check what moved."
+      "text": "Across 712 buyer conversations, a company that came up in the buyer's first questions and made the final shortlist was the top pick 1.7 times as often as one that only appeared at the shortlist. It's a correlation, so we track every turn and use the next run to check whether early work moved the final answer."
      }
     },
     {
@@ -69,7 +68,7 @@
      "name": "Which AI assistants do you test?",
      "acceptedAnswer": {
       "@type": "Answer",
-      "text": "ChatGPT, Claude, Gemini and Perplexity, each one reported on its own. The method sets out the full test setup."
+      "text": "ChatGPT, Claude, Gemini and Perplexity. Every answer is tied to the assistant that gave it, with the exact model wherever it's shown."
      }
     },
     {
@@ -77,7 +76,7 @@
      "name": "How often do you rerun the questions?",
      "acceptedAnswer": {
       "@type": "Answer",
-      "text": "Every week on Lens Engage, and on a set schedule on Lens Monitor. Reruns show whether a change you made moved the answer."
+      "text": "On a set schedule on Lens Monitor and every week on Lens Engage. Reruns show whether a change you made moved the answer."
      }
     },
     {
@@ -123,11 +122,10 @@
       <p class="page-cta"><a class="btn" href="audit.html#request">Request a free audit</a></p>
       <figure class="hiw-turns xf" aria-label="The three turns of one sample situation">
         <div class="xs">
-          <p class="xs-context">One situation from the sample audit, followed down this page: a COO at a booking software company in the UK who needs ISO 27001.</p>
           <ol class="hiw-thread">
-            <li><span class="hiw-role">The problem</span><p class="hiw-said" data-quote>“I'm the COO of a 120-person booking software company. … Could you explain what getting ISO 27001 really takes and what kinds of help exist?”</p></li>
-            <li><span class="hiw-role">The constraints</span><p class="hiw-said" data-quote>“Our security lead is one person who's already stretched, and I can only add maybe one more person next year. … GDPR obligations matter to us too.”</p></li>
-            <li><span class="hiw-role">The ask</span><p class="hiw-said" data-quote>“Which specific compliance platforms are strongest for ISO 27001, ideally with a path to SOC 2 later, and which certification bodies or audit firms should I approach?”</p></li>
+            <li><span class="hiw-role">The buyer's first message</span><p class="hiw-said" data-quote>“I'm the COO of a 120-person booking software company. … Could you explain what getting ISO 27001 really takes and what kinds of help exist?”</p></li>
+            <li><span class="hiw-role">The buyer's second message</span><p class="hiw-said" data-quote>“Our security lead is one person who's already stretched, and I can only add maybe one more person next year. … GDPR obligations matter to us too.”</p></li>
+            <li><span class="hiw-role">The buyer asks which companies to contact</span><p class="hiw-said" data-quote>“Which specific compliance platforms are strongest for ISO 27001, ideally with a path to SOC 2 later, and which certification bodies or audit firms should I approach?”</p></li>
           </ol>
         </div>
         <figcaption class="sample-caption">Illustrative sample. Companies and sources are fictional.</figcaption>
@@ -143,7 +141,7 @@
         </div>
         <figure class="hiw-ex" aria-label="The sample's situations">
           <div class="xs">
-            <p class="xs-label">The sample's situations, with the one this page follows</p>
+            <p class="xs-label">Scope: 15 buyer situations, 4 assistants, 3 turns each, 60 conversations.</p>
             <ul class="hiw-sits">
               <li>First SOC 2 report to close an enterprise deal</li>
               <li>Moving from SOC 2 Type I to Type II</li>
@@ -161,7 +159,6 @@
               <li>Public trust page for sales</li>
               <li>Due diligence before an acquisition</li>
             </ul>
-            <p class="xs-foot">Corvane, the sample client, appears in none of the buyer's three turns.</p>
           </div>
         </figure>
       </section>
@@ -174,10 +171,10 @@
         </div>
         <figure class="hiw-ex" aria-label="Companies named at each turn, by assistant">
           <div class="xs">
-            <p class="xs-label">Companies named at each turn of this situation</p>
+            <p class="xs-label">Named companies</p>
             <div class="hiw-scroll">
               <table class="hiw-grid">
-                <thead><tr><td></td><th scope="col">The problem</th><th scope="col">The constraints</th><th scope="col">The ask</th></tr></thead>
+                <thead><tr><td></td><th scope="col">1</th><th scope="col">2</th><th scope="col">3</th></tr></thead>
                 <tbody>
                   <tr><th scope="row">ChatGPT</th><td>None</td><td>None</td><td class="is-ask"><span class="num">3</span></td></tr>
                   <tr><th scope="row">Claude</th><td>None</td><td>None</td><td class="is-ask"><span class="num">3</span></td></tr>
@@ -186,7 +183,6 @@
                 </tbody>
               </table>
             </div>
-            <p class="xs-foot">In this situation every name arrived with the ask. When an assistant brings a company up sooner, the report notes the turn it came in.</p>
           </div>
         </figure>
       </section>
@@ -200,12 +196,10 @@
         </div>
         <figure class="hiw-ex" aria-label="One answer as it is recorded">
           <div class="xs">
-            <p class="xs-label">One answer, as the report records it</p>
+            <p class="xs-label">The assistant's answer</p>
             <dl class="hiw-record">
-              <div><dt>Assistant</dt><dd>Perplexity</dd></div>
-              <div><dt>Model</dt><dd>Not shown by Perplexity</dd></div>
-              <div><dt>Turn</dt><dd>The ask, the third of three</dd></div>
-              <div class="is-quote"><dt>Exact words</dt><dd data-quote>Corvane: Also a top pick; its site describes a guided onboarding team and plain pricing for running SOC 2 and ISO 27001 together [2].</dd></div>
+              <div><dt>Perplexity</dt><dd>Model not shown</dd></div>
+              <div class="is-quote"><dt>3</dt><dd data-quote>Corvane: Also a top pick; its site describes a guided onboarding team and plain pricing for running SOC 2 and ISO 27001 together [2].</dd></div>
             </dl>
           </div>
         </figure>
@@ -219,7 +213,7 @@
         </div>
         <figure class="hiw-ex" aria-label="Corvane's outcome in each assistant, and the five outcomes">
           <div class="xs">
-            <p class="xs-label">Corvane in this situation, by assistant</p>
+            <p class="xs-label">Corvane</p>
             <ul class="xs-rows hiw-out">
               <li><span>ChatGPT</span><span class="stamp stamp-none">Not named</span></li>
               <li><span>Claude</span><span class="stamp stamp-none">Not named</span></li>
@@ -227,11 +221,11 @@
               <li><span>Perplexity</span><span class="stamp stamp-recommended">Recommended</span></li>
             </ul>
             <ul class="hiw-key" aria-label="The five outcomes">
-              <li><span class="stamp stamp-recommended">Recommended</span><span>The assistant tells the buyer to contact you.</span></li>
-              <li><span class="stamp stamp-shortlisted">Shortlisted</span><span>You're on the list it suggests comparing.</span></li>
-              <li><span class="stamp stamp-mentioned">Mentioned</span><span>You're named, but the assistant doesn't put you forward.</span></li>
-              <li><span class="stamp stamp-negative">Named negatively</span><span>You're named, but with a warning to the buyer.</span></li>
-              <li><span class="stamp stamp-none">Not named</span><span>You're absent from the answer.</span></li>
+              <li><span class="stamp stamp-recommended">Recommended</span><p>The assistant tells the buyer to contact you.</p></li>
+              <li><span class="stamp stamp-shortlisted">Shortlisted</span><p>You're on the list it suggests comparing.</p></li>
+              <li><span class="stamp stamp-mentioned">Mentioned</span><p>You're named, but the assistant doesn't put you forward.</p></li>
+              <li><span class="stamp stamp-negative">Named negatively</span><p>You're named, but with a warning to the buyer.</p></li>
+              <li><span class="stamp stamp-none">Not named</span><p>You're absent from the answer.</p></li>
             </ul>
           </div>
         </figure>
@@ -240,20 +234,20 @@
       <section class="hiw-step" aria-labelledby="sources">
         <div class="hiw-text">
           <h2 id="sources">The sources behind each answer</h2>
-          <p class="intro">Assistants cite pages with their answers, and we record every page they show, whether it's your site, a competitor's, a directory, a review site or a publisher.</p>
+          <p class="intro">Assistants cite pages when they answer, and we record every one, whether it's your site, a competitor's, a directory, a review site or a publisher.</p>
           <p class="hiw-body">You see which pages each answer cited, which of them mention you, and where you need to be.</p>
-          <p class="hiw-body"><a class="link link-arrow" href="insights/how-ai-assistants-decide.html">What we see behind those shortlists</a></p>
+          <p class="hiw-body"><a class="link link-arrow" href="insights/how-ai-assistants-decide.html">What we see deciding those shortlists</a></p>
         </div>
         <figure class="hiw-ex" aria-label="The pages each assistant cited in its final answer">
           <div class="xs">
-            <p class="xs-label">The pages each assistant cited in its final answer</p>
+            <p class="xs-label">Cited sources</p>
             <dl class="hiw-reads">
               <div><dt>ChatGPT</dt><dd><span>compliancecostreport.example</span></dd></div>
               <div><dt>Claude</dt><dd><span>compliancecostreport.example</span></dd></div>
               <div><dt>Gemini</dt><dd><span class="is-own">corvane.example</span><span>auditreadyreview.example</span></dd></div>
               <div><dt>Perplexity</dt><dd><span>grcweekly.example</span><span class="is-own">corvane.example</span><span>auditreadyreview.example</span></dd></div>
             </dl>
-            <p class="xs-foot">The two assistants that cited corvane.example, Corvane's own site, also recommended it. The two that didn't cite it left Corvane out. That's a pattern in one situation, and the rerun after a fix is what tests it.</p>
+            <p class="xs-foot">Wherever an AI cited Corvane’s own pages, it recommended Corvane. That's a correlation, and the rerun after a fix is what tests it.</p>
           </div>
         </figure>
       </section>
@@ -267,13 +261,12 @@
         </div>
         <figure class="hiw-ex" aria-label="One item from the sample's fix plan">
           <div class="xs">
-            <p class="xs-label">One item from the sample's fix plan</p>
+            <p class="xs-label">Fixes to work through</p>
             <h3 class="hiw-fix">Answer buyers’ exact questions on your own site</h3>
+            <p class="xs-context">Do this first. It takes weeks, and Marketing owns it.</p>
             <dl class="hiw-record">
-              <div><dt>Owner</dt><dd>Marketing</dd></div>
-              <div><dt>Effort</dt><dd>Weeks</dd></div>
-              <div><dt>Why</dt><dd>The 6 conversations that cited Corvane’s own pages are the 6 that put it forward, so more of those pages is the first thing to test on the next run.</dd></div>
-              <div><dt>The work</dt><dd>A page per buying question, prices written as text on the page, and a readiness guide for every framework.</dd></div>
+              <div><dt>Why:</dt><dd>Every conversation that cited the company’s pages recommended it.</dd></div>
+              <div><dt>What to do</dt><dd><ul class="hiw-todo"><li>A page per buying question: the SOC 2 timeline, Type I versus Type II, ISO 27001 alongside SOC 2, what an audit costs.</li><li>Prices and plan limits written as text on the page.</li><li>A readiness guide for every framework you support.</li></ul></dd></div>
             </dl>
           </div>
         </figure>
@@ -282,24 +275,22 @@
       <section class="hiw-step" aria-labelledby="rerun">
         <div class="hiw-text">
           <h2 id="rerun">The rerun that checks each fix</h2>
-          <p class="intro">We run your situations again every week on Lens Engage, and on a set schedule on Lens Monitor. A single answer is only a snapshot, so it's the repeated runs that show the trend and what moved it.</p>
-          <p class="hiw-body">Assistants don't pick up a change at the same speed. In our experience some can cite a new page within days or a few weeks, others usually take two to three months, and a stable pattern takes about three to six months. So we expect early movement in the first reruns and lasting change over about a quarter.</p>
+          <p class="intro">We run your situations again on a set schedule on Lens Monitor and every week on Lens Engage. A single answer is only a snapshot, so it's the repeated runs that show the trend and what moved it.</p>
           <p class="hiw-body">Each rerun shows whether a fix moved the answer. Your team gets a live report with every conversation saved, and you can connect your own AI assistant to the data to ask which situations you lost this week, and to whom.</p>
           <p class="hiw-body"><a class="link link-arrow" href="sample-report.html">Read the sample report</a></p>
         </div>
         <figure class="hiw-ex" aria-label="The same situation, run again">
           <div class="xs">
-            <p class="xs-label">The same situation, same four assistants, run again</p>
+            <p class="xs-label">The sample has one run.</p>
             <table class="hiw-rerun">
-              <thead><tr><td></td><th scope="col">This run</th><th scope="col">Next run</th></tr></thead>
               <tbody>
-                <tr><th scope="row">ChatGPT</th><td><span class="stamp stamp-none">Not named</span></td><td><span class="hiw-open">Not run yet</span></td></tr>
-                <tr><th scope="row">Claude</th><td><span class="stamp stamp-none">Not named</span></td><td><span class="hiw-open">Not run yet</span></td></tr>
-                <tr><th scope="row">Gemini</th><td><span class="stamp stamp-recommended">Recommended</span></td><td><span class="hiw-open">Not run yet</span></td></tr>
-                <tr><th scope="row">Perplexity</th><td><span class="stamp stamp-recommended">Recommended</span></td><td><span class="hiw-open">Not run yet</span></td></tr>
+                <tr><th scope="row">ChatGPT</th><td><span class="stamp stamp-none">Not named</span></td><td><span class="hiw-open" aria-hidden="true"></span></td></tr>
+                <tr><th scope="row">Claude</th><td><span class="stamp stamp-none">Not named</span></td><td><span class="hiw-open" aria-hidden="true"></span></td></tr>
+                <tr><th scope="row">Gemini</th><td><span class="stamp stamp-recommended">Recommended</span></td><td><span class="hiw-open" aria-hidden="true"></span></td></tr>
+                <tr><th scope="row">Perplexity</th><td><span class="stamp stamp-recommended">Recommended</span></td><td><span class="hiw-open" aria-hidden="true"></span></td></tr>
               </tbody>
             </table>
-            <p class="xs-foot">The sample has one run. In an engagement, the rerun marks each result moved, no change yet, or worse.</p>
+            <p class="xs-foot">In an engagement, the rerun marks each fix moved, no change yet, or worse.</p>
           </div>
         </figure>
       </section>
@@ -311,7 +302,7 @@
         <div class="hiw-faq">
           <div class="faq-item">
             <h3>Why measure every turn?</h3>
-            <p>Across 712 conversations we counted every company that made the final shortlist, 4,032 in all. Those first named in the buyer's opening questions were the top pick 113 times in 888, and those first named only at the shortlist were the top pick 241 times in 3,144. That's 1.7 times as often. It's a correlation, and being named early did nothing for getting onto the shortlist, so we track every turn and use the next run to check what moved.</p>
+            <p>Across 712 buyer conversations, a company that came up in the buyer's first questions and made the final shortlist was the top pick 1.7 times as often as one that only appeared at the shortlist. It's a correlation, so we track every turn and use the next run to check whether early work moved the final answer.</p>
           </div>
           <div class="faq-item">
             <h3>Do you name my company in the questions?</h3>
@@ -319,11 +310,11 @@
           </div>
           <div class="faq-item">
             <h3>Which AI assistants do you test?</h3>
-            <p>ChatGPT, Claude, Gemini and Perplexity, each one reported on its own. The <a class="link" href="measurement-standard.html">method</a> sets out the full test setup.</p>
+            <p>ChatGPT, Claude, Gemini and Perplexity. Every answer is tied to the assistant that gave it, with the exact model wherever it's shown.</p>
           </div>
           <div class="faq-item">
             <h3>How often do you rerun the questions?</h3>
-            <p>Every week on Lens Engage, and on a set schedule on Lens Monitor. Reruns show whether a change you made moved the answer.</p>
+            <p>On a set schedule on Lens Monitor and every week on Lens Engage. Reruns show whether a change you made moved the answer.</p>
           </div>
           <div class="faq-item">
             <h3>What counts as being recommended?</h3>

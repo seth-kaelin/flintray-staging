@@ -5,7 +5,7 @@
 - Method: each buyer situation runs as a three-turn conversation (the problem, the constraints, then "which companies would you contact?") in all four assistants, each in its own web app, in a fresh session. Every answer is recorded with its assistant, the exact model wherever the assistant shows one, and the pages it cited. A company counts only when the assistant's own words name it.
 - Free audit: a selective sample of the buyer's market. 15 buyer situations, three turns each, four assistants, a private report and a walkthrough call.
 - Lens Monitor: monthly, self-serve, scoped on the call. FlintRay reruns the situations on a schedule and keeps a live report with sources and a fix plan; the client's team makes the changes.
-- Lens Engage: monthly, managed. Managed plans start at $5,000 a month. Weekly reruns, and FlintRay writes and places the fixes. The first month includes the full audit and the first fixes. The client names 3 to 5 rivals who can't become paying clients while it's on Engage.
+- Lens Engage: monthly, managed. Lens Engage starts at $5,000 a month. Weekly reruns, and FlintRay writes and places the fixes. The first month includes the full audit and the first fixes. The client names 3 to 5 rivals who can't become paying clients while it's on Engage.
 - Data access: included with Lens Monitor and Lens Engage. The client connects their own AI assistant to the evidence (through MCP).
 - Partners: white-label delivery under a partner's brand. Private quote.
 
