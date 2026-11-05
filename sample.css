@@ -50,7 +50,7 @@ body:has(.sample-page) > .site-nav { position: relative; }
 .verdict-top { display: contents; }
 .verdict-top .note { grid-area: top; align-self: start; }
 .verdict .ray { grid-area: ray; align-self: center; justify-self: end; width: min(100%, 640px); height: auto; }
-html:not(.ray-still) .verdict .ray .ray-beam { animation: none; }
+html:not(.ray-still) .verdict .ray, html:not(.ray-still) .verdict .ray .ray-beam { animation: none; }
 .verdict h1 { grid-area: title; align-self: end; margin-top: 48px; font: 500 clamp(64px, 9vw, 140px)/.9 var(--sans); letter-spacing: -.06em; }
 .verdict-by { grid-area: by; margin-top: 18px; font: 400 clamp(18px, 1.6vw, 22px)/1.3 var(--sans); color: var(--rp-soft); }
 .figures { grid-area: figs; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 40px; margin-top: 40px; }
@@ -279,18 +279,18 @@ html.drawer-open { overflow: hidden; }
 .drawer-tab::before, .drawer-key .key::before { content: ""; flex: none; width: 10px; height: 10px; box-shadow: inset 0 0 0 1px var(--rp-mute); }
 .drawer-tab.is-put::before, .drawer-key .key.is-put::before { background: var(--lit); box-shadow: none; }
 .drawer-tab.is-named::before, .drawer-key .key.is-named::before { background: none; box-shadow: none; outline: 1px dotted var(--soft); outline-offset: -1px; }
-.drawer .drawer-tab[aria-selected="true"] { background: var(--ink); color: var(--black); border-color: var(--ink); }
-.drawer-tab[aria-selected="true"]::before { box-shadow: inset 0 0 0 1px var(--black); }
-.drawer-tab[aria-selected="true"].is-put::before { background: var(--black); }
-.drawer-tab[aria-selected="true"].is-named::before { outline-color: var(--black); }
+.drawer .drawer-tab { color: var(--rp-mute); }
+/* r10.1: the selected tab is lit on the drawer's own ground (a raised fill, an ink rule and a heavier foot), so its
+   square keeps exactly the key's colours; there is one selected tab, and focus never lingers on another (sample.js) */
+.drawer .drawer-tab[aria-selected="true"] { background: var(--raised); color: var(--rp-ink); border-color: var(--ink); box-shadow: inset 0 -3px 0 var(--ink); }
 .drawer-key { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 14px; margin: 10px 0 0; padding: 0; list-style: none; color: var(--rp-mute); font-size: 14px; }
 .drawer-key .key { gap: 6px; }
-.drawer-models { margin-bottom: 14px; color: var(--rp-mute); font-size: 14px; }
-.drawer-models[hidden] { display: none; }
+.drawer-slide-title { display: none; }
 .drawer-foot { flex: none; padding: 10px 24px; border-top: 1px solid var(--rp-rule); background: var(--black); }
 .drawer .drawer-cta { display: flex; align-items: center; justify-content: center; min-height: var(--tap); padding: 0 20px; background: var(--ink); color: var(--black); font: 500 16px/1 var(--sans); text-decoration: none; }
 .drawer-body { flex: 1; min-height: 0; display: flex; overflow-x: auto; overflow-y: hidden; scroll-snap-type: x mandatory; overscroll-behavior-x: contain; scrollbar-width: none; }
 .drawer-body::-webkit-scrollbar { display: none; }
+.drawer .drawer-body:focus-visible { outline: 0; box-shadow: inset 0 2px 0 var(--beam); }
 .drawer-slide { flex: 0 0 100%; min-width: 0; height: 100%; overflow-y: auto; overscroll-behavior-y: contain; padding: 20px 24px 48px; scroll-snap-align: start; scroll-snap-stop: always; }
 .drawer-slide .turn:first-of-type { margin-top: 22px; }
 
@@ -394,6 +394,30 @@ html.drawer-open { overflow: hidden; }
   .set-row { margin-top: 8px; }
   .set-row button { min-height: 40px; }
 }
+/* r10.1, phones: the drawer head is its controls only, about 140px. The steps and the count share a row with Close,
+   then the four tabs, then the key on one line. The situation's title leads each slide and scrolls away with the
+   conversation; the head's own title stays for screen readers as the dialog's name. */
+@media (max-width: 760px) {
+  .drawer-head { display: grid; grid-template-columns: minmax(0, 1fr) auto; column-gap: 8px; padding: 8px 16px 10px; }
+  .drawer-set { grid-column: 1 / -1; grid-row: 1; margin: -8px -16px 8px; }
+  .drawer-bar { display: contents; }
+  .drawer-titles { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  .drawer-close { grid-column: 2; grid-row: 2; padding: 0 12px; }
+  .drawer-set + .drawer-bar + .set-row, .drawer-bar + .set-row, .set-row { grid-column: 1; grid-row: 2; margin-top: 0; gap: 6px; }
+  .set-row button { min-height: 44px; padding: 0 10px; }
+  .drawer-tabs { grid-column: 1 / -1; grid-row: 3; margin-top: 8px; }
+  .drawer .drawer-tab { min-height: 44px; gap: 4px; }
+  .drawer-key { grid-column: 1 / -1; grid-row: 4; flex-wrap: nowrap; gap: 0 12px; margin-top: 8px; font-size: 13px; white-space: nowrap; }
+  .drawer-key .key { display: inline-flex; align-items: center; }
+  .drawer-slide { padding-top: 14px; }
+  .drawer-slide-title { display: block; margin-bottom: 12px; font: 500 20px/1.2 var(--sans); letter-spacing: -.02em; color: var(--rp-ink); }
+  .drawer-slide-market { color: var(--rp-mute); font-size: 14px; font-weight: 400; letter-spacing: 0; }
+}
+@media (max-width: 400px) {
+  /* "Corvane:" leads the key where it fits; on the narrowest phones the key is its three marks */
+  .drawer-key li:first-child { display: none; }
+}
+
 /* The narrowest phones: each outcome cell stacks the assistant over its outcome, and the bar's two items stay whole */
 @media (max-width: 369px) {
   .matrix tr { grid-template-columns: repeat(2, minmax(0, 1fr)); }

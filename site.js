@@ -444,6 +444,15 @@ const FR = (() => {
     io.observe(root);
   }
 
+  // r10.1: the track is as tall as the conversation showing, at every width, so the quote, the order and the sources
+  // read on the page with no inner scroll. It follows the conversation as it changes (a swipe, a step, a turn unfolding).
+  const fit = () => {
+    const convo = slides[current] && slides[current].firstElementChild;
+    if (convo && convo.offsetHeight) track.style.height = `${convo.offsetHeight}px`;
+  };
+  const sized = "ResizeObserver" in window ? new ResizeObserver(() => fit()) : null;
+  if (sized) slides.forEach((d) => sized.observe(d));
+
   // Where the track is: the tile pressed, the count, the steps at either end
   let current = start;
   const pos = nav.querySelector(".pv-pos");
@@ -456,8 +465,20 @@ const FR = (() => {
     if (getComputedStyle(tabs).display !== "none") showCol(M.engines.findIndex((e) => e[0] === o.engine) + 1);
     steps[0].disabled = !built || i === 0;
     steps[1].disabled = !built || i === total - 1;
+    fit();
   };
   mark(start);
+  // r10.1, phones: the record waits for a tap, so every tile carries a disclosure mark (pages.css), and the tile of the
+  // conversation the record holds rings once as it comes up the screen. Reduced motion: the marks only.
+  const pressed = cells.find((b) => b.getAttribute("aria-pressed") === "true");
+  if (pressed && "IntersectionObserver" in window && !reduced()) {
+    const cue = new IntersectionObserver((es) => {
+      if (!es.some((e) => e.isIntersecting)) return;
+      cue.disconnect();
+      pressed.classList.add("is-cued");
+    }, { rootMargin: "0px 0px -35% 0px" });
+    cue.observe(pressed);
+  }
   let ticking = false;
   track.addEventListener("scroll", () => {
     if (!built || ticking) return;

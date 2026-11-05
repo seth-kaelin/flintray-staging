@@ -86,7 +86,8 @@
   edges();
 
   // ---------------------------------------------------------------------------
-  // The drawer. r04 (Seth, Nov 4): one conversation at a time, so it swipes. Its body is a native sideways scroller
+  // The drawer. r04 (Seth, Nov 4): one conversation at a time, so it swipes. r10.1: it opens with focus on the
+  // conversation, so ← and → step conversations at once; the tab row keeps its own arrow keys only while it has focus. Its body is a native sideways scroller
   // (scroll-snap, one conversation per snap, data-carousel) through the conversations it was opened on: a finding's
   // set, or all 60 in the matrix's order. Nothing advances on its own and touching it starts no timer. The position
   // ("3 of 60") and Previous and Next stay in the head; the arrow keys step on laptops; the tabs jump to another
@@ -94,7 +95,6 @@
   const subject = document.getElementById("verdict-title").textContent;
   const MARK = { put: "put forward", named: "mentioned", none: "not named" };
   const matrix = page.querySelector(".matrix");
-  const modelsFor = (engine) => matrix.querySelector(`thead th[data-engine="${engine}"]`)?.dataset.models || "";
   const ALL = [...matrix.tBodies[0].rows].flatMap((row) => [...row.querySelectorAll("a.cell")].map((c) => ({ sid: c.dataset.sid, engine: c.dataset.engine })));
   const cta = document.querySelector(".jump-cta");
   const root = document.createElement("div");
@@ -128,7 +128,10 @@
   const state = { list: ALL, index: 0, set: null, trigger: null, pushed: false, slides: [] };
   const item = () => state.list[state.index];
 
-  // The slides: one per conversation in the list, filled with a copy of its markup when it is near the one showing
+  // The slides: one per conversation in the list, filled with a copy of its markup when it is near the one showing.
+  // r10.1: each conversation states its own model ("Answered by …"), so the slide no longer repeats the assistant's
+  // model line above it. On phones the situation's title opens the slide and scrolls away with it (sample.css), so the
+  // head keeps only the controls.
   const layout = () => {
     state.slides = state.list.map(() => { const d = document.createElement("div"); d.className = "drawer-slide"; return d; });
     panel.replaceChildren(...state.slides);
@@ -141,11 +144,14 @@
     const copy = source.cloneNode(true);
     copy.removeAttribute("id");
     copy.querySelectorAll("[id]").forEach((n) => n.removeAttribute("id"));
-    const models = document.createElement("p");
-    models.className = "drawer-models";
-    models.textContent = modelsFor(it.engine);
-    models.hidden = !models.textContent;
-    slide.append(models, copy);
+    const situation = document.getElementById(`situation-${it.sid}`);
+    const title = document.createElement("p");
+    title.className = "drawer-slide-title";
+    title.setAttribute("aria-hidden", "true");
+    title.innerHTML = `<span></span> <span class="drawer-slide-market"></span>`;
+    title.firstChild.textContent = situation.querySelector(".situation-title").textContent;
+    title.lastChild.textContent = situation.querySelector(".situation-market").textContent;
+    slide.append(title, copy);
   };
 
   // What the head says for the conversation showing
@@ -165,6 +171,8 @@
       t.querySelector("[data-outcome]").textContent = `, ${subject} ${MARK[m]}`;
     });
     panel.setAttribute("aria-labelledby", `drawer-tab-${engine}`);
+    const focused = document.activeElement;
+    if (focused && focused.matches(".drawer-tab") && focused.dataset.engine !== engine) panel.focus({ preventScroll: true });
     $('[data-f="count"]').textContent = `${i + 1} of ${state.list.length}`;
     root.querySelectorAll("[data-step]").forEach((b) => {
       const to = i + Number(b.dataset.step);
@@ -174,12 +182,17 @@
     const hash = `#conversation-${sid}-${engine}`;
     if (location.hash !== hash) history.replaceState(history.state, "", hash);
   };
+  // A step or a tab scrolls the track to its conversation; until it lands there, the scroll it causes never marks the
+  // conversations it passes (a finger or a wheel takes over at once)
+  let landing = null;
   const go = (i, smooth = true) => {
     i = Math.max(0, Math.min(state.list.length - 1, i));
     fillSlide(i);
+    landing = Math.abs(panel.scrollLeft - i * panel.clientWidth) < 2 ? null : i;
     panel.scrollTo({ left: i * panel.clientWidth, behavior: smooth && !reduced() && Math.abs(i - state.index) <= 2 ? "smooth" : "auto" });
     markAt(i);
   };
+  ["touchstart", "wheel", "pointerdown"].forEach((t) => panel.addEventListener(t, () => (landing = null), { passive: true }));
   let sliding = false;
   panel.addEventListener("scroll", () => {
     if (sliding || root.hidden) return;
@@ -187,6 +200,7 @@
     requestAnimationFrame(() => {
       sliding = false;
       const i = Math.max(0, Math.min(state.list.length - 1, Math.round(panel.scrollLeft / panel.clientWidth)));
+      if (landing !== null) { if (Math.abs(panel.scrollLeft - landing * panel.clientWidth) < 2) landing = null; return; }
       if (i !== state.index) markAt(i);
     });
   }, { passive: true });
@@ -217,7 +231,7 @@
     }
     state.index = i;
     go(i, false);
-    tabs.find((t) => t.dataset.engine === engine).focus({ preventScroll: true });
+    if (!wasOpen) panel.focus({ preventScroll: true });
   };
   // A tab: the same situation, another assistant. Inside a finding's set it stays in the set when that answer is in
   // it; otherwise the drawer moves to the matrix's order of all 60, so swiping still walks the whole report.
