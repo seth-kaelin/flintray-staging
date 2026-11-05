@@ -691,6 +691,9 @@ html.menu-open { overflow: hidden; }
   .fa-actions { margin-top: 28px; }
 }
 
+/* Founder option (a), Seth 2026-11-04: booking sits beside the form instead of in a founder block */
+.fa-request-book { margin-top: 28px; }
+
 /* Inner-page exhibits, shared by audit, how it works and partners: a Silt sheet of sample evidence lying on
    the measurement grid, in the hero sheet's language (pages.css .evidence), scoped to those pages' <main>.
    Quoted text is the sample's exact words (data-quote); Geist Mono is for counts and domains only. */
