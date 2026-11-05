@@ -275,32 +275,6 @@ const FR = (() => {
   }
 })();
 
-// Home, r02. The plans table on phones: each plan's name becomes a tab and the rows show that plan only
-// (pages.css reads data-show). Wider screens ignore data-show and show the whole table.
-(() => {
-  const plans = document.querySelector("[data-plans]");
-  if (!plans) return;
-  const heads = [...plans.querySelectorAll("thead h3")];
-  const show = (n) => {
-    plans.dataset.show = String(n + 1);
-    heads.forEach((h, i) => h.firstChild.setAttribute("aria-pressed", String(i === n)));
-  };
-  heads.forEach((h, i) => {
-    const button = document.createElement("button");
-    button.type = "button";
-    // r10.2: the name sits in its own span, so Engage's tab can keep it out of sight where its price line already says it
-    const name = document.createElement("span");
-    name.className = "g-plan-name";
-    name.append(...h.childNodes);
-    button.append(name);
-    button.addEventListener("click", () => show(i));
-    h.append(button);
-  });
-  // r10.2: each plan's price line, under its tab on phones, picks that plan too
-  plans.querySelectorAll("tr.is-price td").forEach((td, i) => td.addEventListener("click", () => show(i)));
-  show(0);
-})();
-
 // R07. The live preview is the real report, the demo at sample-report.html: its matrix of 60 conversations as a
 // working miniature, Rival A's outcome in words in every cell, the company's one outcome above it, and one
 // conversation's record beside it, built from the same records (assets/report-records.js), so every word is the
@@ -544,156 +518,163 @@ const FR = (() => {
     if (next) { ev.preventDefault(); next.focus(); }
   });
 
-  // The fill: hidden only once the matrix is just below the screen (never while on it), then filled as it comes up
-  if (!reduced() && "IntersectionObserver" in window && grid.getBoundingClientRect().top > innerHeight) {
-    const near = new IntersectionObserver((es) => {
-      if (!es.some((e) => e.isIntersecting)) return;
-      near.disconnect();
-      if (grid.getBoundingClientRect().top > innerHeight) grid.classList.add("is-pre");
-    }, { rootMargin: "0px 0px 50% 0px" });
-    const enter = new IntersectionObserver((es) => {
-      if (!es.some((e) => e.isIntersecting)) return;
-      enter.disconnect();
-      near.disconnect();
-      grid.classList.replace("is-pre", "is-filling") || grid.classList.add("is-filling");
-    }, { rootMargin: "0px 0px -14% 0px" });
-    near.observe(grid);
-    enter.observe(grid);
-  }
+  // The fill (R08): the reveal engine below fills the matrix row by row the first time it comes into view
+  grid.dataset.reveal = "fill";
 })();
 
-// R07. Counted figures, bars and marks (home and the audit page). Each group fills once as it comes up the screen: its
-// numbers count from zero to their exact value over 1.1 s (ease-out, whole numbers, tabular figures in a box of the
-// final width, so nothing moves), its bars draw from zero and its conversation marks wipe in from the left. A group is
-// set to zero only when it is just below the screen, never while on it, and starts when its top passes 88% of the
-// screen height. A group on screen at load, reduced motion and no JS show the final values from frame 1. State is a
-// pure function of the time since the group started; the last frame writes the exact values, and a tab that goes
-// hidden mid-count finishes at once, so no wrong value is ever left on screen.
+// reveal: begin
+// R08, R09. Reveals, one contract for every page (tools/qa/motiongate.mjs). Every element that reveals carries
+// data-reveal="<kind>". The script adds html.rv, and only under that class does CSS (components.css, "Reveals") hold an
+// element in its start state, and only while it carries data-reveal-wait, so with JS off everything shows finished. An
+// element on the screen at load, or above it, is finished at once; one below it waits until it is really in view (an
+// IntersectionObserver, about a quarter of it on screen, no early margin), then plays while the visitor watches, and
+// gets data-revealed when it ends, always within 1.3 s. State is a pure function of the time since it started, the last
+// frame writes the finished state, and a tab that goes hidden finishes at once. Reduced motion: finished at load.
+// R09: words are never faded. r08's reveals held text at 25% while they waited, so a fast scroller and every still saw
+// ghost text (Opus: "the motion is hiding content"). Text is at full opacity in every state; the motion is in the
+// graphics around it: rules drawing, bars growing, marks filling, chips stamping in, nodes scaling. A heading may rise
+// a few pixels at full opacity, nothing more.
+// Kinds:
+//   rise   a heading comes up 8px, at full opacity (700 ms)
+//   rows   each child's rule draws from the left (--k, 0 to 1), one after another (600 ms each, the list within 1.2 s)
+//   rule   the element's own rule draws (--k)
+//   bars   its bars grow from their left edge, one after another (750 ms each)
+//   tally  its conversation marks fill in reading order, the top picks first, as a typewriter fills a page (900 ms)
+//   count  its [data-count] figures count up once from 0 to their exact value (900 ms, in a box of the final width, the
+//          "of 592" base on screen throughout), starting only when the whole figure is in view; no other number counts
+//   fill   a matrix stamps in row by row, 40 ms a row and 22 ms a column: Recommended fills and Shortlisted takes its
+//          outline (--f), each over 420 ms; every word is on screen throughout
+//   steps  the method's steps: each step's rule, node and hop draw, one after another, and on laptops the threads
+//          above them draw step to step
+//   weave  the threads under the hero: three strands draw from the margin's node to the rule, a beat apart
 (() => {
-  if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-  const groups = [...document.querySelectorAll("[data-reveal]")].filter((g) => !g.matches(".g-thread") && g.getBoundingClientRect().top > innerHeight);
-  if (!groups.length) return;
-  const DUR = { count: 1100, draw: 620 };
-  const parts = (g) => ({
-    nums: [...g.querySelectorAll("[data-count]")].map((n) => [n, Number(n.dataset.count)]),
-    bars: [...g.querySelectorAll(".fa-bar i")],
-    marks: [...g.querySelectorAll(".fa-tally")],
-  });
-  const paint = (p, t) => {
-    const kc = FR.clamp(t / DUR.count), kd = FR.clamp(t / DUR.draw);
-    p.nums.forEach(([n, to]) => (n.textContent = String(kc >= 1 ? to : Math.round(to * FR.easeOut(kc)))));
-    p.bars.forEach((b) => (b.style.transform = kd >= 1 ? "" : `scaleX(${FR.easeOut(kd)})`));
-    p.marks.forEach((m) => (m.style.clipPath = kd >= 1 ? "" : `inset(0 ${(1 - FR.easeOut(kd)) * 100}% 0 0)`));
+  const els = [...document.querySelectorAll("[data-reveal]")];
+  if (!els.length) return;
+  const done = (el) => el.setAttribute("data-revealed", "");
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches || !("IntersectionObserver" in window)) { els.forEach(done); return; }
+  const clamp = (x) => Math.max(0, Math.min(1, x));
+  const out = (x) => 1 - Math.pow(1 - x, 3);
+  const narrow = matchMedia("(max-width: 760px)");
+  const stagger = (n, each, cap) => (n > 1 ? Math.min(cap, Math.max(0, 1200 - each) / (n - 1)) : 0);
+  const clear = (n, ...props) => props.forEach((p) => n.style.removeProperty(p));
+  const draw = (n, k) => n.style.setProperty("--k", out(clamp(k)).toFixed(4));
+  // a cell's place in its matrix: the --r and --c it carries (home's preview), or its row and column in the table
+  const place = (n) => {
+    const cs = getComputedStyle(n), r = cs.getPropertyValue("--r"), c = cs.getPropertyValue("--c");
+    if (r !== "") return [Number(r) || 0, Number(c) || 0];
+    const row = n.closest(".mr, .pr"), cell = n.closest(".mc, .pr-ra");
+    return [row ? [...row.parentElement.children].indexOf(row) : 0, cell ? [...cell.parentElement.children].indexOf(cell) : 0];
   };
-  const END = Math.max(DUR.count, DUR.draw);
-  const all = new Map(groups.map((g) => [g, { p: parts(g), stage: 0 }]));
-  for (const { p } of all.values()) {
-    p.bars.forEach((b) => (b.style.transformOrigin = "0 50%"));
-    p.nums.forEach(([n]) => { n.style.minWidth = `${n.getBoundingClientRect().width}px`; });
-  }
-  const running = new Set();
-  const finish = () => { for (const s of running) paint(s.p, END); running.clear(); };
-  document.addEventListener("visibilitychange", () => { if (document.hidden) finish(); });
-  const run = (s) => {
-    running.add(s);
+  const KINDS = {
+    rise: { dur: () => 700, at: (el, t, end) => (end ? clear(el, "transform") : (el.style.transform = `translate3d(0, ${((1 - out(clamp(t / 700))) * 8).toFixed(2)}px, 0)`)) },
+    rows: {
+      prep: (el) => ({ kids: [...el.children], gap: stagger(el.children.length, 600, 110) }),
+      dur: (el, s) => 600 + s.gap * (s.kids.length - 1),
+      at: (el, t, end, s) => s.kids.forEach((n, i) => (end ? clear(n, "--k") : draw(n, (t - i * s.gap) / 600))),
+    },
+    rule: { dur: () => 700, at: (el, t, end) => (end ? clear(el, "--k") : draw(el, t / 700)) },
+    bars: {
+      prep: (el) => { const bars = [...el.querySelectorAll(".fa-bar i, .bar i, .sk, .sg, .ty-bar i")]; return { bars, gap: stagger(bars.length, 750, 70) }; },
+      dur: (el, s) => 750 + s.gap * (s.bars.length - 1),
+      at: (el, t, end, s) => s.bars.forEach((b, i) => (end ? clear(b, "transform") : (b.style.transform = `scaleX(${out(clamp((t - i * s.gap) / 750)).toFixed(4)})`))),
+    },
+    tally: {
+      prep: (el) => ({ marks: [...el.querySelectorAll(".fa-tally")].map((m) => { const v = m.viewBox.baseVal; return [m, Math.max(1, Math.round(v.height / 12))]; }) }),
+      dur: () => 900,
+      at: (el, t, end, s) => s.marks.forEach(([m, rows]) => {
+        if (end) return clear(m, "clip-path");
+        const pos = clamp(t / 900) * rows, r = Math.floor(pos), f = (pos - r) * 100, y0 = (r / rows) * 100, y1 = ((r + 1) / rows) * 100;
+        m.style.clipPath = `polygon(0 0, 100% 0, 100% ${y0}%, ${f}% ${y0}%, ${f}% ${y1}%, 0 ${y1}%)`;
+      }),
+    },
+    count: {
+      whole: true,
+      prep: (el) => ({ nums: [...el.querySelectorAll("[data-count]")].map((n) => [n, Number(n.dataset.count)]) }),
+      dur: () => 900,
+      at: (el, t, end, s) => s.nums.forEach(([n, to]) => { n.textContent = String(end ? to : Math.round(to * out(clamp(t / 900)))); }),
+    },
+    fill: {
+      prep: (el) => ({ cells: [...el.querySelectorAll(".chip:is(.o-rec, .o-sho)")].map((n) => { const [r, c] = place(n); return [n, r * 40 + c * 22, n.classList.contains("o-rec")]; }) }),
+      dur: (el, s) => 420 + Math.max(0, ...s.cells.map(([, d]) => d)),
+      at: (el, t, end, s) => s.cells.forEach(([n, d, rec]) => {
+        if (end) return clear(n, "--f", "color");
+        const e = out(clamp((t - d) / 420));
+        n.style.setProperty("--f", e.toFixed(3));
+        // Recommended's dark word swaps in once the fill gives it more contrast than the light one
+        if (rec) n.style.color = e < 0.55 ? "var(--ink)" : "var(--black)";
+      }),
+    },
+    steps: {
+      prep: (el) => {
+        const list = el.matches(".fa-steps") ? el : el.querySelector(".fa-steps");
+        return { list, steps: [...list.children], byRow: !narrow.matches && !!el.querySelector(".g-threads"),
+          draws: [...el.querySelectorAll("[data-draw]")].map((d) => [d, Number(d.dataset.from), Number(d.dataset.to)]) };
+      },
+      dur: () => 1250,
+      at: (el, t, end, s) => {
+        const n = s.steps.length, row = clamp(t / 1100);
+        s.steps.forEach((li, i) => {
+          if (end) return clear(li, "--rv", "--rd");
+          const k = s.byRow ? clamp(row * n - i) : clamp((t - i * 120) / 600);
+          li.style.setProperty("--rv", String(out(k)));
+          li.style.setProperty("--rd", String(clamp(k * 4)));
+        });
+        if (end) clear(s.list, "--rl");
+        else s.list.style.setProperty("--rl", String(out(s.byRow ? clamp(row * n - (n - 1)) : clamp((t - (n - 1) * 120) / 600))));
+        s.draws.forEach(([d, from, to]) => (end ? clear(d, "stroke-dashoffset") : (d.style.strokeDashoffset = String(1 - out(clamp((row - from) / (to - from)))))));
+      },
+    },
+    weave: {
+      prep: (el) => ({ paths: [...el.querySelectorAll("path")], nodes: [...el.querySelectorAll("i[style]")] }),
+      dur: () => 1200,
+      at: (el, t, end, s) => s.paths.forEach((p, j) => {
+        const k = clamp((t - j * 200) / 800);
+        if (end) { clear(p, "stroke-dashoffset"); if (s.nodes[j]) clear(s.nodes[j], "opacity"); return; }
+        p.style.strokeDashoffset = String(1 - out(k));
+        if (s.nodes[j]) s.nodes[j].style.opacity = k >= 1 ? "1" : "0";
+      }),
+    },
+  };
+  const kind = (el) => KINDS[el.dataset.reveal] || KINDS.rise;
+  // count only: its figures hold their final width from the start, so nothing moves while they count
+  for (const n of document.querySelectorAll("[data-reveal=count] [data-count]")) n.style.minWidth = `${n.getBoundingClientRect().width}px`;
+  document.documentElement.classList.add("rv");
+  const running = new Map();
+  const finish = (el) => { const r = running.get(el); if (r) { running.delete(el); kind(el).at(el, r.dur, true, r.s); } done(el); };
+  const play = (el) => {
+    io.unobserve(el);
+    const K = kind(el), s = K.prep ? K.prep(el) : null, dur = K.dur(el, s);
+    running.set(el, { dur, s });
+    K.at(el, 0, false, s);
+    el.removeAttribute("data-reveal-wait");
     let t0 = null;
     const frame = (now) => {
-      if (!running.has(s)) return;
+      if (!running.has(el)) return;
       if (t0 === null) t0 = now;
       const t = now - t0;
-      paint(s.p, t);
-      if (t < END) requestAnimationFrame(frame); else running.delete(s);
+      if (t >= dur) finish(el);
+      else { K.at(el, t, false, s); requestAnimationFrame(frame); }
     };
     requestAnimationFrame(frame);
   };
-  const check = () => {
-    const h = innerHeight;
-    for (const [g, s] of all) {
-      const r = g.getBoundingClientRect();
-      if (r.bottom < 0) { if (s.stage < 2) paint(s.p, END); all.delete(g); continue; }
-      if (s.stage === 0 && r.top < h * 1.5 && r.top > h) { paint(s.p, 0); s.stage = 1; }
-      if (r.top < h * 0.88) { s.stage = 2; all.delete(g); run(s); }
-    }
-    if (!all.size) removeEventListener("scroll", onScroll);
-  };
-  let queued = false;
-  const onScroll = () => { if (!queued) { queued = true; requestAnimationFrame(() => { queued = false; check(); }); } };
-  addEventListener("scroll", onScroll, { passive: true });
-  check();
+  document.addEventListener("visibilitychange", () => { if (document.hidden) [...running.keys()].forEach(finish); });
+  // In view: a quarter of it on screen, or for a tall element a third of the screen; a counted figure, all of it
+  const io = new IntersectionObserver((es) => es.forEach((e) => {
+    if (!e.isIntersecting) return;
+    const seen = kind(e.target).whole ? e.intersectionRatio >= 0.97 : e.intersectionRatio >= 0.25 || e.intersectionRect.height >= innerHeight * 0.34;
+    if (seen) play(e.target);
+  }), { threshold: [0, 0.1, 0.2, 0.25, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 0.97, 1] });
+  const h = innerHeight;
+  for (const el of els) {
+    const r = el.getBoundingClientRect();
+    if (!el.getClientRects().length || r.top < h) { done(el); continue; }
+    el.setAttribute("data-reveal-wait", "");
+    // a counted figure waits at 0, in full view, at its final width
+    if (el.dataset.reveal === "count") el.querySelectorAll("[data-count]").forEach((n) => { n.textContent = "0"; });
+    io.observe(el);
+  }
 })();
-
-// R07. Steps drawn by scroll position at every width: home's method and the audit's five steps. Home on laptops: the
-// threads above the six steps and each step's rule and node draw as the steps cross the screen, from 85% to 35% of
-// its height. Phones, and the audit's stacked rows: each step's rule, node and hop draw as that step comes up the
-// screen, and home's return to the first step draws with the last. Both only ever move forward (nothing undraws on
-// the way back up). A step already above its band at load is drawn; reduced motion and no JS show everything drawn.
-(() => {
-  if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-  const narrow = matchMedia("(max-width: 760px)");
-  const lists = [...document.querySelectorAll(".g-thread .fa-steps, .aud-steps")].map((list) => ({
-    list, steps: [...list.children], row: 0, byRow: list.matches(".g-thread .fa-steps"), done: [...list.children].map(() => 0),
-    draws: [...(list.closest(".g-thread") || list).querySelectorAll("[data-draw]")].map((d) => [d, Number(d.dataset.from), Number(d.dataset.to)]),
-  }));
-  if (!lists.length) return;
-  const paint = () => {
-    const h = innerHeight;
-    for (const L of lists) {
-      if (L.finished) continue;
-      if (L.byRow && !narrow.matches) {
-        L.row = Math.max(L.row, FR.clamp((h * 0.85 - L.list.getBoundingClientRect().top) / (h * 0.5)));
-        L.steps.forEach((li, i) => { L.done[i] = Math.max(L.done[i], FR.clamp(L.row * L.steps.length - i)); });
-      } else {
-        L.steps.forEach((li, i) => { L.done[i] = Math.max(L.done[i], FR.clamp((h * 0.85 - li.getBoundingClientRect().top) / (h * 0.4))); });
-        L.row = Math.max(L.row, L.done[L.done.length - 1]);
-      }
-      L.steps.forEach((li, i) => {
-        li.style.setProperty("--rv", String(FR.easeOut(L.done[i])));
-        li.style.setProperty("--rd", String(FR.clamp(L.done[i] * 4)));
-      });
-      L.list.style.setProperty("--rl", String(FR.easeOut(L.done[L.done.length - 1])));
-      L.draws.forEach(([d, from, to]) => { d.style.strokeDashoffset = String(1 - FR.easeOut(FR.clamp((L.row - from) / (to - from)))); });
-      if (L.done.every((k) => k >= 1) && L.row >= 1) {
-        L.finished = true;
-        L.steps.forEach((li) => { li.style.removeProperty("--rv"); li.style.removeProperty("--rd"); });
-        L.list.style.removeProperty("--rl");
-        L.draws.forEach(([d]) => d.style.removeProperty("stroke-dashoffset"));
-      }
-    }
-    if (lists.every((L) => L.finished)) removeEventListener("scroll", onScroll);
-  };
-  let queued = false;
-  const onScroll = () => { if (!queued) { queued = true; requestAnimationFrame(() => { queued = false; paint(); }); } };
-  addEventListener("scroll", onScroll, { passive: true });
-  paint();
-})();
-
-// R07. The threads between sections (build_site.render_weave): three strands leave one node at the left margin and land
-// on the section's rule further along, each a beat after the last, drawn by the section's position as it comes up the
-// screen (from 95% to 45% of its height) and undrawn the same way back up. Never on a loop, nothing on a timer.
-// Reduced motion and no JS: drawn.
-(() => {
-  const weaves = [...document.querySelectorAll("[data-weave]")];
-  if (!weaves.length || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-  const parts = weaves.map((w) => ({ w, paths: [...w.querySelectorAll("path")], nodes: [...w.querySelectorAll("i[style]")], o: w.querySelector(".weave-o") }));
-  const paint = () => {
-    const h = innerHeight;
-    for (const { w, paths, nodes, o } of parts) {
-      const r = w.getBoundingClientRect();
-      if (r.top > h * 1.2 || r.bottom < -h * 0.2) continue;
-      const k = FR.clamp((h * 0.95 - r.top) / (h * 0.5));
-      o.style.opacity = k > 0 ? "1" : "0";
-      paths.forEach((p, j) => {
-        const kj = FR.clamp(k * 1.5 - j * 0.25);
-        p.style.strokeDashoffset = String(1 - FR.easeOut(kj));
-        if (nodes[j]) nodes[j].style.opacity = kj >= 1 ? "1" : "0";
-      });
-    }
-  };
-  let queued = false;
-  addEventListener("scroll", () => { if (!queued) { queued = true; requestAnimationFrame(() => { queued = false; paint(); }); } }, { passive: true });
-  addEventListener("resize", paint);
-  paint();
-})();
+// reveal: end
 
 // R07. The ray's parallax: the figure that holds it drifts at a fifth of the scroll (an eighth on phones) while its
 // section is on screen, by transform only. Reduced motion: it stays put.

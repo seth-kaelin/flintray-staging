@@ -207,37 +207,12 @@ const reduced = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
   });
 })();
 
-// Figures draw once as they enter: the verdict's total bars and the sources bar grow from the left, the top picks'
-// threads draw turn to turn. Numbers never count. Reduced motion and no-JS get the finished figure from the first frame.
-(() => {
-  const figs = document.querySelectorAll(".draw");
-  if (!("IntersectionObserver" in window)) { figs.forEach((f) => f.classList.add("is-drawn")); return; }
-  const io = new IntersectionObserver((entries) => entries.forEach((e) => {
-    if (e.isIntersecting) { e.target.classList.add("is-drawn"); io.unobserve(e.target); }
-  }), { rootMargin: "0px 0px -8% 0px" });
-  figs.forEach((f) => io.observe(f));
-})();
-
-// R07. The matrix fills in the first time it comes up the screen, row by row (CSS .is-filling). It is hidden only while
-// it is still below the screen, never on it; already on screen at load, reduced motion and no JS: it is simply there.
+// R08. The figures reveal through the site's one engine (the lane's site.js, "reveal: begin"; the standalone page gets
+// the same block): the verdict's bars, the matrix, the turns and the sources each carry data-reveal. Here the matrix
+// cells only learn their row and column, so the fill runs row by row.
 (() => {
   const mx = document.querySelector("[data-fill]");
-  if (!mx || reduced() || !("IntersectionObserver" in window) || mx.getBoundingClientRect().top < innerHeight) return;
-  mx.querySelectorAll(".mr:not(.mr-head)").forEach((row, r) => row.querySelectorAll(".mc").forEach((c, k) => { c.style.setProperty("--r", r); c.style.setProperty("--c", k); }));
-  const near = new IntersectionObserver((es) => {
-    if (!es.some((e) => e.isIntersecting)) return;
-    near.disconnect();
-    if (mx.getBoundingClientRect().top > innerHeight) mx.classList.add("is-pre");
-  }, { rootMargin: "0px 0px 50% 0px" });
-  const enter = new IntersectionObserver((es) => {
-    if (!es.some((e) => e.isIntersecting)) return;
-    enter.disconnect();
-    near.disconnect();
-    mx.classList.remove("is-pre");
-    mx.classList.add("is-filling");
-  }, { rootMargin: "0px 0px -14% 0px" });
-  near.observe(mx);
-  enter.observe(mx);
+  if (mx) mx.querySelectorAll(".mr:not(.mr-head)").forEach((row, r) => row.querySelectorAll(".mc").forEach((c, k) => { c.style.setProperty("--r", r); c.style.setProperty("--c", k); }));
 })();
 
 // R07. The ray's parallax on the cover: it drifts at a fifth of the scroll (an eighth on phones) while the cover is on
