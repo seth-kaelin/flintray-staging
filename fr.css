@@ -125,7 +125,8 @@ main, .site-footer { position: relative; z-index: var(--z-content); }
    from the top edge at the page's centre line, in the header's empty top margin, scrolling away with the page, so
    it never sits over a word, a field or a button (judges, r03: the left-edge tab covered form labels). No taps. */
 .draft-bar { position: absolute; top: 0; left: 50%; z-index: var(--z-banner); transform: translateX(-50%); padding: 1px 8px 2px;
-  font: 500 13px/1 var(--sans); letter-spacing: .02em; background: #2A2110; color: #F3D9A4; box-shadow: inset 0 -1px 0 rgba(226, 169, 59, 0.5); white-space: nowrap; pointer-events: none; }
+  font: 500 13px/1 var(--sans); letter-spacing: .02em; background: var(--raised); color: var(--mute); box-shadow: inset 0 -1px 0 var(--line); white-space: nowrap; pointer-events: none; }
+/* r07 (judges A fix 8, B fix 6): staging chrome in the ground's own greys, so it is never the first colour the eye meets */
 html.menu-open .draft-bar { display: none; }
 
 /* Quiet metadata: dates, sources, provenance lines */
@@ -146,6 +147,8 @@ html.menu-open .draft-bar { display: none; }
 .nav-book { margin-left: 8px; color: var(--ink); box-shadow: inset 0 0 0 1px var(--edge); }
 .nav-cta { margin-left: -12px; background: var(--ink); color: var(--black); }
 .menu-toggle { display: none; margin-left: auto; align-items: center; gap: 10px; min-width: 44px; min-height: 44px; padding: 0 14px; background: transparent; color: var(--ink); border: 1px solid var(--edge); font: 500 16px/1 var(--sans); cursor: pointer; }
+/* r07: the chrome carries no span (a rival in the real report shares the word; its leak check reads every file) */
+.menu-word { font-weight: inherit; }
 .menu-icon { position: relative; width: 18px; height: 12px; border-top: 2px solid currentColor; border-bottom: 2px solid currentColor; }
 .menu-icon::after { content: ""; position: absolute; left: 0; right: 0; top: 3px; border-top: 2px solid currentColor; }
 .menu-sheet { position: fixed; inset: 0; z-index: var(--z-banner); display: flex; flex-direction: column; background: var(--black); padding: 0 var(--m) 32px; overflow-y: auto; }
@@ -500,12 +503,19 @@ html.menu-open { overflow: hidden; }
    compositor layer. Both start mid-travel, so the first frame is the resting pose. They are the site's only looping
    motion. Under reduced motion, or with html.ray-still (the single switch the judges asked for), it holds that pose,
    the beam pointing at the claim. */
+/* R07 (Seth: "the sweep is too subtle"): a clear searchlight. The lamp, the cone with the eye's glow, lights from off to
+   on over the first second after arrival (ray-on), then the beam sweeps -15deg to +15deg and back, 7 s each way (one
+   cycle in 14 s, 0.07 Hz, under the 0.1 Hz cap), eased at both ends. site.js adds the scroll parallax to the figure
+   that holds the ray (data-parallax). Reduced motion or html.ray-still: the lamp is on and the beam rests mid-travel. */
 .ray .ray-beam { transform-origin: 0 0; }
 @media (prefers-reduced-motion: no-preference) {
-  html:not(.ray-still) .ray .ray-beam { animation: ray-sweep 9s cubic-bezier(.45, 0, .55, 1) -4.5s infinite alternate; }
+  html:not(.ray-still) .ray .ray-beam { animation: ray-sweep 7s cubic-bezier(.45, 0, .55, 1) -3.5s infinite alternate; }
   html:not(.ray-still) .ray { animation: ray-glide 11s cubic-bezier(.45, 0, .55, 1) -5.5s infinite alternate; will-change: transform; }
+  .ray .ray-lamp { animation: ray-on 1s cubic-bezier(.3, 0, .2, 1) .12s both; }
 }
-@keyframes ray-sweep { from { transform: rotate(-14deg); } to { transform: rotate(14deg); } }
+@keyframes ray-sweep { from { transform: rotate(-15deg); } to { transform: rotate(15deg); } }
+@keyframes ray-on { from { opacity: 0; } 35% { opacity: .25; } to { opacity: 1; } }
+[data-parallax] { will-change: transform; }
 @keyframes ray-glide { from { transform: translate3d(0, 3px, 0) rotate(.4deg); } to { transform: translate3d(0, -3px, 0) rotate(-.4deg); } }
 @media (max-width: 359px) {
   /* iPhone SE in Safari: both phone-bar buttons stay on one line */
@@ -1133,6 +1143,26 @@ html.menu-open { overflow: hidden; }
   .aud .faq-item p { font-size: 16px; }
 }
 
+/* R07: the ray on the audit's first screen (judge A fix 4), the same asset and sweep as home, beam toward the form;
+   small on phones so the form still starts on the first screens. Seth's person block sits above the form. */
+.aud-ray { width: min(100%, 520px); margin: 0 0 clamp(8px, 1.4vw, 24px) -2%; pointer-events: none; }
+.aud-ray .ray { width: 100%; height: auto; }
+.aud-request .person { margin: 22px 0 6px; }
+.aud-request .person-line { font-size: 17px; }
+/* One marker per step, a solid square on its rule (judge A fix 2: the rule ran through it and read as a broken icon) */
+.aud-steps > li::before { z-index: 1; width: 8px; height: 8px; top: -3.5px; }
+@media (max-width: 760px) {
+  .aud-ray { width: 62%; margin: -12px 0 -18px auto; }
+}
+/* Judge A (r06) fixes 7 to 9: the plans' shared note runs under both columns; the partners line on the body rhythm;
+   the open answer under its question's text, and a bare glyph for the fold */
+.aud-monthly { margin-top: 24px; font-size: 15px; line-height: 1.55; color: var(--cap); }
+.aud-partners { line-height: 24px; align-self: start; }
+.aud .faq-item p { max-width: 680px; }
+.aud .faq-item summary::after { width: 16px; height: 16px; box-shadow: none; color: rgba(238, 243, 251, .6); transition: color var(--dur-ui) var(--ease-standard); }
+@media (hover: hover) and (pointer: fine) { .aud .faq-item summary:hover::after { color: var(--ink); } }
+.aud-partners .link { display: inline; min-height: 0; }
+
 /* The shared price line is one long sentence in a guide's column; let it wrap like prose */
 .prose .price-line.num { white-space: normal; }
 /* Guides: price tables. The band table stacks into one block per band on phones. */
@@ -1146,6 +1176,211 @@ html.menu-open { overflow: hidden; }
   .guide-bands td { margin-top: 12px; }
   .guide-bands td::before { content: attr(data-label); display: block; color: var(--ink); font-weight: 500; }
 }
+
+/* home cut list (cuts/CUT-LIST.md, Seth decides each one). Folds open on tap and add no words: the summary is
+   the block's own heading or first sentence, and the marker is a bare glyph. Nothing here applies to the uncut page. */
+.fa .g-fold > summary { display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; min-height: var(--tap); cursor: pointer; list-style: none; -webkit-tap-highlight-color: transparent; }
+.fa .g-fold > summary::-webkit-details-marker { display: none; }
+.fa .g-fold > summary::after { content: "+"; flex: none; width: 16px; font: 400 22px/1 var(--sans); text-align: center; color: var(--mute); transition: color .2s; }
+.fa .g-fold[open] > summary::after { content: "\2212"; }
+.fa .g-fold > summary:focus-visible { outline: 2px solid var(--beam); outline-offset: 4px; }
+@media (hover: hover) and (pointer: fine) { .fa .g-fold > summary:hover::after { color: var(--ink); } }
+.fa .g-aside .g-fold > summary { min-height: 0; }
+.fa .g-aside .g-fold > summary::after { margin-top: .1em; }
+.fa .g-aside .g-fold > p { margin-top: 8px; }
+.fa .g-aside .g-fold + p { margin-top: 14px; }
+.fa .g-steps .g-fold > summary::after { margin-top: .2em; }
+.fa .g-steps .g-fold:not([open]) > summary { min-height: 0; }
+.fa .g-note.g-fold > summary::after { font-size: 18px; }
+.fa .g-note.g-fold > p { margin-top: 8px; }
+
+/* With the other two cases cut, the one left reads as a pair: the two counts on the left, its words on the right */
+@media (min-width: 1024px) {
+  .g-cases:has(> .g-case:nth-child(2):last-child) { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .g-cases:has(> .g-case:only-child) { grid-template-columns: minmax(0, 1fr); grid-template-rows: none; }
+  .g-case:only-child { grid-row: auto; grid-template-columns: repeat(12, minmax(0, 1fr)); grid-template-rows: auto auto 1fr; column-gap: var(--gap); padding-right: 0; }
+  .g-case:only-child > .g-split { grid-column: 1 / span 5; grid-row: 1 / span 3; align-self: start; }
+  .g-case:only-child > :not(.g-split) { grid-column: 7 / -1; }
+  .g-case:only-child > .g-claim { margin-top: 0; }
+  /* One essay left (if Seth cuts only one): it takes the width the pair used */
+  .g-essay:only-of-type { grid-column: 1 / -1; }
+  .g-essay:only-of-type h2 { max-width: 22ch; }
+}
+
+/* R07 (Seth, Nov 5): the person, the cut list's picks, the real report as the preview, and the
+   motion package. Built into ../../fr.css by tools/build_site.py; edit here, never there. Every effect here has a
+   still, finished state under reduced motion and without JS. */
+
+/* ---------- The count: tabular figures in a box of the final width (site.js), so counting never moves "of 592" ---------- */
+.g-count { display: inline-block; font-weight: inherit; text-align: right; font-variant-numeric: tabular-nums; }
+
+/* ---------- The two other audits, folded into one compact strip: each case's mark, its two numbers, its caption ---------- */
+.g-more { margin-top: clamp(40px, 4vw, 64px); display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); border-top: 1px solid var(--cell); }
+.g-more-i { display: grid; grid-template-rows: auto 1fr auto; align-content: start; gap: 14px; padding: 24px var(--gap) 0 0; color: inherit; text-decoration: none; }
+.g-more-i + .g-more-i { padding: 24px 0 0 var(--gap); border-left: 1px solid var(--cell); }
+.g-more .g-mk { gap: 8px; }
+.g-more .g-mk .fa-tally-16 { width: 160px; } .g-more .g-mk .fa-tally-22 { width: 220px; } .g-more .g-mk .fa-tally-20 { width: 200px; }
+.g-more .g-claim { margin: 0; font: 500 clamp(17px, 1.3vw, 20px)/1.35 var(--sans); letter-spacing: -0.01em; color: var(--ink); max-width: 40ch; }
+.g-more .g-src { margin: 0; padding: 10px 0 0; }
+a.g-more-i .g-claim { text-decoration: underline; text-decoration-color: var(--edge); text-decoration-thickness: 1px; text-underline-offset: 5px; }
+a.g-more-i:focus-visible { outline: 2px solid var(--beam); outline-offset: 4px; }
+@media (hover: hover) and (pointer: fine) { a.g-more-i:hover .g-claim { text-decoration-color: var(--ink); } }
+@media (max-width: 760px) {
+  .g-more { grid-template-columns: minmax(0, 1fr); margin-top: 36px; }
+  .g-more-i, .g-more-i + .g-more-i { padding: 18px 0 20px; border-left: 0; }
+  .g-more-i + .g-more-i { border-top: 1px solid var(--cell); }
+  .g-more .g-claim { font-size: 17px; }
+}
+
+/* ---------- The person you'll talk to: Seth, just above the form ---------- */
+.person { display: grid; grid-template-columns: 76px minmax(0, 1fr); align-items: center; gap: 18px; margin: 0 0 28px; padding: 0 0 24px; border-bottom: 1px solid var(--cell); }
+.person-photo { width: 76px; height: 95px; object-fit: cover; object-position: 50% 20%; background: var(--rim); }
+.person-line { font: 500 clamp(18px, 1.45vw, 22px)/1.35 var(--sans); letter-spacing: -0.012em; color: var(--ink); max-width: 34ch; }
+.person-name { margin-top: 10px; font: 400 14px/1.3 var(--mono); color: var(--mute); }
+@media (max-width: 760px) {
+  .person { grid-template-columns: 64px minmax(0, 1fr); gap: 14px; margin-bottom: 20px; padding-bottom: 20px; }
+  .person-photo { width: 64px; height: 80px; }
+  .person-line { font-size: 17px; }
+}
+
+/* ---------- Threads between sections (site.js draws them by scroll; build_site.render_weave) ----------
+   In the section's top padding, under its rule: three strands from one node at the margin to the rule further along. */
+.weave { position: absolute; left: var(--x); right: var(--x); top: 0; height: calc(var(--sec) * .62); pointer-events: none; }
+.weave svg { display: block; width: 100%; height: 100%; overflow: visible; }
+.weave path { fill: none; stroke: var(--lit); stroke-width: 1.1; vector-effect: non-scaling-stroke; stroke-dasharray: 1; opacity: calc(.62 - var(--k) * .16); }
+.weave i { position: absolute; top: -4px; width: 7px; height: 7px; margin-left: -3.5px; background: var(--lit); transition: opacity .3s var(--ease-standard); }
+.weave .weave-o { left: 0; margin-left: 0; width: 9px; height: 9px; top: -5px; }
+@media (max-width: 760px) { .weave { height: calc(var(--sec) * .55); } }
+
+/* ---------- The live preview, on the real report's data (site.js) ---------- */
+.pv-top { display: grid; gap: 14px; padding: 18px clamp(16px, 1.6vw, 24px) 16px; border-bottom: 1px solid var(--rule-dark); }
+.pv-label { font: 500 14px/1.3 var(--sans); color: var(--ink); }
+.pv-co { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 16px; padding: 10px 12px 10px 14px; box-shadow: inset 3px 0 0 var(--orange); background: rgba(232, 116, 59, .05); }
+.pv-co-h { font: 500 15px/1.3 var(--sans); color: var(--orange); }
+.pv-co-v { display: inline-flex; align-items: center; gap: 12px; }
+.pv-co-v em { font: 400 14px/1 var(--mono); font-style: normal; color: var(--orange); }
+.pv-read { display: flex; flex-wrap: wrap; gap: 4px 18px; font-size: 14px; line-height: 1.4; color: var(--soft); }
+.pv-read b { font-weight: 500; color: var(--ink); }
+.pv-read i { font-style: normal; }
+.pv-read i::before { content: ""; display: inline-block; width: 18px; margin-right: 8px; vertical-align: middle; border-top: 1px solid var(--lit); }
+.pv-grid .pv-mk { font: 400 14px/1.2 var(--mono); color: var(--soft); }
+.pv-grid .pv-mk-h, .pv-grid .pv-h { min-height: 44px; font: 500 14px/1.2 var(--sans); color: var(--ink); border-bottom-color: var(--rule-dark); }
+.pv-grid .pv-mk-h { display: flex; align-items: center; padding: 0 10px 0 clamp(16px, 1.6vw, 24px); }
+.pv-grid { grid-template-columns: minmax(0, 1.25fr) repeat(4, minmax(0, 1fr)); }
+.pv-cell { min-height: 44px; padding: 0 8px; color: var(--ink); }
+/* The matrix code, the report's own: Recommended a solid lit chip, Shortlisted a lit outline, Mentioned a dotted outline,
+   Named negatively a muted outline with a wavy underline, Not named the plain muted words */
+.chip { display: inline-flex; align-items: center; max-width: 100%; min-height: 28px; padding: 0 8px; font: 400 14px/1.1 var(--sans); white-space: nowrap; color: var(--ink); }
+.chip.o-rec { background: var(--lit); color: var(--black); font-weight: 500; }
+.chip.o-sho { box-shadow: inset 0 0 0 1px var(--lit); }
+.chip.o-men { outline: 1px dotted var(--soft); outline-offset: -1px; }
+.chip.o-neg { box-shadow: inset 0 0 0 1px var(--mute); text-decoration: underline wavy 1px var(--soft); text-underline-offset: 4px; }
+.chip.o-not { padding-left: 0; color: var(--mute); }
+.chip.chip-co { color: var(--orange); box-shadow: inset 0 0 0 1px var(--orange); padding-left: 8px; background: none; }
+.pv-cell[aria-pressed="true"] { background: var(--rim); box-shadow: inset 0 0 0 1px var(--lit); }
+@media (hover: hover) and (pointer: fine) { .pv-cell:hover { background: var(--rim); } }
+/* The first arrival: every cell's frame is there from the first frame, and the outcomes fill in row by row, 40 ms a row
+   and 22 ms a column, each over 360 ms (about 1 s for the whole matrix). Only below the screen are they hidden first. */
+@media (prefers-reduced-motion: no-preference) {
+  .pv-grid.is-pre .chip, .pv-grid.is-pre .pv-mk[style] { opacity: 0; }
+  .pv-grid.is-filling .chip, .pv-grid.is-filling .pv-mk[style] { animation: pv-fill .36s var(--ease-surface) both; animation-delay: calc(var(--r, 0) * 40ms + var(--c, 0) * 22ms); }
+}
+@keyframes pv-fill { from { opacity: 0; transform: translateY(4px); } }
+/* The record of one conversation, as the report's drawer shows it */
+.pv-nav { justify-content: flex-start; }
+.pv-step { width: auto; padding: 0 16px; font: 500 14px/1 var(--sans); }
+.pv-where { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 12px; flex: 1; min-width: 0; padding: 12px 12px 12px 0; }
+.pv-where .pv-open { font: 500 17px/1.25 var(--sans); }
+.pv-where em { font-style: normal; font-size: 15px; color: var(--soft); }
+.pv-slide { padding: 20px 0 8px; }
+.pv .rec-sum { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: 1px solid var(--hard); border-bottom: 1px solid var(--line); }
+.pv .rec-sum > div { display: grid; align-content: start; gap: 8px; padding: 12px 12px 14px; border-left: 1px solid var(--line); }
+.pv .rec-sum > div:first-child { padding-left: 0; border-left: 0; }
+.pv .rec-sum dt { font-size: 14px; line-height: 1.3; color: var(--mute); }
+.pv .rec-sum dd { margin: 0; font: 500 16px/1.2 var(--sans); }
+.pv .rec-sum .chip { justify-self: start; }
+.pv .turns { list-style: none; padding: 0; margin-top: 24px; }
+.pv .turn { position: relative; padding: 0 0 24px 30px; }
+.pv .turn::before { content: ""; position: absolute; left: 5px; top: 8px; bottom: -8px; border-left: 1px solid var(--line); }
+.pv .turn:last-child { padding-bottom: 8px; }
+.pv .turn:last-child::before { display: none; }
+.pv .turn::after { content: ""; position: absolute; left: 0; top: 3px; width: 11px; height: 11px; box-sizing: border-box; border: 1.5px solid var(--mute); background: var(--raised); border-radius: 50%; }
+.pv .turn.is-lit::before { border-left-color: var(--lit); }
+.pv .turn.is-lit::after { border-color: var(--lit); }
+.pv .turn.is-first::after { background: var(--lit); }
+.pv .turn-h { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; font: 500 15px/1.3 var(--sans); }
+.pv .turn-h em { font: 400 14px/1 var(--mono); font-style: normal; color: var(--mute); }
+.pv .named { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+.pv .named li { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; }
+.pv .named .who { font-style: normal; color: var(--soft); }
+.pv .named .others { min-height: 28px; color: var(--mute); }
+.pv .none { margin-top: 10px; font-size: 14px; color: var(--mute); }
+.pv .cites { margin-top: 12px; }
+.pv .stack { display: flex; gap: 2px; height: 8px; }
+.pv .sk { display: block; min-width: 2px; }
+.pv .sk-rival, .pv .sw-rival { background: #EEF3FB; }
+.pv .sk-publisher, .pv .sw-publisher { background: #9AABC8; }
+.pv .sk-forum, .pv .sw-forum { background: #5C6E92; }
+.pv .sk-directory, .pv .sw-directory { background: #34446A; }
+.pv .sk-other, .pv .sw-other { background: transparent; box-shadow: inset 0 0 0 1px #5C6E92; }
+.pv .sk-own { background: var(--orange); }
+.pv .cites ul { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 4px 16px; margin-top: 8px; font-size: 14px; color: var(--soft); }
+.pv .cites li { display: inline-flex; align-items: center; gap: 8px; }
+.pv .cites li em { font-family: var(--mono); font-style: normal; color: var(--ink); }
+.pv .sw { flex: none; width: 10px; height: 10px; }
+/* The underglow: the pool of light under the panel breathes, 8 s each way, between two low levels */
+@media (prefers-reduced-motion: no-preference) { .pv::after { animation: pv-glow 8s cubic-bezier(.45, 0, .55, 1) infinite alternate; } }
+@keyframes pv-glow { from { opacity: .55; } to { opacity: 1; } }
+@media (max-width: 1180px) and (min-width: 761px) { .pv-index-in { position: static; } }
+@media (max-width: 760px) {
+  .pv-top { padding: 14px; gap: 12px; }
+  .pv-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr); }
+  .pv-grid .pv-mk-h { display: none; }
+  .pv-grid .pv-mk { padding-left: 14px; font-size: 13px; }
+  .pv-cell, .pv-grid .pv-mk { min-height: 44px; }
+  .pv-cell { padding: 0 14px; }
+  .pv-where { padding: 10px 8px 10px 0; }
+  .pv-step { padding: 0 10px; }
+  .pv-pos { min-width: 0; padding: 0 6px; }
+  .pv-where .pv-open { font-size: 16px; }
+  .pv-slide { padding: 16px 0 6px; }
+  .pv .rec-sum { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .pv .rec-sum > div:nth-child(3) { grid-column: 1 / -1; padding-left: 0; border-left: 0; border-top: 1px solid var(--line); }
+}
+
+/* ---------- The essays fold to their first sentence (cut list 12 and 13); the 1.7x line stays in full ---------- */
+.g-essay .g-fold > summary { margin-top: clamp(24px, 2.6vw, 40px); font-size: 18px; line-height: 1.6; color: var(--paper-soft); }
+.g-essay .g-fold > p { margin-top: 10px; }
+@media (max-width: 760px) { .g-essay .g-fold > summary { font-size: 17px; } }
+/* The take-apart's intro folds to its first sentence (cut list 8) */
+.g-look .g-aside.g-fold > summary { color: var(--soft); }
+/* The method's steps fold to their headings (cut list 17); each heading is a 44px tap target on phones */
+.g-steps .g-fold > p { margin-top: 12px; }
+@media (max-width: 760px) { .fa .g-steps .g-fold > summary, .fa .g-steps .g-fold:not([open]) > summary { min-height: var(--tap); align-items: center; } }
+
+/* ---------- Judge A (r06) fixes 2 and 3: the three anchor sections keep the big headings; the rest step down, and
+   the proof and plans bands sit on the deeper ground so proof, demo, plans and the letter separate ---------- */
+.g-paths .g-head h2, .g-method .g-head h2 { font-size: clamp(36px, 3.6vw, 60px); letter-spacing: -0.045em; }
+.g-essay h2 { font-size: clamp(32px, 3.2vw, 52px); }
+.g-proof, .g-paths { background: var(--deep); }
+@media (max-width: 760px) {
+  .g-paths .g-head h2, .g-method .g-head h2, .g-essay h2 { font-size: clamp(30px, 8.6vw, 38px); }
+}
+
+/* ---------- One scroll for a busy VP (R07 item 6), phones: under the request's heading come the person they'll talk to
+   and the form, then what the audit includes; the words are the same, only their order on a small screen ---------- */
+@media (max-width: 760px) {
+  .g-request h2 { order: 1; }
+  .g-request .g-form { order: 2; margin-top: 28px; }
+  .g-request .g-intro { order: 3; margin-top: 36px; }
+  .g-request .g-qualifier { order: 4; }
+  .g-request .g-book { order: 5; }
+  .g-more .g-mk .fa-tally-16 { width: 128px; } .g-more .g-mk .fa-tally-22 { width: 176px; } .g-more .g-mk .fa-tally-20 { width: 160px; }
+  .g-more-i { gap: 10px; }
+  .g-more-i, .g-more-i + .g-more-i { padding: 14px 0 16px; }
+}
+/* The form's own top rule closes the person block, so the block draws none of its own */
+.g-form .person, .aud-request .person { border-bottom: 0; padding-bottom: 0; }
 
 /* how-it-works: one sample situation followed from the buyer's three turns to the rerun. The hero sets the
    turns beside the title; below it, each step's copy sits in columns one and two, and its exhibit lies on a

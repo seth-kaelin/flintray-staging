@@ -301,49 +301,52 @@ const FR = (() => {
   show(0);
 })();
 
-// Home, r04. The live preview: the sample report's matrix as a working miniature beside its conversations, one at a
-// time, taken apart. The record is a native sideways swipe (scroll-snap, one conversation per snap, data-carousel):
-// nothing ever advances on its own and touching it starts no timer. Tapping a tile goes to that conversation; the
-// position shows as "24 of 60"; on laptops the prev/next buttons and the arrow keys step through. Each situation line
-// opens that conversation in full in the sample report, and each buyer turn still unfolds on a tap.
-// The matrix lays out from the inline data at once; the 60 conversations load from assets/sample-preview.json when
-// the preview nears the screen, or on the first tap. Exact sample text only (build_site.write_preview).
-// No JS: the record shows the showcase conversation and the matrix is a still image of itself.
+// R07. The live preview is the real report, the demo at sample-report.html: its matrix of 60 conversations as a
+// working miniature, Rival A's outcome in words in every cell, the company's one outcome above it, and one
+// conversation's record beside it, built from the same records (assets/report-records.js), so every word is the
+// approved report's. The record is a native sideways swipe (scroll-snap, one conversation per snap, data-carousel):
+// nothing advances on its own and touching it starts no timer. Tapping a cell goes to that conversation, the position
+// shows as "8 of 60", and on laptops the steps and the arrow keys move through. Each record's title opens that
+// conversation in the report. Phones keep the record closed until a cell is tapped (a wordless cue rings one tile),
+// and it opens under that row. The first time the matrix comes up the screen it fills in, row by row (pages CSS,
+// .is-filling); already on screen, or under reduced motion, it is simply there. No JS: a still image of the preview.
 (() => {
   const root = document.querySelector("[data-preview]");
   const index = root && root.querySelector("[data-pv-index]");
   const inline = index && index.querySelector("[data-pv-matrix]");
-  const first = root && root.querySelector("[data-takeapart]");
-  if (!inline || !first) return;
+  const pane = root && root.querySelector(".pv-convo");
+  if (!inline || !pane) return;
+  const V = document.currentScript ? new URL(document.currentScript.src).search : "";
   const M = JSON.parse(inline.textContent);
-  // One outcome code on every page (r06/TOKENS.md): each cell carries its own outcome's class
-  const STATE = { recommended: "recommended", shortlisted: "shortlisted", mentioned: "mentioned", cautioned: "cautioned", none: "none" };
   const esc = (t) => String(t).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
   const reduced = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
-  // Phones (pages.css): one assistant's column, and the record opens under the tapped row
   const phone = matchMedia("(max-width: 760px)");
-  const order = M.scenarios.flatMap((s) => M.engines.map(([key]) => ({ sid: s.id, engine: key })));
-  const total = order.length;
-  const at = (sid, engine) => order.findIndex((o) => o.sid === sid && o.engine === engine);
+  const E = M.engines.length, total = M.n, start = M.show;
+  const situation = (i) => `Situation ${String(Math.floor(i / E) + 1).padStart(2, "0")}`;
+  const engine = (i) => M.engines[i % E][1];
+  const chip = ([word, code], extra = "") => `<b class="chip o-${code}${extra}">${esc(word)}</b>`;
 
-  // The matrix
+  // Above the matrix: the label, the company's one outcome in all 60, and the key (the report's own words)
+  const top = document.createElement("div");
+  top.className = "pv-top";
+  top.innerHTML = `<p class="pv-label">Real data, anonymized.</p>
+    <div class="pv-co"><p class="pv-co-h">The company, in all ${total}</p><p class="pv-co-v">${chip([M.co[0], M.co[1]], " chip-co")}<em>${M.co[2]} of ${total}</em></p></div>
+    <p class="pv-read"><b>Each cell is one conversation</b><i>Rival A’s outcome</i></p>`;
+  // The matrix: the four assistants across, the 15 situations down
   const grid = document.createElement("div");
   grid.className = "pv-grid";
   grid.setAttribute("role", "group");
-  grid.setAttribute("aria-label", `${M.subject}, ${M.engines.map((e) => e[1]).join(", ")}`);
-  let html = `<div class="pv-mk" aria-hidden="true"></div>` + M.engines.map(([, n]) => `<div class="pv-h">${esc(n)}</div>`).join("");
-  for (const s of M.scenarios) {
-    // r06: each row names its situation in words (editorial's index), not its market
-    html += `<div class="pv-mk" title="${esc(s.title)}"><span>${esc(s.title)}</span></div>`;
-    html += s.roles.map((role, i) => {
-      const [key, name] = M.engines[i];
-      return `<button type="button" class="pv-cell is-${STATE[role]}" data-sid="${s.id}" data-engine="${key}" data-col="${i + 1}" aria-pressed="false"
-        aria-label="${esc(`${name}, ${s.title}, ${s.market}: ${M.subject} ${M.stamps[role]}`)}"><span class="pv-w">${esc(M.stamps[role])}</span></button>`;
-    }).join("");
+  grid.setAttribute("aria-label", "The conversation matrix");
+  let html = `<p class="pv-mk pv-mk-h">Situation</p>` + M.engines.map(([, n]) => `<p class="pv-h">${esc(n)}</p>`).join("");
+  for (let s = 0; s < M.sit; s++) {
+    html += `<p class="pv-mk" style="--r:${s}">${situation(s * E)}</p>`;
+    for (let c = 0; c < E; c++) {
+      const i = s * E + c, [word, code] = M.cells[i];
+      html += `<button type="button" class="pv-cell" data-i="${i}" data-col="${c + 1}" aria-pressed="false" aria-label="${esc(word)}, ${situation(i)}, ${esc(engine(i))}" style="--r:${s};--c:${c}">${chip([word, code])}</button>`;
+    }
   }
   grid.innerHTML = html;
-  // Phones (pages.css): one assistant's column at a time, chosen by these tabs, so every cell reads its outcome in
-  // words at 14px. Wider screens hide the tabs and show all four columns.
+  // Phones (pages CSS): one assistant's column at a time, chosen by these tabs
   const tabs = document.createElement("div");
   tabs.className = "pv-tabs";
   tabs.setAttribute("role", "group");
@@ -353,149 +356,114 @@ const FR = (() => {
     tabs.querySelectorAll("button").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.col === String(n))));
   };
   tabs.addEventListener("click", (ev) => { const b = ev.target.closest("button"); if (b) showCol(Number(b.dataset.col)); });
-  showCol(Math.max(1, M.engines.findIndex((e) => e[0] === M.show[1]) + 1));
+  showCol(start % E + 1);
   const box = document.createElement("div");
   box.className = "pv-index-in";
-  box.append(tabs, grid);
+  box.append(top, tabs, grid);
   index.replaceChildren(box);
   const cells = [...grid.querySelectorAll(".pv-cell")];
 
-  // The record: a track of 60 slides, the server-rendered showcase conversation in its own place
-  const holder = first.closest(".takeapart-pin") || first;
-  const pane = holder.parentElement;
-  const template = first.cloneNode(true);
-  template.querySelectorAll(".fold-toggle").forEach((b) => b.remove());
-  template.querySelectorAll(".is-folded").forEach((r) => r.classList.remove("is-folded"));
+  // One conversation's record, as the report's drawer shows it (sample.js)
+  const turn = (t, n, rec) => {
+    const lit = rec.ft && n >= rec.ft, first = rec.ft === n;
+    const named = t.n.map(([who, word, code]) => `<li><i class="who">${esc(who)}</i>${chip([word, code])}</li>`).join("")
+      + (t.o ? `<li class="others">${t.o === 1 ? "1 other rival" : `${t.o} other rivals`}</li>` : "");
+    const cites = t.l ? `<div class="cites"><div class="stack" aria-hidden="true">${t.lt.map(([, c, k]) => `<i class="sk sk-${k}" style="flex-basis:${(100 * c / t.l).toFixed(2)}%"></i>`).join("")}</div>
+      <ul>${t.lt.map(([label, c, k]) => `<li><i class="sw sw-${k}" aria-hidden="true"></i>${esc(label)} <em>${c}</em></li>`).join("")}</ul></div>` : "";
+    return `<li class="turn${lit ? " is-lit" : ""}${first ? " is-first" : ""}"><p class="turn-h">Turn ${n}<em>${t.l === 1 ? "1 cited link" : `${t.l} cited links`}</em></p>
+      ${named ? `<ul class="named">${named}</ul>` : `<p class="none">No company named</p>`}${cites}</li>`;
+  };
+  const record = (rec) => `<dl class="rec-sum">
+      <div><dt>The company</dt><dd>${chip(rec.co, " chip-co")}</dd></div>
+      <div><dt>Top pick</dt><dd>${rec.p ? esc(rec.p) : "None"}</dd></div>
+      <div><dt>Top pick first named</dt><dd>${rec.ft ? `Turn ${rec.ft}` : "None"}</dd></div>
+    </dl><ol class="turns">${rec.t.map((t, k) => turn(t, k + 1, rec)).join("")}</ol>`;
+
   const nav = document.createElement("div");
   nav.className = "pv-nav";
-  nav.innerHTML = `<button type="button" class="pv-step" data-step="-1" aria-label="Previous">‹</button><p class="pv-pos" aria-live="polite"></p><button type="button" class="pv-step" data-step="1" aria-label="Next">›</button>`;
+  nav.innerHTML = `<p class="pv-where"><a class="pv-open" href="sample-report.html"></a><em></em></p><button type="button" class="pv-step" data-step="-1">Previous</button><p class="pv-pos" aria-live="polite"></p><button type="button" class="pv-step" data-step="1">Next</button>`;
   const track = document.createElement("div");
   track.className = "pv-track";
   track.dataset.carousel = "";
   track.tabIndex = 0;
   track.setAttribute("role", "region");
-  track.setAttribute("aria-label", M.subject);
-  const slides = order.map(() => { const d = document.createElement("div"); d.className = "pv-slide"; return d; });
-  const start = Math.max(0, at(M.show[0], M.show[1]));
-  slides[start].append(holder);
-  slides.forEach((d, i) => { if (i === start) track.append(d); });
+  const slides = Array.from({ length: total }, () => { const d = document.createElement("div"); d.className = "pv-slide"; return d; });
+  slides[start].innerHTML = record(M.first);
+  track.append(slides[start]);
   pane.replaceChildren(nav, track);
   root.classList.add("is-live");
 
-  const fold = (convo) => {
-    for (const row of convo.querySelectorAll(".convo-row.is-fold")) {
-      if (row.querySelector(".fold-toggle")) continue;
-      const button = document.createElement("button");
-      button.type = "button";
-      button.className = "fold-toggle";
-      button.setAttribute("aria-expanded", "false");
-      const name = row.querySelector(".callout b");
-      if (name) button.setAttribute("aria-label", name.textContent);
-      button.addEventListener("click", () => button.setAttribute("aria-expanded", String(row.classList.toggle("is-folded") === false)));
-      row.classList.add("is-folded");
-      row.append(button);
-    }
-  };
-  // The situation line opens the whole conversation in the sample report (its drawer)
-  const linkSituation = (convo, sid, engine) => {
-    const line = convo.querySelector(".convo-row .meta-line");
-    if (!line || line.querySelector("a")) return;
-    const a = document.createElement("a");
-    a.className = "pv-open";
-    a.href = `sample-report.html#conversation-${sid}-${engine}`;
-    a.append(...line.childNodes);
-    line.append(a);
-  };
-  linkSituation(first, M.show[0], M.show[1]);
-
-  let data = null, loading = null, built = false;
-  const fill = (convo, sid, engine) => {
-    const s = data.scenarios.find((x) => x.id === sid), c = s && s.c[engine];
-    if (!c) return;
-    const rows = [...convo.querySelectorAll(".convo-row")];
-    const part = (i, sel) => rows[i] && rows[i].querySelector(sel);
-    const name = M.engines.find((e) => e[0] === engine)[1];
-    part(0, ".meta-line").textContent = `${s.title}, ${s.market}`;
-    [1, 2, 3].forEach((i) => { const r = part(i, ".record"); if (r) r.textContent = c.prompts[i - 1] || ""; });
-    part(4, ".meta-line").textContent = `${name}, ${c.model || data.notShown}`;
-    part(5, ".record").innerHTML = c.lines.length ? c.lines.map((l) => {
-      let t = esc(l.text);
-      l.names.forEach((n) => (t = t.replace(esc(n), `<b>${esc(n)}</b>`)));
-      return `<p data-quote>${t}</p>`;
-    }).join("") : `<p data-quote>This engine named no company in its third answer.</p>`;
-    part(6, ".order").innerHTML = c.order.concat([[data.subject, c.role]]).map(([n, role]) =>
-      `<li${n === data.subject ? ' class="is-you"' : ""}><span>${esc(n)}</span><span class="stamp stamp-${role}">${esc(data.stamps[role])}</span></li>`).join("");
-    part(7, ".srcs").innerHTML = c.sources.length
-      ? c.sources.map(([d, k], i) => `<li data-src="${i + 1}"><span class="n">[${i + 1}]</span> ${esc(d)}, ${esc(k)}</li>`).join("")
-      : `<li>The app showed no sources for this answer.</li>`;
-  };
-  // Every conversation, built once the data is in: each slide a copy of the record in the same shape
+  let recs = null, loading = null, built = false;
+  const fill = (i) => { if (recs && slides[i] && !slides[i].childElementCount) slides[i].innerHTML = record(recs[i]); };
+  // Every slide in place once the records are in; each is filled when it comes near
   const build = () => {
-    if (built || !data) return;
+    if (built || !recs) return;
     built = true;
-    const keep = track.scrollLeft;
     track.replaceChildren(...slides);
-    order.forEach(({ sid, engine }, i) => {
-      if (i === start) return;
-      const convo = template.cloneNode(true);
-      fill(convo, sid, engine);
-      linkSituation(convo, sid, engine);
-      fold(convo);
-      slides[i].append(convo);
-    });
-    track.scrollLeft = keep + start * track.clientWidth;
-    mark(start);
+    track.scrollLeft = start * track.clientWidth;
+    mark(current);
   };
-  const load = () => loading || (loading = fetch("assets/sample-preview.json").then((r) => r.json()).then((d) => { data = d; build(); }).catch(() => { loading = null; }));
+  const load = () => loading || (loading = new Promise((done, fail) => {
+    if (window.RR_RECORDS) return done();
+    const s = document.createElement("script");
+    s.src = `assets/report-records.js${V}`;
+    s.onload = done;
+    s.onerror = fail;
+    document.head.append(s);
+  }).then(() => { recs = window.RR_RECORDS; build(); }).catch(() => { loading = null; }));
   if ("IntersectionObserver" in window) {
     const io = new IntersectionObserver((es) => { if (es.some((e) => e.isIntersecting)) { io.disconnect(); load(); } }, { rootMargin: "800px 0px" });
     io.observe(root);
   }
 
-  // r10.1: the track is as tall as the conversation showing, at every width, so the quote, the order and the sources
-  // read on the page with no inner scroll. It follows the conversation as it changes (a swipe, a step, a turn unfolding).
+  // The track is as tall as the record showing, at every width, so it reads on the page with no inner scroll
   const fit = () => {
-    const convo = slides[current] && slides[current].firstElementChild;
-    if (convo && convo.offsetHeight) track.style.height = `${convo.offsetHeight}px`;
+    const shown = slides[current];
+    if (shown && shown.offsetHeight) track.style.height = `${shown.scrollHeight}px`;
   };
   const sized = "ResizeObserver" in window ? new ResizeObserver(() => fit()) : null;
   if (sized) slides.forEach((d) => sized.observe(d));
 
-  // Where the track is: the tile pressed, the count, the steps at either end. r10.2: on phones a tile is pressed only
-  // while the record is open under it, so a closed matrix never rings a tile that shows nothing
+  // Where the track is: the tile pressed, the title and its link, the count, the steps at either end. On phones a tile
+  // is pressed only while the record is open under it.
   let current = start;
   const pos = nav.querySelector(".pv-pos");
+  const where = nav.querySelector(".pv-open");
+  const eng = nav.querySelector(".pv-where em");
   const steps = [...nav.querySelectorAll(".pv-step")];
-  const shown = () => !phone.matches || root.classList.contains("is-open");
+  const open = () => !phone.matches || root.classList.contains("is-open");
   const mark = (i) => {
     current = i;
-    const o = order[i];
-    cells.forEach((b) => b.setAttribute("aria-pressed", String(shown() && b.dataset.sid === o.sid && b.dataset.engine === o.engine)));
+    [i - 1, i, i + 1].forEach(fill);
+    cells.forEach((b) => b.setAttribute("aria-pressed", String(open() && Number(b.dataset.i) === i)));
+    where.textContent = situation(i);
+    where.href = `sample-report.html#c${i}`;
+    eng.textContent = engine(i);
+    track.setAttribute("aria-label", `${situation(i)}, ${engine(i)}`);
     pos.textContent = `${i + 1} of ${total}`;
-    if (getComputedStyle(tabs).display !== "none") showCol(M.engines.findIndex((e) => e[0] === o.engine) + 1);
+    if (getComputedStyle(tabs).display !== "none") showCol(i % E + 1);
     steps[0].disabled = !built || i === 0;
     steps[1].disabled = !built || i === total - 1;
     fit();
   };
   mark(start);
-  // r10.1, phones: the record waits for a tap, so every tile carries a disclosure mark (pages.css), and the tile of the
-  // conversation the record holds rings once as it comes up the screen. Reduced motion: the marks only.
-  const pressed = cells.find((b) => b.dataset.sid === M.show[0] && b.dataset.engine === M.show[1]);
-  if (pressed && phone.matches && "IntersectionObserver" in window && !reduced()) {
+
+  // Phones: the wordless tap cue rings the tile of the record it opens on, once, as it comes up the screen
+  const cued = cells[start];
+  if (cued && phone.matches && "IntersectionObserver" in window && !reduced()) {
     const cue = new IntersectionObserver((es) => {
       if (!es.some((e) => e.isIntersecting)) return;
       cue.disconnect();
-      pressed.classList.add("is-cued");
+      cued.classList.add("is-cued");
     }, { rootMargin: "0px 0px -35% 0px" });
-    cue.observe(pressed);
+    cue.observe(cued);
   }
-  // r10.2, phones: the record opens in place, straight under the tapped row, so the reader keeps their place in the
-  // matrix. It moves by moving rows past it, never by moving the record itself, so its sideways scroll survives, and
-  // the page scrolls by the shift so the element in hand (the tapped tile, or the record after a swipe) stays put.
-  const window_ = root.querySelector(".pv-window");
-  const rowEnd = (sid) => cells.filter((b) => b.dataset.sid === sid).pop();
-  const place = (sid, hold) => {
-    const end = rowEnd(sid);
+  // Phones: the record opens in place, straight under the tapped row. It moves by moving rows past it, never by moving
+  // the record itself, so its sideways scroll survives, and the page scrolls by the shift so the element in hand stays put.
+  const win = root.querySelector(".pv-window");
+  const rowEnd = (i) => cells[Math.floor(i / E) * E + E - 1];
+  const place = (i, hold) => {
+    const end = rowEnd(i);
     if (!end || pane.previousElementSibling === end) return false;
     const y = hold.getBoundingClientRect().top;
     if (pane.parentElement !== grid) end.after(pane);
@@ -504,25 +472,24 @@ const FR = (() => {
       if (to > from) pane.before(...kids.slice(from + 1, to + 1));
       else pane.after(...kids.slice(to + 1, from));
     }
-    // At once, past the page's smooth scrolling (base.css), so the element in hand never drifts
-    const html = document.documentElement.style, was = html.scrollBehavior;
-    html.scrollBehavior = "auto";
+    const doc = document.documentElement.style, was = doc.scrollBehavior;
+    doc.scrollBehavior = "auto";
     scrollBy(0, hold.getBoundingClientRect().top - y);
-    html.scrollBehavior = was;
+    doc.scrollBehavior = was;
     return true;
   };
-  const unplace = () => { if (pane.parentElement === grid) window_.append(pane); };
+  const unplace = () => { if (pane.parentElement === grid) win.append(pane); };
   phone.addEventListener("change", () => {
     if (!phone.matches) unplace();
-    else if (root.classList.contains("is-open")) place(order[current].sid, pane);
+    else if (root.classList.contains("is-open")) place(current, pane);
     mark(current);
   });
   let ticking = false, rest = 0;
   track.addEventListener("scroll", () => {
     if (!built) return;
-    // A swipe into another situation's conversations takes the record to that row once the track comes to rest
+    // A swipe into another situation takes the record to that row once the track comes to rest
     clearTimeout(rest);
-    rest = setTimeout(() => { if (phone.matches && root.classList.contains("is-open")) place(order[current].sid, pane); }, 180);
+    rest = setTimeout(() => { if (phone.matches && root.classList.contains("is-open")) place(current, pane); }, 180);
     if (ticking) return;
     ticking = true;
     requestAnimationFrame(() => {
@@ -534,6 +501,7 @@ const FR = (() => {
   const go = (i, smooth = true) => {
     if (!built) return;
     i = Math.max(0, Math.min(total - 1, i));
+    fill(i);
     track.scrollTo({ left: i * track.clientWidth, behavior: smooth && !reduced() && Math.abs(i - current) <= 3 ? "smooth" : "auto" });
     mark(i);
   };
@@ -547,9 +515,8 @@ const FR = (() => {
   grid.addEventListener("click", async (ev) => {
     const cell = ev.target.closest(".pv-cell");
     if (!cell) return;
-    // Phones keep the record closed until a cell is tapped (pages.css), so the preview never stands between
-    // the visitor and the form; the first tap opens it on that conversation, under its row (r10.2), and a second tap
-    // on the same tile closes it again
+    const i = Number(cell.dataset.i);
+    // Phones: a second tap on the open tile closes the record again
     if (phone.matches && root.classList.contains("is-open") && cell.getAttribute("aria-pressed") === "true") {
       root.classList.remove("is-open");
       mark(current);
@@ -557,126 +524,190 @@ const FR = (() => {
     }
     const opening = !root.classList.contains("is-open");
     root.classList.add("is-open");
-    const moved = phone.matches && place(cell.dataset.sid, cell);
+    const moved = phone.matches && place(i, cell);
     await load();
-    go(at(cell.dataset.sid, cell.dataset.engine), !opening && !moved);
-    const scrollPad = parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop || 0);
-    const top = pane.getBoundingClientRect().top;
+    go(i, !opening && !moved);
+    const pad = parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop || 0);
+    const at = pane.getBoundingClientRect().top;
     if (phone.matches) {
-      // Under the row, the record's start shows; a tile tapped low on the screen comes up to the top with it
-      if (top > innerHeight * 0.7) scrollTo({ top: scrollY + cell.getBoundingClientRect().top - scrollPad, behavior: reduced() ? "auto" : "smooth" });
-    } else if (getComputedStyle(window_).gridTemplateColumns.split(" ").length === 1 && top > innerHeight * 0.7) {
-      // Stacked tablets: bring the record up if it is below the screen
-      scrollTo({ top: scrollY + top - scrollPad, behavior: reduced() ? "auto" : "smooth" });
+      if (at > innerHeight * 0.7) scrollTo({ top: scrollY + cell.getBoundingClientRect().top - pad, behavior: reduced() ? "auto" : "smooth" });
+    } else if (getComputedStyle(win).gridTemplateColumns.split(" ").length === 1 && at > innerHeight * 0.7) {
+      scrollTo({ top: scrollY + at - pad, behavior: reduced() ? "auto" : "smooth" });
     }
   });
   grid.addEventListener("keydown", (ev) => {
     const cell = ev.target.closest(".pv-cell");
     const one = getComputedStyle(tabs).display !== "none";
-    const move = one ? { ArrowDown: 4, ArrowUp: -4 }[ev.key] : { ArrowRight: 1, ArrowLeft: -1, ArrowDown: 4, ArrowUp: -4 }[ev.key];
+    const move = one ? { ArrowDown: E, ArrowUp: -E }[ev.key] : { ArrowRight: 1, ArrowLeft: -1, ArrowDown: E, ArrowUp: -E }[ev.key];
     if (!cell || !move) return;
     const next = cells[cells.indexOf(cell) + move];
     if (next) { ev.preventDefault(); next.focus(); }
   });
+
+  // The fill: hidden only once the matrix is just below the screen (never while on it), then filled as it comes up
+  if (!reduced() && "IntersectionObserver" in window && grid.getBoundingClientRect().top > innerHeight) {
+    const near = new IntersectionObserver((es) => {
+      if (!es.some((e) => e.isIntersecting)) return;
+      near.disconnect();
+      if (grid.getBoundingClientRect().top > innerHeight) grid.classList.add("is-pre");
+    }, { rootMargin: "0px 0px 50% 0px" });
+    const enter = new IntersectionObserver((es) => {
+      if (!es.some((e) => e.isIntersecting)) return;
+      enter.disconnect();
+      near.disconnect();
+      grid.classList.replace("is-pre", "is-filling") || grid.classList.add("is-filling");
+    }, { rootMargin: "0px 0px -14% 0px" });
+    near.observe(grid);
+    enter.observe(grid);
+  }
 })();
 
-// r04. Scroll reveals for the counted figures, home and the sample report: as a figure group first comes well on
-// screen, its numbers count up from zero, its bars draw from zero to their value and the conversation marks wipe in
-// from the left, once, over 0.36 s (ease-out; the process line over 0.9 s). State is a pure function of the time since that group arrived (no
-// timers); a group already on screen at load, reduced motion and no JS all show the final state from frame 1.
+// R07. Counted figures, bars and marks (home and the audit page). Each group fills once as it comes up the screen: its
+// numbers count from zero to their exact value over 1.1 s (ease-out, whole numbers, tabular figures in a box of the
+// final width, so nothing moves), its bars draw from zero and its conversation marks wipe in from the left. A group is
+// set to zero only when it is just below the screen, never while on it, and starts when its top passes 88% of the
+// screen height. A group on screen at load, reduced motion and no JS show the final values from frame 1. State is a
+// pure function of the time since the group started; the last frame writes the exact values, and a tab that goes
+// hidden mid-count finishes at once, so no wrong value is ever left on screen.
 (() => {
   if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-  // r10.2: on phones the method's thread draws by scroll position instead (below), one step at a time
-  const phoneThread = matchMedia("(max-width: 760px)").matches;
-  const groups = [...document.querySelectorAll("[data-reveal]")].filter((g) => g.getBoundingClientRect().top > innerHeight && !(phoneThread && g.matches(".g-thread")));
+  const groups = [...document.querySelectorAll("[data-reveal]")].filter((g) => !g.matches(".g-thread") && g.getBoundingClientRect().top > innerHeight);
   if (!groups.length) return;
-  // r06: the method's thread lays itself step to step over 2.7 s, 450 ms a step
-  const DUR = 360, ease = FR.easeOut, dur = (g) => (g.matches(".g-thread") ? 2700 : g.matches(".fa-steps") ? 900 : DUR);
+  const DUR = { count: 1100, draw: 620 };
   const parts = (g) => ({
     nums: [...g.querySelectorAll("[data-count]")].map((n) => [n, Number(n.dataset.count)]),
-    bars: [...g.querySelectorAll(".fa-bar i, .pick-bar, .src-bar span")],
+    bars: [...g.querySelectorAll(".fa-bar i")],
     marks: [...g.querySelectorAll(".fa-tally")],
-    // The process line (home): it draws itself from the first step to the last, each step's mark landing as the
-    // line reaches it, like a thread being laid (kurrent.io's idea, not its look)
-    steps: g.matches(".fa-steps") ? [...g.children] : [...g.querySelectorAll(".fa-steps > li")],
-    // r06: the threads above the steps (navy's idea): each strand draws over its own share of the arrival
-    draws: [...g.querySelectorAll("[data-draw]")].map((d) => [d, Number(d.dataset.from), Number(d.dataset.to)]),
   });
-  const paint = (p, k) => {
-    const e = ease(k);
-    p.nums.forEach(([n, to]) => (n.textContent = String(Math.round(to * e))));
-    p.bars.forEach((b) => (b.style.transform = k >= 1 ? "" : `scaleX(${e})`));
-    p.marks.forEach((m) => (m.style.clipPath = k >= 1 ? "" : `inset(0 ${(1 - e) * 100}% 0 0)`));
-    p.draws.forEach(([d, from, to]) => {
-      d.style.strokeDashoffset = k >= 1 ? "" : String(1 - ease(Math.max(0, Math.min(1, (k - from) / (to - from)))));
-    });
-    const n = p.steps.length;
-    p.steps.forEach((li, i) => {
-      if (k >= 1) { li.style.removeProperty("--rv"); li.style.removeProperty("--rd"); return; }
-      li.style.setProperty("--rv", String(Math.max(0, Math.min(1, k * n - i))));
-      li.style.setProperty("--rd", String(Math.max(0, Math.min(1, (k * n - i) * 4))));
-    });
+  const paint = (p, t) => {
+    const kc = FR.clamp(t / DUR.count), kd = FR.clamp(t / DUR.draw);
+    p.nums.forEach(([n, to]) => (n.textContent = String(kc >= 1 ? to : Math.round(to * FR.easeOut(kc)))));
+    p.bars.forEach((b) => (b.style.transform = kd >= 1 ? "" : `scaleX(${FR.easeOut(kd)})`));
+    p.marks.forEach((m) => (m.style.clipPath = kd >= 1 ? "" : `inset(0 ${(1 - FR.easeOut(kd)) * 100}% 0 0)`));
   };
-  // A group starts the moment its top edge is on screen; one already scrolled past (a jump, a link) shows its
-  // final state at once, so no figure is ever left at zero
-  const pending = new Set(groups);
-  const run = (g) => {
-    const p = parts(g);
+  const END = Math.max(DUR.count, DUR.draw);
+  const all = new Map(groups.map((g) => [g, { p: parts(g), stage: 0 }]));
+  for (const { p } of all.values()) {
+    p.bars.forEach((b) => (b.style.transformOrigin = "0 50%"));
+    p.nums.forEach(([n]) => { n.style.minWidth = `${n.getBoundingClientRect().width}px`; });
+  }
+  const running = new Set();
+  const finish = () => { for (const s of running) paint(s.p, END); running.clear(); };
+  document.addEventListener("visibilitychange", () => { if (document.hidden) finish(); });
+  const run = (s) => {
+    running.add(s);
     let t0 = null;
     const frame = (now) => {
+      if (!running.has(s)) return;
       if (t0 === null) t0 = now;
-      const k = Math.min(1, (now - t0) / dur(g));
-      paint(p, k);
-      if (k < 1) requestAnimationFrame(frame);
+      const t = now - t0;
+      paint(s.p, t);
+      if (t < END) requestAnimationFrame(frame); else running.delete(s);
     };
     requestAnimationFrame(frame);
   };
   const check = () => {
-    for (const g of pending) {
+    const h = innerHeight;
+    for (const [g, s] of all) {
       const r = g.getBoundingClientRect();
-      if (r.top > innerHeight - 24) continue;
-      pending.delete(g);
-      if (r.bottom < 0) paint(parts(g), 1); else run(g);
+      if (r.bottom < 0) { if (s.stage < 2) paint(s.p, END); all.delete(g); continue; }
+      if (s.stage === 0 && r.top < h * 1.5 && r.top > h) { paint(s.p, 0); s.stage = 1; }
+      if (r.top < h * 0.88) { s.stage = 2; all.delete(g); run(s); }
     }
-    if (!pending.size) removeEventListener("scroll", onScroll);
+    if (!all.size) removeEventListener("scroll", onScroll);
   };
   let queued = false;
   const onScroll = () => { if (!queued) { queued = true; requestAnimationFrame(() => { queued = false; check(); }); } };
-  for (const g of groups) {
-    const p = parts(g);
-    p.bars.forEach((b) => (b.style.transformOrigin = "0 50%"));
-    paint(p, 0);
-  }
   addEventListener("scroll", onScroll, { passive: true });
+  check();
 })();
 
-// r10.2, phones: the method's threads run down the left of the steps (pages.css). Each step's rule, node and hop to the
-// next draw as that step comes up the screen, from 85% to 45% of its height, a pure function of scroll position that
-// only ever moves forward (nothing undraws on the way back up), and the rerun's return to the first step draws with the
-// last step. A step already above that band at load is drawn; reduced motion and no JS show them all drawn.
+// R07. Steps drawn by scroll position at every width: home's method and the audit's five steps. Home on laptops: the
+// threads above the six steps and each step's rule and node draw as the steps cross the screen, from 85% to 35% of
+// its height. Phones, and the audit's stacked rows: each step's rule, node and hop draw as that step comes up the
+// screen, and home's return to the first step draws with the last. Both only ever move forward (nothing undraws on
+// the way back up). A step already above its band at load is drawn; reduced motion and no JS show everything drawn.
 (() => {
-  const list = document.querySelector(".g-thread .fa-steps");
-  if (!list || !matchMedia("(max-width: 760px)").matches || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-  const steps = [...list.children];
-  const done = steps.map(() => 0);
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const narrow = matchMedia("(max-width: 760px)");
+  const lists = [...document.querySelectorAll(".g-thread .fa-steps, .aud-steps")].map((list) => ({
+    list, steps: [...list.children], row: 0, byRow: list.matches(".g-thread .fa-steps"), done: [...list.children].map(() => 0),
+    draws: [...(list.closest(".g-thread") || list).querySelectorAll("[data-draw]")].map((d) => [d, Number(d.dataset.from), Number(d.dataset.to)]),
+  }));
+  if (!lists.length) return;
   const paint = () => {
     const h = innerHeight;
-    steps.forEach((li, i) => {
-      const k = Math.max(done[i], FR.clamp((h * 0.85 - li.getBoundingClientRect().top) / (h * 0.4)));
-      done[i] = k;
-      const e = FR.easeOut(k);
-      li.style.setProperty("--rv", String(e));
-      li.style.setProperty("--rd", String(FR.clamp(k * 4)));
-    });
-    list.style.setProperty("--rl", String(FR.easeOut(done[done.length - 1])));
-    if (done.every((k) => k >= 1)) {
-      removeEventListener("scroll", onScroll);
-      steps.forEach((li) => { li.style.removeProperty("--rv"); li.style.removeProperty("--rd"); });
-      list.style.removeProperty("--rl");
+    for (const L of lists) {
+      if (L.finished) continue;
+      if (L.byRow && !narrow.matches) {
+        L.row = Math.max(L.row, FR.clamp((h * 0.85 - L.list.getBoundingClientRect().top) / (h * 0.5)));
+        L.steps.forEach((li, i) => { L.done[i] = Math.max(L.done[i], FR.clamp(L.row * L.steps.length - i)); });
+      } else {
+        L.steps.forEach((li, i) => { L.done[i] = Math.max(L.done[i], FR.clamp((h * 0.85 - li.getBoundingClientRect().top) / (h * 0.4))); });
+        L.row = Math.max(L.row, L.done[L.done.length - 1]);
+      }
+      L.steps.forEach((li, i) => {
+        li.style.setProperty("--rv", String(FR.easeOut(L.done[i])));
+        li.style.setProperty("--rd", String(FR.clamp(L.done[i] * 4)));
+      });
+      L.list.style.setProperty("--rl", String(FR.easeOut(L.done[L.done.length - 1])));
+      L.draws.forEach(([d, from, to]) => { d.style.strokeDashoffset = String(1 - FR.easeOut(FR.clamp((L.row - from) / (to - from)))); });
+      if (L.done.every((k) => k >= 1) && L.row >= 1) {
+        L.finished = true;
+        L.steps.forEach((li) => { li.style.removeProperty("--rv"); li.style.removeProperty("--rd"); });
+        L.list.style.removeProperty("--rl");
+        L.draws.forEach(([d]) => d.style.removeProperty("stroke-dashoffset"));
+      }
     }
+    if (lists.every((L) => L.finished)) removeEventListener("scroll", onScroll);
   };
   let queued = false;
   const onScroll = () => { if (!queued) { queued = true; requestAnimationFrame(() => { queued = false; paint(); }); } };
   addEventListener("scroll", onScroll, { passive: true });
+  paint();
+})();
+
+// R07. The threads between sections (build_site.render_weave): three strands leave one node at the left margin and land
+// on the section's rule further along, each a beat after the last, drawn by the section's position as it comes up the
+// screen (from 95% to 45% of its height) and undrawn the same way back up. Never on a loop, nothing on a timer.
+// Reduced motion and no JS: drawn.
+(() => {
+  const weaves = [...document.querySelectorAll("[data-weave]")];
+  if (!weaves.length || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const parts = weaves.map((w) => ({ w, paths: [...w.querySelectorAll("path")], nodes: [...w.querySelectorAll("i[style]")], o: w.querySelector(".weave-o") }));
+  const paint = () => {
+    const h = innerHeight;
+    for (const { w, paths, nodes, o } of parts) {
+      const r = w.getBoundingClientRect();
+      if (r.top > h * 1.2 || r.bottom < -h * 0.2) continue;
+      const k = FR.clamp((h * 0.95 - r.top) / (h * 0.5));
+      o.style.opacity = k > 0 ? "1" : "0";
+      paths.forEach((p, j) => {
+        const kj = FR.clamp(k * 1.5 - j * 0.25);
+        p.style.strokeDashoffset = String(1 - FR.easeOut(kj));
+        if (nodes[j]) nodes[j].style.opacity = kj >= 1 ? "1" : "0";
+      });
+    }
+  };
+  let queued = false;
+  addEventListener("scroll", () => { if (!queued) { queued = true; requestAnimationFrame(() => { queued = false; paint(); }); } }, { passive: true });
+  addEventListener("resize", paint);
+  paint();
+})();
+
+// R07. The ray's parallax: the figure that holds it drifts at a fifth of the scroll (an eighth on phones) while its
+// section is on screen, by transform only. Reduced motion: it stays put.
+(() => {
+  const els = [...document.querySelectorAll("[data-parallax]")];
+  if (!els.length || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const narrow = matchMedia("(max-width: 760px)");
+  const paint = () => {
+    const y = scrollY, h = innerHeight;
+    if (y > h * 1.6) return;
+    const f = narrow.matches ? 0.12 : 0.2;
+    for (const el of els) el.style.transform = `translate3d(0, ${Math.min(y * f, h * 0.22).toFixed(1)}px, 0)`;
+  };
+  let queued = false;
+  addEventListener("scroll", () => { if (!queued) { queued = true; requestAnimationFrame(() => { queued = false; paint(); }); } }, { passive: true });
   paint();
 })();

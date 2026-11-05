@@ -18,7 +18,8 @@
   <meta name="twitter:card" content="summary_large_image">
   <link rel="preload" href="assets/fonts/geist-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/fonts/newsreader-italic-latin.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="fr.css?v=12">
+  <link rel="preload" href="assets/ray-navy.webp" as="image" type="image/webp" fetchpriority="high">
+  <link rel="stylesheet" href="fr.css?v=13">
   <link rel="icon" type="image/svg+xml" href="assets/hallmark.svg">
   <link rel="icon" type="image/png" href="assets/manta-mark.png">
   <script type="application/ld+json">
@@ -104,7 +105,7 @@
     <a class="wordmark" href="index.html"><svg class="hallmark" viewBox="0 0 100 46" aria-hidden="true" focusable="false"><path d="M2 7C15 23 31 31 50 30"/><path d="M44 30C50 21 51 11 47 2C61 10 79 21 97 26C89 28 83 29 78 31C74 37 70 41 66 44C64 38 61 34 55 32C51 31 47 30.5 44 30Z"/><path d="M86 25.5h.01"/></svg>FlintRay</a>
     <nav class="nav-links" aria-label="Main"><a href="how-it-works.html">How it works</a><a href="measurement-standard.html">Method</a><a href="sample-report.html">Sample report</a><a href="insights.html">Insights</a></nav>
     <a class="nav-book" href="https://calendar.app.google/9M8xRZvibsCU6EeSA">Book a call</a><a class="nav-cta" href="audit.html#request">Free audit</a>
-    <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-menu"><span class="menu-icon" aria-hidden="true"></span><span class="menu-word">Menu</span></button>
+    <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-menu"><i class="menu-icon" aria-hidden="true"></i><b class="menu-word">Menu</b></button>
     <div class="menu-sheet" id="site-menu" role="dialog" aria-modal="true" aria-label="Menu" hidden>
       <div class="menu-sheet-head"><a class="wordmark" href="index.html" tabindex="-1"><svg class="hallmark" viewBox="0 0 100 46" aria-hidden="true" focusable="false"><path d="M2 7C15 23 31 31 50 30"/><path d="M44 30C50 21 51 11 47 2C61 10 79 21 97 26C89 28 83 29 78 31C74 37 70 41 66 44C64 38 61 34 55 32C51 31 47 30.5 44 30Z"/><path d="M86 25.5h.01"/></svg>FlintRay</a><button class="menu-close" type="button">Close</button></div>
       <nav aria-label="Main"><a href="how-it-works.html">How it works</a><a href="measurement-standard.html">Method</a><a href="sample-report.html">Sample report</a><a href="insights.html">Insights</a><a class="sheet-book" href="https://calendar.app.google/9M8xRZvibsCU6EeSA">Book a call</a><a class="sheet-cta" href="audit.html#request">Free audit</a></nav>
@@ -114,12 +115,17 @@
   <main class="aud fa">
     <section class="aud-top" aria-labelledby="aud-title">
       <header class="aud-open">
+        <div class="aud-ray" data-parallax><svg class="ray" viewBox="0 0 1240 700" aria-hidden="true" focusable="false"><defs><radialGradient id="ray-beam" gradientUnits="userSpaceOnUse" cx="0" cy="0" r="400"><stop offset="0" stop-color="#F7FAFF" stop-opacity=".95"/><stop offset=".2" stop-color="#E6EFFB" stop-opacity=".66"/><stop offset=".45" stop-color="#D6E7FB" stop-opacity=".3"/><stop offset=".75" stop-color="#D6E7FB" stop-opacity="0"/></radialGradient><radialGradient id="ray-glow"><stop offset="0" stop-color="#FFFFFF" stop-opacity=".6"/><stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/></radialGradient><filter id="ray-soft" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="5"/></filter></defs><image href="assets/ray-navy.webp" x="0" y="0" width="1056" height="500"/><g transform="translate(893 295)"><g class="ray-lamp"><g class="ray-beam"><path d="M0 0 L310.9 251.7 A400 400 0 0 1 143.3 373.4 Z" fill="url(#ray-beam)" filter="url(#ray-soft)"/></g><circle r="18" fill="url(#ray-glow)"/></g></g></svg></div>
         <h1 id="aud-title">Your free AI search audit</h1>
         <p class="aud-lede">When your buyers ask ChatGPT, Claude, Gemini or Perplexity who to call, the answer works like a referral. The audit shows you who gets it in your place, and why, across a real slice of your market.</p>
       </header>
       <div class="aud-side">
         <section class="aud-request" id="request" aria-labelledby="request-title">
           <h2 id="request-title">Request your audit</h2>
+          <figure class="person">
+          <img class="person-photo" src="assets/founder.jpg" alt="Seth Kaelin" width="120" height="150">
+          <figcaption class="person-text"><p class="person-line">I'm Seth. I built FlintRay's measurement, and I'll walk you through your results.</p><p class="person-name">Seth Kaelin</p></figcaption>
+        </figure>
           <div class="request">
         <div class="request-sheet">
           <form class="audit-form letter" action="https://formspree.io/f/xoeerlpj" method="POST">
@@ -201,9 +207,10 @@
         <p class="g-aside">If you want the full picture and the fixes, there are two ways to keep going, both monthly.</p>
       </header>
         <ul class="aud-plans">
-          <li><h3>Lens Monitor</h3><p>We measure and your team fixes. Your situations rerun on a set schedule, with a live report, the pages behind every answer, and a fix plan your team works through.</p><p class="aud-body">Both plans are monthly. Lens Monitor is scoped on the call.</p></li>
+          <li><h3>Lens Monitor</h3><p>We measure and your team fixes. Your situations rerun on a set schedule, with a live report, the pages behind every answer, and a fix plan your team works through.</p></li>
           <li><h3>Lens Engage</h3><p>We measure and we do the fixes. Your situations rerun every week, we write and place the fixes, and we review the results with you each month. You name 3 to 5 rivals, and none of them can become a paying client while you're on Engage. Your first month includes the full audit and the first fixes.</p><p class="price-line num">Lens Engage starts at $5,000 a month.</p></li>
         </ul>
+        <p class="aud-monthly">Both plans are monthly. Lens Monitor is scoped on the call.</p>
         <div class="aud-close-row">
           <div class="aud-policy"><h3>How we make fixes</h3><p>When we make the fixes on Lens Engage, we never post under fake names, buy reviews or invent quotes.</p></div>
           <p class="aud-body aud-partners">Agencies and advisory firms can offer all of this under their own name, on a private quote. <a class="link link-arrow" href="partners.html">White-label for partners</a></p>
@@ -220,14 +227,14 @@
       <div class="foot-col"><h2>FlintRay</h2><ul><li><a href="index.html">Home</a></li><li><a href="how-it-works.html">How it works</a></li><li><a href="measurement-standard.html">Method</a></li><li><a href="sample-report.html">Sample report</a></li><li><a href="audit.html">Free audit</a></li></ul></div>
       <div class="foot-col"><h2>Insights</h2><ul><li><a href="insights.html">All insights</a></li><li><a href="insights/how-ai-assistants-decide.html">How AI assistants decide</a></li><li><a href="insights/how-much-does-aeo-cost.html">How much AEO costs</a></li></ul></div>
       <div class="foot-col"><h2>Company</h2><ul><li><a href="partners.html">Partners</a></li><li><a href="https://calendar.app.google/9M8xRZvibsCU6EeSA">Book a call</a></li><li><a href="privacy.html">Privacy</a></li><li><a href="mailto:seth@flintray.com">seth@flintray.com</a></li><li><a href="mailto:privacy@flintray.com">privacy@flintray.com</a></li></ul></div>
-      <div class="foot-legal meta"><span>© 2026 FlintRay</span></div>
+      <div class="foot-legal meta"><p>© 2026 FlintRay</p></div>
     </div>
   </footer>
 
   <div class="cta-bar" data-cta-bar><a class="cta-bar-main" href="audit.html#request">Request a free audit</a><a class="cta-bar-book" href="https://calendar.app.google/9M8xRZvibsCU6EeSA">Book a call</a></div>
   <div class="draft-bar" role="note">Staging</div>
-  <script src="chrome.js?v=12" defer></script>
+  <script src="chrome.js?v=13" defer></script>
 
-  <script src="site.js?v=12" defer></script>
+  <script src="site.js?v=13" defer></script>
 </body>
 </html>

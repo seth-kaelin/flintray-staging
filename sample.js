@@ -1,101 +1,93 @@
-// The sample report's interactions, loaded only on sample-report.html. No framework.
-// Without this file every section and conversation still reads in place (tools/build_sample.py renders them all).
-// With it: the section bar marks where you are, and matrix cells and finding buttons open a conversation drawer
-// (assistant tabs, three turns, the companies named, the sources) that works by touch and keyboard.
+// The real report's interactions: the header's phone menu, the section bar (pinned on laptops only), the phone
+// matrix's sideways swipe between assistants, the record of each conversation, and the figures that draw once on
+// entry. No framework. The phone header and bottom bar are the site's own chrome.js. Without this file the page still
+// reads top to bottom: the section bar is a row of links on laptops and hidden on phones, the phone matrix lists all
+// four assistants one after another, and every figure is drawn.
+document.documentElement.classList.add("js");
+const reduced = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+
+// The section bar is the report's one pinned element on laptops (TOKENS.md, Chrome; the site header scrolls away). It
+// marks the section you're in. On phones (760px and below, CSS) it sits in the flow under the cover, never pinned, as
+// a slim row that names the current section and opens the section list; the site's bottom bar carries the action.
 (() => {
-  const page = document.querySelector(".sample-page");
-  if (!page) return;
-  const ENGINES = ["chatgpt", "claude", "gemini", "perplexity"];
-  const NAMES = { chatgpt: "ChatGPT", claude: "Claude", gemini: "Gemini", perplexity: "Perplexity" };
-  const bodyFor = (sid, engine) => document.getElementById(`conversation-${sid}-${engine}`);
-  // r06, the LCP trim: the 60 conversations in full (assets/sample-convos.js, 470KB) load once the page has loaded,
-  // so the first paint never waits on them. Anything that opens a conversation before they arrive waits for them.
-  const convos = new Promise((done) => {
-    const host = document.querySelector("[data-convos]");
-    if (!host) { done(); return; }
-    const load = () => {
-      const s = document.createElement("script");
-      s.src = host.dataset.convos;
-      s.onload = s.onerror = () => done();
-      document.body.append(s);
-    };
-    if (document.readyState === "complete") load(); else addEventListener("load", load, { once: true });
-  });
-
-  // The section bar sits under the site header when the header is pinned
-  const nav = document.querySelector("body > header.site-nav");
-  const jump = page.querySelector(".jump");
-  const measure = () => {
-    const pos = nav ? getComputedStyle(nav).position : "static";
-    page.style.setProperty("--sample-top", pos === "sticky" || pos === "fixed" ? `${nav.offsetHeight}px` : "0px");
-  };
-  measure();
-  addEventListener("resize", measure);
-
-  // Where you are: the last section whose top has passed under the bar
+  const jump = document.querySelector(".jump");
+  if (!jump) return;
   const links = [...jump.querySelectorAll("ul a")];
   const sections = links.map((a) => document.getElementById(a.hash.slice(1)));
-  const strip = jump.querySelector("ul");
+  const here = document.createElement("button");
+  here.type = "button"; here.className = "jump-here";
+  here.setAttribute("aria-expanded", "false"); here.setAttribute("aria-controls", "jump-list");
+  jump.prepend(here);
+  const open = (on) => { jump.classList.toggle("is-open", on); here.setAttribute("aria-expanded", String(on)); };
+  here.addEventListener("click", () => open(!jump.classList.contains("is-open")));
+  links.forEach((a) => a.addEventListener("click", () => open(false)));
+  document.addEventListener("click", (e) => { if (!jump.contains(e.target)) open(false); });
+  jump.addEventListener("keydown", (e) => { if (e.key === "Escape") { open(false); here.focus(); } });
   let current = null, ticking = false;
   const mark = () => {
     ticking = false;
-    const line = jump.getBoundingClientRect().bottom + 24;
-    let i = 0;
-    sections.forEach((s, k) => { if (s && s.getBoundingClientRect().top <= line) i = k; });
-    if (i === current) return;
-    current = i;
-    here.textContent = links[i].textContent;
-    links.forEach((a, k) => (k === i ? a.setAttribute("aria-current", "true") : a.removeAttribute("aria-current")));
-    const a = links[i], left = a.offsetLeft - strip.offsetLeft;
-    if (left < strip.scrollLeft || left + a.offsetWidth > strip.scrollLeft + strip.clientWidth) {
-      strip.scrollTo({ left: left - 24, behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
-    }
+    const edge = Math.max(0, jump.getBoundingClientRect().bottom);
+    let at = 0;
+    sections.forEach((s, k) => { if (s && s.getBoundingClientRect().top <= edge + 24) at = k; });
+    if (at === current) return;
+    current = at;
+    here.textContent = links[at].textContent;
+    links.forEach((a, k) => (k === at ? a.setAttribute("aria-current", "true") : a.removeAttribute("aria-current")));
   };
-  // On phones the bar is one slim row: the current section, which opens the full list, and the main action
-  const here = document.createElement("button");
-  here.type = "button"; here.className = "jump-here";
-  here.setAttribute("aria-expanded", "false"); here.setAttribute("aria-controls", strip.id);
-  jump.prepend(here);
-  jump.classList.add("has-menu");
-  const openMenu = (on) => { jump.classList.toggle("is-open", on); here.setAttribute("aria-expanded", String(on)); };
-  here.addEventListener("click", () => openMenu(!jump.classList.contains("is-open")));
-  strip.addEventListener("click", (e) => { if (e.target.closest("a")) openMenu(false); });
-  document.addEventListener("click", (e) => { if (!jump.contains(e.target)) openMenu(false); });
-  document.addEventListener("keydown", (e) => { if (e.key === "Escape" && jump.classList.contains("is-open")) { openMenu(false); here.focus(); } });
   addEventListener("scroll", () => { if (!ticking) { ticking = true; requestAnimationFrame(mark); } }, { passive: true });
+  addEventListener("resize", mark);
   mark();
+})();
 
-  // The bar scrolls sideways on phones: an edge with more sections past it fades and shows a 44px arrow that scrolls it
-  const arrow = (dir, label, glyph) => {
-    const b = document.createElement("button");
-    b.type = "button"; b.className = `jump-more jump-more-${dir}`; b.textContent = glyph; b.hidden = true;
-    b.setAttribute("aria-label", label);
-    b.addEventListener("click", () => strip.scrollBy({ left: (dir === "end" ? 1 : -1) * strip.clientWidth * 0.7, behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" }));
-    return b;
+// Phone matrix: one assistant at a time, as a native sideways swipe (scroll-snap, data-carousel). The tabs show
+// which assistant is showing and jump to another; arrow keys move between tabs. Nothing moves on its own.
+(() => {
+  const track = document.querySelector(".pm-track");
+  const tabs = [...document.querySelectorAll(".pm-tabs [role=tab]")];
+  if (!track || !tabs.length) return;
+  const panels = tabs.map((t) => document.getElementById(t.getAttribute("aria-controls")));
+  let at = 0;
+  const select = (k) => {
+    at = k;
+    tabs.forEach((t, j) => { t.setAttribute("aria-selected", String(j === k)); t.tabIndex = j === k ? 0 : -1; });
+    panels.forEach((p, j) => p.toggleAttribute("inert", j !== k));
   };
-  const back = arrow("start", "Earlier sections", "\u2039"), more = arrow("end", "More sections", "\u203A");
-  strip.before(back); strip.after(more);
-  const edges = () => {
-    const atStart = strip.scrollLeft <= 1, atEnd = strip.scrollLeft + strip.clientWidth >= strip.scrollWidth - 1;
-    strip.classList.toggle("more-start", !atStart);
-    strip.classList.toggle("more-end", !atEnd);
-    back.hidden = atStart; more.hidden = atEnd;
+  const go = (k, focus) => {
+    select(k);
+    track.scrollTo({ left: panels[k].offsetLeft - track.offsetLeft, behavior: reduced() ? "auto" : "smooth" });
+    if (focus) tabs[k].focus();
   };
-  strip.addEventListener("scroll", edges, { passive: true });
-  addEventListener("resize", edges);
-  edges();
+  tabs.forEach((t, k) => {
+    t.addEventListener("click", () => go(k));
+    t.addEventListener("keydown", (e) => {
+      const step = e.key === "ArrowRight" ? 1 : e.key === "ArrowLeft" ? -1 : 0;
+      if (step) go((k + step + tabs.length) % tabs.length, true);
+    });
+  });
+  let queued = false;
+  track.addEventListener("scroll", () => {
+    if (queued) return;
+    queued = true;
+    requestAnimationFrame(() => {
+      queued = false;
+      const k = Math.max(0, Math.min(tabs.length - 1, Math.round(track.scrollLeft / track.clientWidth)));
+      if (k !== at) select(k);
+    });
+  }, { passive: true });
+  select(0);
+})();
 
-  // ---------------------------------------------------------------------------
-  // The drawer. r04 (Seth, Nov 4): one conversation at a time, so it swipes. r10.1: it opens with focus on the
-  // conversation, so ← and → step conversations at once; the tab row keeps its own arrow keys only while it has focus. Its body is a native sideways scroller
-  // (scroll-snap, one conversation per snap, data-carousel) through the conversations it was opened on: a finding's
-  // set, or all 60 in the matrix's order. Nothing advances on its own and touching it starts no timer. The position
-  // ("3 of 60") and Previous and Next stay in the head; the arrow keys step on laptops; the tabs jump to another
-  // assistant's answer to the same situation. Each slide is a copy of the conversation's markup in the page.
-  const subject = document.getElementById("verdict-title").textContent;
-  const MARK = { put: "put forward", named: "mentioned", none: "not named" };
-  const matrix = page.querySelector(".matrix");
-  const ALL = [...matrix.tBodies[0].rows].flatMap((row) => [...row.querySelectorAll("a.cell")].map((c) => ({ sid: c.dataset.sid, engine: c.dataset.engine })));
+// The record of one conversation. Tapping a matrix cell (or a phone row) opens it in a drawer that is a native
+// sideways swipe through all 60 in the matrix's order (scroll-snap, one conversation per snap, data-carousel). It
+// never advances on its own and touching it starts no timer. The position ("8 of 60") and Previous and Next stay in
+// the head; the arrow keys step on laptops; Escape or Close returns to the cell. Every value comes from
+// real-report-records.js, which the build writes from the audit.
+(() => {
+  const records = window.RR_RECORDS;
+  const openers = [...document.querySelectorAll("[data-rec]")];
+  if (!records || !openers.length) return;
+  const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
   const cta = document.querySelector(".jump-cta");
   const root = document.createElement("div");
   root.className = "drawer-root";
@@ -103,254 +95,158 @@
   root.innerHTML = `<div class="drawer-scrim" data-close></div>
     <section class="drawer" role="dialog" aria-modal="true" aria-labelledby="drawer-title">
       <div class="drawer-head">
-        <div class="drawer-set" hidden>
-          <p class="set-finding">Conversations behind <strong data-f="finding"></strong></p>
-          <p class="set-note" data-f="note"></p>
-          <p class="set-why" data-f="why"></p>
-        </div>
-        <div class="drawer-bar">
-          <div class="drawer-titles"><h2 class="drawer-title" id="drawer-title" tabindex="-1" data-f="title"></h2><p class="drawer-market" data-f="market"></p></div>
-          <button type="button" class="drawer-close" data-close>Close</button>
-        </div>
-        <div class="set-row"><button type="button" data-step="-1">Previous</button><span class="set-count" data-f="count" aria-live="polite"></span><button type="button" data-step="1">Next</button></div>
-        <div class="drawer-tabs" role="tablist" aria-label="Assistant">${ENGINES.map((x) =>
-          `<button type="button" class="drawer-tab" role="tab" id="drawer-tab-${x}" data-engine="${x}" aria-controls="drawer-panel">${NAMES[x]}<span class="visually-hidden" data-outcome></span></button>`).join("")}</div>
-        <ul class="drawer-key" aria-hidden="true"><li>${subject}:</li>${Object.entries(MARK).map(([k, v]) => `<li class="key is-${k}">${v}</li>`).join("")}</ul>
+        <div class="drawer-bar"><div class="drawer-titles"><h2 class="drawer-title" id="drawer-title" tabindex="-1"></h2><p class="drawer-eng"></p></div>
+          <button type="button" class="drawer-close" data-close>Close</button></div>
+        <div class="set-row"><button type="button" data-step="-1">Previous</button><p class="set-count" aria-live="polite"></p><button type="button" data-step="1">Next</button></div>
       </div>
-      <div class="drawer-body" id="drawer-panel" role="tabpanel" tabindex="0" data-carousel></div>
-      <div class="drawer-foot"><a class="drawer-cta" href="${cta.getAttribute("href")}">${cta.textContent}</a></div>
+      <div class="drawer-body" data-carousel></div>
+      <div class="drawer-foot"><a class="btn" href="${cta.getAttribute("href")}">${esc(cta.textContent)}</a></div>
     </section>`;
   document.body.append(root);
   const $ = (s) => root.querySelector(s);
-  const panel = $(".drawer-body");
-  const tabs = [...root.querySelectorAll(".drawer-tab")];
-  const reduced = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const state = { list: ALL, index: 0, set: null, trigger: null, pushed: false, slides: [] };
-  const item = () => state.list[state.index];
+  const body = $(".drawer-body");
+  const slides = records.map(() => { const d = document.createElement("article"); d.className = "slide"; return d; });
+  body.append(...slides);
+  const state = { index: 0, trigger: null };
 
-  // The slides: one per conversation in the list, filled with a copy of its markup when it is near the one showing.
-  // r10.1: each conversation states its own model ("Answered by …"), so the slide no longer repeats the assistant's
-  // model line above it. On phones the situation's title opens the slide and scrolls away with it (sample.css), so the
-  // head keeps only the controls.
-  const layout = () => {
-    state.slides = state.list.map(() => { const d = document.createElement("div"); d.className = "drawer-slide"; return d; });
-    panel.replaceChildren(...state.slides);
+  const chip = ([word, code], extra = "") => `<b class="chip o-${code}${extra}">${esc(word)}</b>`;
+  const turnHtml = (t, n, rec) => {
+    const lit = rec.ft && n >= rec.ft, first = rec.ft === n;
+    const named = t.n.map(([who, word, code]) => `<li><i class="who">${esc(who)}</i>${chip([word, code])}</li>`).join("")
+      + (t.o ? `<li class="others">${t.o === 1 ? "1 other rival" : `${t.o} other rivals`}</li>` : "");
+    const total = t.l || 1;
+    const cites = t.l ? `<div class="cites"><div class="stack" aria-hidden="true">${t.lt.map(([, c, k]) => `<i class="sk sk-${k}" style="flex-basis:${(100 * c / total).toFixed(2)}%"></i>`).join("")}</div>
+      <ul>${t.lt.map(([label, c, k]) => `<li><i class="sw sw-${k}" aria-hidden="true"></i>${esc(label)} <em>${c}</em></li>`).join("")}</ul></div>` : "";
+    return `<li class="turn${lit ? " is-lit" : ""}${first ? " is-first" : ""}"><p class="turn-h">Turn ${n}<em>${t.l === 1 ? "1 cited link" : `${t.l} cited links`}</em></p>
+      ${named ? `<ul class="named">${named}</ul>` : `<p class="none">No company named</p>`}${cites}</li>`;
   };
-  const fillSlide = (i) => {
-    const slide = state.slides[i], it = state.list[i];
-    if (!slide || slide.childElementCount || !it) return;
-    const source = bodyFor(it.sid, it.engine);
-    if (!source) return;
-    const copy = source.cloneNode(true);
-    copy.removeAttribute("id");
-    copy.querySelectorAll("[id]").forEach((n) => n.removeAttribute("id"));
-    const situation = document.getElementById(`situation-${it.sid}`);
-    const title = document.createElement("p");
-    title.className = "drawer-slide-title";
-    title.setAttribute("aria-hidden", "true");
-    title.innerHTML = `<span></span> <span class="drawer-slide-market"></span>`;
-    title.firstChild.textContent = situation.querySelector(".situation-title").textContent;
-    title.lastChild.textContent = situation.querySelector(".situation-market").textContent;
-    slide.append(title, copy);
+  const fill = (i) => {
+    const slide = slides[i], rec = records[i];
+    if (!slide || slide.childElementCount) return;
+    slide.setAttribute("aria-label", `${rec.s}, ${rec.e}`);
+    slide.innerHTML = `<dl class="rec-sum">
+        <div><dt>The company</dt><dd>${chip(rec.co, " chip-co")}</dd></div>
+        <div><dt>Top pick</dt><dd>${rec.p ? esc(rec.p) : "None"}</dd></div>
+        <div><dt>Top pick first named</dt><dd>${rec.ft ? `Turn ${rec.ft}` : "None"}</dd></div>
+      </dl>
+      <ol class="turns">${rec.t.map((t, k) => turnHtml(t, k + 1, rec)).join("")}</ol>`;
   };
 
-  // What the head says for the conversation showing
-  const markAt = (i) => {
+  const mark = (i) => {
     state.index = i;
-    [i - 1, i, i + 1].forEach(fillSlide);
-    const { sid, engine } = item();
-    const situation = document.getElementById(`situation-${sid}`);
-    $('[data-f="title"]').textContent = situation.querySelector(".situation-title").textContent;
-    $('[data-f="market"]').textContent = situation.querySelector(".situation-market").textContent;
-    tabs.forEach((t) => {
-      const on = t.dataset.engine === engine;
-      t.setAttribute("aria-selected", String(on));
-      t.tabIndex = on ? 0 : -1;
-      const m = bodyFor(sid, t.dataset.engine).dataset.state;
-      t.className = `drawer-tab is-${m}`;
-      t.querySelector("[data-outcome]").textContent = `, ${subject} ${MARK[m]}`;
-    });
-    panel.setAttribute("aria-labelledby", `drawer-tab-${engine}`);
-    const focused = document.activeElement;
-    if (focused && focused.matches(".drawer-tab") && focused.dataset.engine !== engine) panel.focus({ preventScroll: true });
-    $('[data-f="count"]').textContent = `${i + 1} of ${state.list.length}`;
-    root.querySelectorAll("[data-step]").forEach((b) => {
-      const to = i + Number(b.dataset.step);
-      b.disabled = to < 0 || to >= state.list.length;
-    });
-    if (state.set) $('[data-f="why"]').textContent = state.list[i].why || "";
-    const hash = `#conversation-${sid}-${engine}`;
-    if (location.hash !== hash) history.replaceState(history.state, "", hash);
+    [i - 1, i, i + 1].forEach(fill);
+    const rec = records[i];
+    $(".drawer-title").textContent = rec.s;
+    $(".drawer-eng").textContent = rec.e;
+    $(".set-count").textContent = `${i + 1} of ${records.length}`;
+    root.querySelectorAll("[data-step]").forEach((b) => { const to = i + Number(b.dataset.step); b.disabled = to < 0 || to >= records.length; });
+    slides.forEach((s, k) => { s.classList.toggle("is-shown", k === i); s.toggleAttribute("inert", k !== i); });
+    openers.forEach((o) => o.matches(".mc-b") && o.setAttribute("aria-pressed", String(Number(o.dataset.rec) === i)));
   };
-  // A step or a tab scrolls the track to its conversation; until it lands there, the scroll it causes never marks the
-  // conversations it passes (a finger or a wheel takes over at once)
-  let landing = null;
   const go = (i, smooth = true) => {
-    i = Math.max(0, Math.min(state.list.length - 1, i));
-    fillSlide(i);
-    landing = Math.abs(panel.scrollLeft - i * panel.clientWidth) < 2 ? null : i;
-    panel.scrollTo({ left: i * panel.clientWidth, behavior: smooth && !reduced() && Math.abs(i - state.index) <= 2 ? "smooth" : "auto" });
-    markAt(i);
+    i = Math.max(0, Math.min(records.length - 1, i));
+    fill(i);
+    body.scrollTo({ left: i * body.clientWidth, behavior: smooth && !reduced() && Math.abs(i - state.index) <= 2 ? "smooth" : "auto" });
+    mark(i);
   };
-  ["touchstart", "wheel", "pointerdown"].forEach((t) => panel.addEventListener(t, () => (landing = null), { passive: true }));
-  let sliding = false;
-  panel.addEventListener("scroll", () => {
-    if (sliding || root.hidden) return;
-    sliding = true;
+  let queued = false;
+  body.addEventListener("scroll", () => {
+    if (queued || root.hidden) return;
+    queued = true;
     requestAnimationFrame(() => {
-      sliding = false;
-      const i = Math.max(0, Math.min(state.list.length - 1, Math.round(panel.scrollLeft / panel.clientWidth)));
-      if (landing !== null) { if (Math.abs(panel.scrollLeft - landing * panel.clientWidth) < 2) landing = null; return; }
-      if (i !== state.index) markAt(i);
+      queued = false;
+      const i = Math.max(0, Math.min(records.length - 1, Math.round(body.scrollLeft / body.clientWidth)));
+      if (i !== state.index) mark(i);
     });
   }, { passive: true });
-  addEventListener("resize", () => { if (!root.hidden) panel.scrollLeft = state.index * panel.clientWidth; });
+  addEventListener("resize", () => { if (!root.hidden) body.scrollLeft = state.index * body.clientWidth; });
 
-  const siblings = () => [...document.body.children].filter((n) => n !== root && n.tagName !== "SCRIPT");
-  const open = (sid, engine, opts) => convos.then(() => openNow(sid, engine, opts));
-  const openNow = (sid, engine, { set = null, index = 0, trigger = null } = {}) => {
-    if (!bodyFor(sid, engine)) return;
-    state.set = set;
-    state.list = set ? set.items : ALL;
-    const setBox = $(".drawer-set");
-    setBox.hidden = !set;
-    if (set) { $('[data-f="finding"]').textContent = set.title; $('[data-f="note"]').textContent = set.note; }
-    const wasOpen = !root.hidden;
-    if (!wasOpen) {
-      state.trigger = trigger || document.activeElement;
-      state.pushed = false;
-      if (location.hash !== `#conversation-${sid}-${engine}`) { history.pushState({ sampleDrawer: true }, ""); state.pushed = true; }
-    }
-    layout();
-    const i = set ? index : Math.max(0, ALL.findIndex((o) => o.sid === sid && o.engine === engine));
-    if (!wasOpen) {
-      root.hidden = false;
-      document.documentElement.classList.add("drawer-open");
-      siblings().forEach((n) => { if (!n.inert) { n.inert = true; n.dataset.drawerInert = ""; } });
-      requestAnimationFrame(() => requestAnimationFrame(() => root.classList.add("is-open")));
-    }
-    state.index = i;
+  const others = () => [...document.body.children].filter((n) => n !== root && n.tagName !== "SCRIPT");
+  const open = (i, trigger) => {
+    state.trigger = trigger;
+    root.hidden = false;
+    document.documentElement.classList.add("drawer-open");
+    others().forEach((n) => { if (!n.inert) { n.inert = true; n.dataset.drawerInert = ""; } });
+    requestAnimationFrame(() => requestAnimationFrame(() => root.classList.add("is-open")));
+    state.index = -1;
     go(i, false);
-    if (!wasOpen) panel.focus({ preventScroll: true });
+    $(".drawer-title").focus({ preventScroll: true });
   };
-  // A tab: the same situation, another assistant. Inside a finding's set it stays in the set when that answer is in
-  // it; otherwise the drawer moves to the matrix's order of all 60, so swiping still walks the whole report.
-  const toEngine = (engine) => {
-    const { sid } = item();
-    const inList = state.list.findIndex((o) => o.sid === sid && o.engine === engine);
-    if (inList >= 0) { go(inList); return; }
-    open(sid, engine);
-  };
-
-  const hide = () => {
+  const close = () => {
     if (root.hidden) return;
     root.classList.remove("is-open");
     root.hidden = true;
     document.documentElement.classList.remove("drawer-open");
-    siblings().forEach((n) => { if ("drawerInert" in n.dataset) { n.inert = false; delete n.dataset.drawerInert; } });
+    others().forEach((n) => { if ("drawerInert" in n.dataset) { n.inert = false; delete n.dataset.drawerInert; } });
+    openers.forEach((o) => o.removeAttribute("aria-pressed"));
     if (state.trigger && state.trigger.isConnected) state.trigger.focus({ preventScroll: true });
   };
-  const close = () => {
-    if (state.pushed) { state.pushed = false; history.back(); return; } // popstate hides it
-    history.replaceState(history.state, "", location.pathname + location.search);
-    hide();
-  };
-  addEventListener("popstate", () => {
-    const m = location.hash.match(/^#conversation-([A-Za-z0-9]+)-([a-z]+)$/);
-    if (m && !root.hidden) {
-      const i = state.list.findIndex((o) => o.sid === m[1] && o.engine === m[2]);
-      if (i >= 0) go(i, false);
-    } else { state.pushed = false; hide(); }
-  });
-
-  root.addEventListener("click", (ev) => {
-    const t = ev.target.closest("button, a, [data-close]");
+  openers.forEach((o) => o.addEventListener("click", () => open(Number(o.dataset.rec), o)));
+  // R07: home's live preview links each record here as #c<n> (matrix order); the page opens on it
+  const asked = location.hash.match(/^#c(\d+)$/);
+  if (asked && records[Number(asked[1])]) open(Number(asked[1]), openers.find((o) => Number(o.dataset.rec) === Number(asked[1])));
+  root.addEventListener("click", (e) => {
+    const t = e.target.closest("[data-close], [data-step]");
     if (!t) return;
     if (t.matches("[data-close]")) { close(); return; }
-    if (t.matches(".drawer-tab")) { toEngine(t.dataset.engine); return; }
-    if (t.matches("[data-step]")) {
-      go(state.index + Number(t.dataset.step));
-      (t.disabled ? root.querySelector(`[data-step="${-Number(t.dataset.step)}"]`) : t).focus();
-      return;
-    }
-    if (t.matches(".citation")) {
-      // A citation points at the source list under its own answer, inside the slide it sits in
-      ev.preventDefault();
-      const li = t.closest(".drawer-slide")?.querySelector(`[data-src="${t.dataset.cite}"]`);
-      if (!li) return;
-      li.scrollIntoView({ block: "nearest", inline: "nearest", behavior: reduced() ? "auto" : "smooth" });
-      li.classList.add("is-flash");
-      setTimeout(() => li.classList.remove("is-flash"), 1400);
-      return;
-    }
-    if (t.matches("a[href^='#']")) hide(); // a source link leaves the drawer for the page's source table
+    go(state.index + Number(t.dataset.step));
+    (t.disabled ? root.querySelector(`[data-step="${-Number(t.dataset.step)}"]`) : t).focus();
   });
+  root.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") { close(); return; }
+    if ((e.key === "ArrowRight" || e.key === "ArrowLeft") && !e.target.closest("a")) {
+      e.preventDefault();
+      go(state.index + (e.key === "ArrowRight" ? 1 : -1));
+    }
+    if (e.key === "Tab") {
+      const f = [...root.querySelectorAll("button:not(:disabled), a[href]")].filter((n) => n.offsetParent);
+      if (!f.length) return;
+      if (e.shiftKey && document.activeElement === f[0]) { e.preventDefault(); f[f.length - 1].focus(); }
+      else if (!e.shiftKey && document.activeElement === f[f.length - 1]) { e.preventDefault(); f[0].focus(); }
+    }
+  });
+})();
 
-  root.addEventListener("keydown", (ev) => {
-    if (ev.key === "Escape") { ev.preventDefault(); close(); return; }
-    const tab = ev.target.closest(".drawer-tab");
-    if (tab) {
-      const i = tabs.indexOf(tab);
-      const to = { ArrowRight: i + 1, ArrowLeft: i - 1, Home: 0, End: tabs.length - 1 }[ev.key];
-      if (to === undefined) return;
-      ev.preventDefault();
-      const next = tabs[(to + tabs.length) % tabs.length];
-      toEngine(next.dataset.engine);
-      next.focus();
-      return;
-    }
-    // Arrow keys on the conversation step to the previous or next one
-    if ((ev.key === "ArrowRight" || ev.key === "ArrowLeft") && ev.target.closest(".drawer-body, .drawer-slide, .drawer-head") && !ev.target.matches("input, textarea")) {
-      ev.preventDefault();
-      go(state.index + (ev.key === "ArrowRight" ? 1 : -1));
-      return;
-    }
-    if (ev.key === "Tab") {
-      const focusable = [...root.querySelectorAll("button:not([disabled]), a[href], [tabindex='0']")].filter((n) => n.getClientRects().length && n.tabIndex >= 0);
-      const first = focusable[0], last = focusable[focusable.length - 1];
-      if (ev.shiftKey && document.activeElement === first) { ev.preventDefault(); last.focus(); }
-      else if (!ev.shiftKey && document.activeElement === last) { ev.preventDefault(); first.focus(); }
-    }
-  });
+// Figures draw once as they enter: the verdict's total bars and the sources bar grow from the left, the top picks'
+// threads draw turn to turn. Numbers never count. Reduced motion and no-JS get the finished figure from the first frame.
+(() => {
+  const figs = document.querySelectorAll(".draw");
+  if (!("IntersectionObserver" in window)) { figs.forEach((f) => f.classList.add("is-drawn")); return; }
+  const io = new IntersectionObserver((entries) => entries.forEach((e) => {
+    if (e.isIntersecting) { e.target.classList.add("is-drawn"); io.unobserve(e.target); }
+  }), { rootMargin: "0px 0px -8% 0px" });
+  figs.forEach((f) => io.observe(f));
+})();
 
-  // ---------------------------------------------------------------------------
-  // What opens it: matrix cells, finding buttons and their conversation rows
-  matrix.addEventListener("click", (ev) => {
-    const cell = ev.target.closest("a.cell");
-    if (!cell) return;
-    ev.preventDefault();
-    open(cell.dataset.sid, cell.dataset.engine, { trigger: cell });
-  });
-  matrix.addEventListener("keydown", (ev) => {
-    const cell = ev.target.closest("tbody a.cell");
-    const move = { ArrowRight: [0, 1], ArrowLeft: [0, -1], ArrowDown: [1, 0], ArrowUp: [-1, 0] }[ev.key];
-    if (!cell || !move) return;
-    const rows = [...matrix.tBodies[0].rows];
-    const r = rows.indexOf(cell.closest("tr")), c = cell.closest("td").cellIndex;
-    const target = rows[r + move[0]]?.cells[c + move[1]]?.querySelector("a.cell");
-    if (target) { ev.preventDefault(); target.focus(); }
-  });
+// R07. The matrix fills in the first time it comes up the screen, row by row (CSS .is-filling). It is hidden only while
+// it is still below the screen, never on it; already on screen at load, reduced motion and no JS: it is simply there.
+(() => {
+  const mx = document.querySelector("[data-fill]");
+  if (!mx || reduced() || !("IntersectionObserver" in window) || mx.getBoundingClientRect().top < innerHeight) return;
+  mx.querySelectorAll(".mr:not(.mr-head)").forEach((row, r) => row.querySelectorAll(".mc").forEach((c, k) => { c.style.setProperty("--r", r); c.style.setProperty("--c", k); }));
+  const near = new IntersectionObserver((es) => {
+    if (!es.some((e) => e.isIntersecting)) return;
+    near.disconnect();
+    if (mx.getBoundingClientRect().top > innerHeight) mx.classList.add("is-pre");
+  }, { rootMargin: "0px 0px 50% 0px" });
+  const enter = new IntersectionObserver((es) => {
+    if (!es.some((e) => e.isIntersecting)) return;
+    enter.disconnect();
+    near.disconnect();
+    mx.classList.remove("is-pre");
+    mx.classList.add("is-filling");
+  }, { rootMargin: "0px 0px -14% 0px" });
+  near.observe(mx);
+  enter.observe(mx);
+})();
 
-  page.querySelectorAll(".finding").forEach((finding) => {
-    const rows = [...finding.querySelectorAll(".evidence-row")];
-    const set = {
-      title: finding.querySelector("h3").textContent,
-      note: finding.querySelector(".evidence-note")?.textContent || "",
-      items: rows.map((a) => ({ sid: a.dataset.sid, engine: a.dataset.engine, why: a.querySelector(".ev-why").textContent })),
-    };
-    const button = finding.querySelector(".evidence-open");
-    button.setAttribute("aria-haspopup", "dialog");
-    button.addEventListener("click", (ev) => {
-      ev.preventDefault();
-      open(set.items[0].sid, set.items[0].engine, { set, index: 0, trigger: button });
-    });
-    rows.forEach((a, index) => a.addEventListener("click", (ev) => {
-      ev.preventDefault();
-      open(a.dataset.sid, a.dataset.engine, { set, index, trigger: a });
-    }));
-  });
-
-  // A shared link to one conversation opens it
-  const linked = location.hash.match(/^#conversation-([A-Za-z0-9]+)-([a-z]+)$/);
-  if (linked) open(linked[1], linked[2]);
+// R07. The ray's parallax on the cover: it drifts at a fifth of the scroll (an eighth on phones) while the cover is on
+// screen, by transform only. Reduced motion: it stays put.
+(() => {
+  const fig = document.querySelector(".ray-fig");
+  if (!fig || reduced()) return;
+  const narrow = matchMedia("(max-width: 760px)");
+  let queued = false;
+  const paint = () => { queued = false; const y = scrollY; if (y < innerHeight * 1.6) fig.style.transform = `translate3d(0, ${Math.min(y * (narrow.matches ? 0.12 : 0.2), innerHeight * 0.22).toFixed(1)}px, 0)`; };
+  addEventListener("scroll", () => { if (!queued) { queued = true; requestAnimationFrame(paint); } }, { passive: true });
 })();
