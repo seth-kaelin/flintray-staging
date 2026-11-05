@@ -643,3 +643,89 @@ body.p-sample-report .site-footer, .foot { background: var(--band); border-top: 
 @media (max-width: 1023px) { .fd + .fd { border-top: 0; } }
 /* The source types read on their bars and spacing, like Rival A's list; rules stay on the verdict and the matrix */
 .types li { border-bottom: 0; }
+
+/* ---------------------------------------------------------------- R10 (R10.md: change the system, not the list) */
+/* The ray travels: the cover's beam rests at 60deg below level, reaches 30% of the ray's width and swings 20deg either
+   way, ending clear of the headline and inside the screen at 1440. On phones the ray sits left at 76% of the width, so
+   the beam sweeps into the space beside the headline's short first line; the cover keeps its height. */
+.ray-fig .ray { --ray-aim: 6deg; --ray-len: 30%; }
+@media (max-width: 760px) {
+  .ray-fig { width: 74vw; height: calc((100vw - var(--x) * 1.5) * .5645); margin: 8px auto 0 0; }
+  .ray-fig .ray { --ray-aim: -34deg; --ray-len: 54%; }
+}
+/* Two navies 8.6 L* apart (the ground L* 4.4, the band L* 13.0), the site's own pair; mono nowhere */
+body.p-sample-report { --black: #0A0F1C; --deep: #0A0F1C; --band: #172139; --raised: #172139; --rim: #1F2B48; --blue: #A9C3E8;
+  --track: rgba(214, 231, 251, .16); --mute: #9AA6BD; --cap: #9AA6BD; --soft: #BCC7D8; --mono: var(--sans); }
+/* The outcome words (the lane's components.css, "R10: outcomes in words") win over this file's earlier chips */
+.chip, .chip.o-rec, .chip.o-sho, .chip.o-men, .chip.o-not, .chip.o-neg, .chip.chip-co, .pr .chip, .mc .chip, .read-o .chip {
+  min-height: 0; padding: 0; border: 0; border-radius: 0; background: none; box-shadow: none; outline: 0; }
+.chip, .chip.o-rec, .chip.o-sho, .chip.o-men, .chip.o-not, .chip.o-neg, .pr .chip, .mc .chip, .read-o .chip, .named .chip, .rec-sum .chip {
+  color: color-mix(in srgb, var(--o, var(--mute)) calc(var(--f, 1) * 100%), var(--mute)); font-weight: calc(400 + var(--w, 0) * var(--f, 1)); }
+.chip.chip-co, .pv-co-v .chip.chip-co, .co-sum .chip, .chip-co.o-not { color: var(--orange); }
+
+/* Readable secondary text: 15px or more on laptops, 14px or more on phones, in the main sans */
+@media (min-width: 761px) {
+  .cover-meta, .fd-v em, .big em, .vt em, .co-sum em, .sum em, .of, .set-count, .turn-h em, .vh > p, .vh-w, .read, .read-h,
+  .read-t, .read-o .chip, .mc-t, .read-t .mc-t, .mr-head > p, .ms, .sk-l, .ty-p, .ts-p, .ts-n, .foot .stamp, .rec-sum dt,
+  .cites ul, .fig-cap, .chip, .mc .chip, .pv-pos, .rec-pos, .cites li, .named li, .none { font-size: 15px; }
+}
+@media (max-width: 760px) {
+  .cover-meta, .fd-v em, .big em, .vt em, .co-sum em, .sum em, .of, .set-count, .turn-h em, .vh > p, .vh-w, .read, .read-h,
+  .read-t, .mc-t, .ms, .ty-p, .ts-p, .ts-n, .foot .stamp, .rec-sum dt, .cites ul, .fig-cap, .chip, .vc-e, .pm-h,
+  .pm-tabs button, .pr > p, .pr > p:first-child, .pr-t, .pr > p.pr-t, .pr-head > p, .th-sum li, .jump-here, .vh > p:nth-child(n) { font-size: 14px; }
+}
+
+/* Space instead of lines: rules stay only on the verdict table and the source table */
+.site-nav { border-bottom: 0; }
+.site-nav .nav-book, .site-nav .nav-cta { border-left: 0; }
+.jump { border-top: 0; border-bottom: 0; }
+.jump li, .jump .jump-cta { border-left: 0; }
+.jump a { color: var(--mute); }
+.jump ul a[aria-current], .jump.is-open ul a[aria-current] { color: var(--ink); font-weight: 500; box-shadow: none; }
+.fd, .fd:first-child, .fd:last-child, .fd + .fd { border-left: 0; border-top: 0; background-image: none; }
+.mr, .mr-head, .mr > p, .mr > p:first-child { border: 0; box-shadow: none; }
+.mx-sum > div { border-top: 0; padding-top: 0; }
+/* The company's row is a sentence of the matrix's own words, not a boxed fact: no fill, no rule */
+.co-row { background: none; box-shadow: none; border: 0; padding-left: 0; padding-right: 0; }
+@media (max-width: 760px) {
+  .pr, .pr-head, .pm-tabs { border-bottom: 0; box-shadow: none; }
+  .pm-tabs button { color: var(--mute); }
+  .pm-tabs button[aria-selected="true"] { color: var(--ink); font-weight: 600; box-shadow: none; }
+}
+
+/* On phones the situation list is compact: two columns of eight, each situation over its outcome and turn, so one
+   assistant's fifteen conversations fit one screen. The column headers stay for screen readers. */
+@media (max-width: 760px) {
+  .pt > [role="table"] { position: relative; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: repeat(8, auto); grid-auto-flow: column; column-gap: 20px; margin-top: 8px; }
+  .pr.pr-head { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+  .pr:not(.pr-head) { display: grid; grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "s s" "o t"; align-content: center; row-gap: 2px; min-height: 54px; padding: 6px 0; }
+  .pr:not(.pr-head) > p { min-height: 0; padding: 0; }
+  .pr:not(.pr-head) > p:first-child { grid-area: s; color: var(--mute); font: 400 14px/1.25 var(--sans); }
+  .pr:not(.pr-head) > .pr-ra { grid-area: o; }
+  .pr:not(.pr-head) > p.pr-t { grid-area: t; justify-content: flex-end; color: var(--mute); }
+  .pr .chip { font-size: 15px; line-height: 1.25; white-space: nowrap; }
+}
+
+/* Full laptop compositions. The two findings each fill their half: the figure at 128px with its caption beside it on
+   its baseline. Rival A's five outcomes run across the width, and the turn bar under them runs the full width too. */
+@media (min-width: 1024px) {
+  .fd { display: flex; align-items: flex-end; gap: 28px; padding-top: 48px; padding-bottom: 48px; }
+  .fd-v strong { font-size: 128px; }
+  .fd-l { margin: 0 0 10px; max-width: 320px; }
+  .mx-sum { grid-template-columns: minmax(0, 1fr); row-gap: 72px; }
+  .mx-out, .mx-turns { grid-column: 1 / -1; margin-top: 0; }
+  .mx-out .sum { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); column-gap: var(--gap); margin-top: 24px; }
+  .mx-out .sum li { display: grid; grid-template-rows: auto auto auto; row-gap: 10px; border: 0; }
+  .mx-out .sum li > em { justify-self: start; }
+  .mx-out .sum li > em strong { font-size: 44px; }
+  .mx-turns .seg { height: 40px; margin-top: 24px; }
+  .mx-turns .th-sum li > em strong { font-size: 32px; }
+}
+@media (max-width: 760px) { .js .pm-tabs { border-bottom: 0; } }
+.nav-links a[aria-current] { box-shadow: none; color: var(--ink); }
+/* Bars and their tracks are fills, never outlines */
+.sk-other, .sw-other { box-shadow: none; background: var(--track); }
+/* Under 360px the phone list holds one situation a row, as in r09 */
+@media (max-width: 359px) {
+  .pt > [role="table"] { grid-template-columns: minmax(0, 1fr); grid-template-rows: none; grid-auto-flow: row; }
+}

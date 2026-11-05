@@ -542,8 +542,9 @@ const FR = (() => {
 //   tally  its conversation marks fill in reading order, the top picks first, as a typewriter fills a page (900 ms)
 //   count  its [data-count] figures count up once from 0 to their exact value (900 ms, in a box of the final width, the
 //          "of 592" base on screen throughout), starting only when the whole figure is in view; no other number counts
-//   fill   a matrix stamps in row by row, 40 ms a row and 22 ms a column: Recommended fills and Shortlisted takes its
-//          outline (--f), each over 420 ms; every word is on screen throughout
+//   fill   a matrix stamps in row by row, 40 ms a row and 22 ms a column: R10, with no chips, each outcome word settles
+//          from the quiet tone to its rank's colour and weight (--f) and rises 4px, over 420 ms; every word is on
+//          screen at full opacity throughout
 //   steps  the method's steps: each step's rule, node and hop draw, one after another, and on laptops the threads
 //          above them draw step to step
 //   weave  the threads under the hero: three strands draw from the margin's node to the rule, a beat apart
@@ -594,14 +595,13 @@ const FR = (() => {
       at: (el, t, end, s) => s.nums.forEach(([n, to]) => { n.textContent = String(end ? to : Math.round(to * out(clamp(t / 900)))); }),
     },
     fill: {
-      prep: (el) => ({ cells: [...el.querySelectorAll(".chip:is(.o-rec, .o-sho)")].map((n) => { const [r, c] = place(n); return [n, r * 40 + c * 22, n.classList.contains("o-rec")]; }) }),
-      dur: (el, s) => 420 + Math.max(0, ...s.cells.map(([, d]) => d)),
-      at: (el, t, end, s) => s.cells.forEach(([n, d, rec]) => {
-        if (end) return clear(n, "--f", "color");
-        const e = out(clamp((t - d) / 420));
+      prep: (el) => ({ cells: [...el.querySelectorAll(".chip")].map((n) => { const [r, c] = place(n); return [n, r * 40 + c * 22]; }) }),
+      dur: (el, s) => 420 + Math.min(880, Math.max(0, ...s.cells.map(([, d]) => d))),
+      at: (el, t, end, s) => s.cells.forEach(([n, d]) => {
+        if (end) return clear(n, "--f", "transform");
+        const e = out(clamp((t - Math.min(d, 880)) / 420));
         n.style.setProperty("--f", e.toFixed(3));
-        // Recommended's dark word swaps in once the fill gives it more contrast than the light one
-        if (rec) n.style.color = e < 0.55 ? "var(--ink)" : "var(--black)";
+        n.style.transform = `translateY(${((1 - e) * 4).toFixed(2)}px)`;
       }),
     },
     steps: {

@@ -497,45 +497,49 @@ html.menu-open { overflow: hidden; }
 .price-line { margin-top: 28px; font: 500 22px/1.3 var(--sans); letter-spacing: -0.01em; color: var(--ink); }
 
 /* ray: begin (build_real_report.py copies this block into the standalone report) */
-/* The ray (build_site.render_ray). R08, measured on r07 in Safari on an iPhone 15: the hero changed 0.6% of its pixels in
-   3.5 s, so nobody saw the sweep; the beam became a searchlight with its own layer. R09 (Opus R fix 1, A ray notes):
-   eight idle frames over 8 s still looked the same, and the beam ran long and bright, a stage spotlight whose tail hazed
-   off the edge at 1440. Now it is shorter and softer, closer to the brand file's short soft glow, and it moves more:
-     0.00 s  FRAME 1   the manta, rim-lit, on the navy; the lamp is off
+/* The ray (build_site.render_ray). R08 made the beam its own layer; R09 swept it 12deg, and judges still saw eight idle
+   frames 1 s apart as the same: at a difference someone sees in a still (0.3), r09's phone hero changed 1.5% of the
+   screen in 8 s. R10 (R10.md, "the ray travels"; motiongate's 8 s idle check):
+     0.00 s  FRAME 1   the manta, dark dorsal and lit underside, on the navy; the lamp is off
      0.15 s  LIGHT UP  the lamp (the cone and the eye's glow) comes up over 1 s, the eye flaring first
-     0.90 s  SWEEP     the beam travels from -12deg to +12deg of its resting angle and back, 3.5 s each way, eased in and
-                       out (one cycle in 7 s, 0.14 Hz, under R08's 0.15 Hz cap)
-     1.90 s  BREATH    the beam's brightness breathes from 1 to .8 and back, 2 s each way, offset from the sweep
-   and the whole figure glides 5px with under a degree of roll, 9 s each way. Fin undulation was tried and dropped: on
-   the raster body it read as a wobble, not a wingbeat. Everything animates transform and opacity only. Resting angle:
-   the brand file's 54deg below level; on phones 60deg, so more of the beam stays on the screen. Reduced motion or
-   html.ray-still: the lamp is on and the beam rests at that angle. */
-.ray { position: relative; display: block; width: 100%; aspect-ratio: 1240 / 700; }
+     1.50 s  SWEEP     with the lamp up, the beam travels --ray-swing (20deg, 24 on phones) either side of its resting
+                       angle, 4 s each way, eased in and out: one cycle in 8 s, 0.125 Hz, under the 0.15 Hz cap
+     1.50 s  GLIDE     the whole figure glides 40px across and 24px up with 2.4deg of roll on laptops (48px and 28px on
+                       phones), 12 s each way (0.042 Hz), slower than the sweep and never in step with it; the page's
+                       parallax moves it against the words on scroll
+   The beam is a searchlight with a bright core and crisp sides (a 1.4deg feather) across a 40deg spread, holding its light along its length
+   and ending in a short, clean fade inside its hero, with no haze. Every page sets its own resting angle (--ray-aim),
+   length (--ray-len) and swing, so the beam never reaches the headline, the form card or the screen edge. Everything
+   animates transform and opacity only. Reduced motion or html.ray-still: the lamp is on and the beam rests. */
+.ray { position: relative; display: block; width: 100%; aspect-ratio: 1240 / 700; --ray-swing: 20deg; --glide-x: 20px; --glide-y: 12px; }
 .ray-body { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
 .ray-lamp, .ray-aim, .ray-cone, .ray-eye { position: absolute; display: block; pointer-events: none; }
 .ray-lamp { inset: 0; }
 /* The pivot is the light point under the head; the cone's box has its corner there and opens down and to the right */
-.ray-aim { left: 72.016%; top: 42.143%; width: var(--ray-len, 40%); aspect-ratio: 1; transform-origin: 0 0; transform: rotate(var(--ray-aim, 0deg)); }
+.ray-aim { left: 72.016%; top: 42.143%; width: var(--ray-len, 34%); aspect-ratio: 1; transform-origin: 0 0; transform: rotate(var(--ray-aim, 0deg)); }
 .ray-cone { inset: 0; transform-origin: 0 0;
-  background: conic-gradient(from 0deg at 0 0, rgba(214, 231, 251, 0) 125deg, rgba(214, 231, 251, .14) 130deg, rgba(226, 238, 253, .46) 136deg,
-    rgba(242, 247, 255, .88) 144deg, rgba(226, 238, 253, .46) 152deg, rgba(214, 231, 251, .14) 158deg, rgba(214, 231, 251, 0) 163deg);
-  -webkit-mask-image: radial-gradient(farthest-side at 0 0, #000 0, rgba(0, 0, 0, .9) 8%, rgba(0, 0, 0, .42) 38%, rgba(0, 0, 0, .1) 66%, transparent 86%);
-  mask-image: radial-gradient(farthest-side at 0 0, #000 0, rgba(0, 0, 0, .9) 8%, rgba(0, 0, 0, .42) 38%, rgba(0, 0, 0, .1) 66%, transparent 86%); }
-.ray-eye { left: 72.016%; top: 42.143%; width: 7%; aspect-ratio: 1; margin: -3.5% 0 0 -3.5%; border-radius: 50%;
-  background: radial-gradient(closest-side, rgba(255, 255, 255, .78), rgba(230, 240, 255, .28) 45%, rgba(214, 231, 251, 0)); }
-@media (max-width: 760px) { .ray { --ray-len: 100%; --ray-aim: 6deg; } }
+  background: conic-gradient(from 0deg at 0 0, rgba(214, 231, 251, 0) 124deg, rgba(220, 234, 252, .56) 125.4deg, rgba(228, 239, 253, .66) 132deg,
+    rgba(246, 250, 255, .92) 144deg, rgba(228, 239, 253, .66) 156deg, rgba(220, 234, 252, .56) 162.6deg, rgba(214, 231, 251, 0) 164deg);
+  -webkit-mask-image: radial-gradient(farthest-side at 0 0, #000 0, rgba(0, 0, 0, .96) 20%, rgba(0, 0, 0, .88) 72%, rgba(0, 0, 0, .8) 91%, transparent 98%);
+  mask-image: radial-gradient(farthest-side at 0 0, #000 0, rgba(0, 0, 0, .96) 20%, rgba(0, 0, 0, .88) 72%, rgba(0, 0, 0, .8) 91%, transparent 98%); }
+.ray-eye { left: 72.016%; top: 42.143%; width: 6%; aspect-ratio: 1; margin: -3% 0 0 -3%; border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(255, 255, 255, .9), rgba(230, 240, 255, .34) 45%, rgba(214, 231, 251, 0)); }
+/* Laptops: a narrower, more focused cone (32deg), its light gathered in the core */
+@media (min-width: 761px) {
+  .ray-cone { background: conic-gradient(from 0deg at 0 0, rgba(214, 231, 251, 0) 128deg, rgba(220, 234, 252, .42) 129.4deg, rgba(228, 239, 253, .58) 135deg,
+    rgba(248, 251, 255, .95) 144deg, rgba(228, 239, 253, .58) 153deg, rgba(220, 234, 252, .42) 158.6deg, rgba(214, 231, 251, 0) 160deg); }
+}
+@media (max-width: 760px) { .ray { --ray-swing: 24deg; --glide-x: 24px; --glide-y: 14px; } }
 @media (prefers-reduced-motion: no-preference) {
-  html:not(.ray-still) .ray { animation: ray-glide 9s cubic-bezier(.45, 0, .55, 1) -4.5s infinite alternate; will-change: transform; }
-  html:not(.ray-still) .ray-cone { animation: ray-sweep 3.5s cubic-bezier(.45, 0, .55, 1) .9s infinite alternate both; will-change: transform; }
-  html:not(.ray-still) .ray-aim { animation: ray-breath 2s cubic-bezier(.45, 0, .55, 1) 1.9s infinite alternate both; will-change: opacity; }
+  html:not(.ray-still) .ray { animation: ray-glide 12s cubic-bezier(.45, 0, .55, 1) 1.5s infinite alternate both; will-change: transform; }
+  html:not(.ray-still) .ray-cone { animation: ray-sweep 4s cubic-bezier(.45, 0, .55, 1) 1.5s infinite alternate both; will-change: transform; }
   .ray-lamp { animation: ray-on 1s cubic-bezier(.3, 0, .2, 1) .15s both; will-change: opacity; }
   .ray-eye { animation: ray-flare 1.2s cubic-bezier(.2, .7, .2, 1) .1s both; }
 }
-@keyframes ray-sweep { from { transform: rotate(-12deg); } to { transform: rotate(12deg); } }
-@keyframes ray-breath { from { opacity: 1; } to { opacity: .8; } }
+@keyframes ray-sweep { from { transform: rotate(calc(-1 * var(--ray-swing))); } to { transform: rotate(var(--ray-swing)); } }
 @keyframes ray-on { from { opacity: 0; } 30% { opacity: .3; } to { opacity: 1; } }
 @keyframes ray-flare { from { transform: scale(.4); } 45% { transform: scale(1.5); } to { transform: none; } }
-@keyframes ray-glide { from { transform: translate3d(0, 3px, 0) rotate(.5deg); } to { transform: translate3d(0, -2px, 0) rotate(-.4deg); } }
+@keyframes ray-glide { from { transform: translate3d(calc(-1 * var(--glide-x)), var(--glide-y), 0) rotate(1.2deg); } to { transform: translate3d(var(--glide-x), calc(-1 * var(--glide-y)), 0) rotate(-1.2deg); } }
 [data-parallax] { will-change: transform; }
 /* ray: end */
 /* Reveals (site.js, "reveal: begin"). The start state of each kind, held only under html.rv (the script adds it) and
@@ -546,17 +550,26 @@ html.menu-open { overflow: hidden; }
 .rv [data-reveal="rows"][data-reveal-wait] > *, .rv [data-reveal="rule"][data-reveal-wait] { --k: 0; }
 .rv [data-reveal="bars"][data-reveal-wait] :is(.fa-bar i, .bar i, .sk, .sg, .ty-bar i) { transform: scaleX(0); }
 .rv [data-reveal="tally"][data-reveal-wait] .fa-tally { clip-path: polygon(0 0, 0 0, 0 0); }
-.rv [data-reveal="fill"][data-reveal-wait] .chip { --f: 0; }
-.rv [data-reveal="fill"][data-reveal-wait] .chip.o-rec { color: var(--ink); }
 .rv [data-reveal="steps"][data-reveal-wait] .fa-steps > li, .rv .fa-steps[data-reveal="steps"][data-reveal-wait] > li { --rv: 0; --rd: 0; }
 .rv [data-reveal="steps"][data-reveal-wait] .fa-steps, .rv .fa-steps[data-reveal="steps"][data-reveal-wait] { --rl: 0; }
 .rv [data-reveal="steps"][data-reveal-wait] [data-draw], .rv [data-reveal="weave"][data-reveal-wait] path { stroke-dashoffset: 1; }
 .rv [data-reveal="weave"][data-reveal-wait] i[style] { opacity: 0; }
 :is(.bar i, .sk, .sg, .ty-bar i) { transform-origin: 0 50%; }
-/* The matrix code's two marks that stamp in (fill): Recommended a solid light fill that starts as its own outline,
-   Shortlisted a 1px outline at 40% white (Opus A fix 10). --f is 1 at rest. */
-.chip.o-rec { background: rgba(214, 231, 251, var(--f, 1)); box-shadow: inset 0 0 0 1px rgba(214, 231, 251, calc(1 - var(--f, 1))); }
-.chip.o-sho { background: none; box-shadow: inset 0 0 0 1px rgba(238, 243, 251, calc(.4 * var(--f, 1))); }
+/* R10: outcomes in words, no pills, outlines or fills: weight and colour carry the rank. Recommended is the
+   brightest ink at 600, Shortlisted the brand's light blue at 500, Mentioned quiet, Not named a visible word */
+.chip, .chip.o-rec, .chip.o-sho, .chip.o-men, .chip.o-not, .chip.o-neg, .chip.chip-co { min-height: 0; padding: 0; border: 0; border-radius: 0;
+  background: none; box-shadow: none; outline: 0; line-height: 1.2; letter-spacing: 0; }
+.chip { --f: 1; font-weight: calc(400 + var(--w, 0) * var(--f)); color: color-mix(in srgb, var(--o, var(--mute)) calc(var(--f) * 100%), var(--mute)); }
+.chip.o-rec { --o: #F5F8FD; --w: 200; }
+.chip.o-sho { --o: var(--blue); --w: 100; }
+.chip.o-men { --o: #A7B2C6; --w: 0; }
+.chip.o-not { --o: var(--mute); --w: 0; }
+.chip.o-neg { --o: #A7B2C6; --w: 0; text-decoration: underline wavy rgba(214, 231, 251, .55) 1px; text-underline-offset: 4px; }
+.chip.chip-co { --o: var(--orange); color: var(--orange); }
+/* The matrix stamps in (fill): row by row, each word settles from the quiet tone to its rank's colour and weight and
+   rises 4px, at full opacity throughout */
+.rv [data-reveal="fill"][data-reveal-wait] .chip { --f: 0; transform: translateY(4px); }
+.chip { display: inline-block; }
 /* reveal: end */
 @media (max-width: 359px) {
   /* iPhone SE in Safari: both phone-bar buttons stay on one line */
@@ -2070,3 +2083,184 @@ a.g-more-i .g-claim::after { content: "\2192"; display: inline-block; margin-lef
 .g-essay + .g-essay { border-left: 0; }
 /* the narrowest phones (320 to 380): the mark and the word a touch smaller, so the wordmark stays clear of the centre of the bar */
 @media (max-width: 380px) { .site-nav .wordmark { font-size: 17px; } .site-nav .wordmark .hallmark { height: 16px; margin-right: 8px; } }
+
+/* R10 (R10.md): change the system, not the list. Motion you can see in a still, data without chips or boxes, space
+   instead of lines, full laptop compositions, readable secondary text, and the ray's dark body. Built into ../../fr.css
+   last, by tools/build_site.py; edit here, never there. */
+
+/* ---------- The ray travels: where each hero's beam rests, how far it reaches and how far it swings ----------
+   The beam stays inside its hero: clear of the headline, the form card and the screen edge at both ends of the sweep
+   (measured in rounds/r10/BUILD.md). Phones keep the hero's height, so the headline doesn't move. */
+.g-ray .ray { --ray-aim: 6deg; --ray-len: 34%; }
+.aud-ray .ray { --ray-aim: -24deg; --ray-len: 29%; }
+@media (min-width: 761px) { .aud-ray { margin-bottom: calc(-0.16 * min(100%, 520px) + 64px); } }
+@media (min-width: 1024px) { .aud-ray { width: min(100%, 680px); margin-bottom: calc(-0.16 * min(100%, 680px) + 72px); } }
+@media (max-width: 760px) {
+  .g-ray { width: 74vw; height: calc(var(--rw) * .5645); margin: 0 auto 0 0; }
+  .g-ray .ray { --ray-aim: -36deg; --ray-len: 54%; }
+  .aud-ray { width: 76vw; margin: -8px auto calc(-11.5vw + 28px) 0; }
+  .aud-ray .ray { --ray-aim: -42deg; --ray-len: 51%; --ray-swing: 23deg; }
+}
+@media (max-width: 380px) {
+  .g-ray { height: calc(var(--rw) * .5645); }
+}
+
+/* ---------- Two navies you can tell apart: the ground at L* 4.4 and the band at L* 13.0, 8.6 apart in CIELAB (r09's
+   pair was 4.3 apart), edge to edge. The brand's light blues are the accents: the lit mark, Shortlisted, the bars. ---------- */
+:root { --black: #0A0F1C; --deep: #0A0F1C; --band: #172139; --raised: #172139; --panel: #172139; --rim: #1F2B48;
+  --lit: #D6E7FB; --blue: #A9C3E8; --track: rgba(214, 231, 251, .16);
+  --mute: #9AA6BD; --cap: #9AA6BD; --soft: #BCC7D8;
+  /* Mono only ever carried counted numbers; R10 keeps it nowhere (Opus: two type voices, a coded look) */
+  --mono: var(--sans); }
+body, .site-nav, .menu-sheet { background-color: var(--black); }
+
+/* ---------- Readable secondary text: 14px or more on phones, 15px or more on laptops, in the main sans ---------- */
+:root { --t-meta: 15px; --t-cap: 15px; }
+@media (max-width: 760px) { :root { --t-meta: 14px; --t-cap: 14px; } }
+.person-name, .pv-pos, .pv-co-v em, .stamp, .g-n small { font-family: var(--sans); font-variant-numeric: tabular-nums; letter-spacing: 0; }
+@media (min-width: 761px) {
+  .person-name, .pv-label, .pv-co-v em, .pv-read, .pv-grid .pv-mk, .pv-grid .pv-mk-h, .pv-grid .pv-h, .chip, .pv-step, .pv-pos,
+  .pv .rec-sum dt, .pv .turn-h em, .pv .named li, .pv .none, .pv .cites ul, .stamp, .g-plans tbody th, .g-form .letter label,
+  .letter label, .aud-facts dt, .pv-co-h, .convo-row .meta-line, .convo-row .callout, .sample-caption, .foot-legal, .g-src,
+  .g-product, .aud-bars dd, .field label, .audit-form label, .form-note, .pv-cell { font-size: 15px; }
+}
+@media (max-width: 760px) {
+  .person-name, .pv-label, .pv-co-v em, .pv-read, .pv-grid .pv-mk, .chip, .pv-step, .pv-pos, .pv-tabs button, .pv-cell,
+  .pv .rec-sum dt, .pv .turn-h em, .pv .named li, .pv .none, .pv .cites ul, .stamp, .g-plans tbody th, .g-plans tbody td[data-label]::before,
+  .aud-facts dt, .pv-co-h, .convo-row .meta-line, .convo-row .callout, .g-src, .g-product, .foot-legal, .field label, .audit-form label { font-size: 14px; }
+}
+
+/* ---------- Space instead of lines. Hairlines stay only on the form's fields (and the report's verdict and source
+   tables); everything else is separated by space, type and the two navies ---------- */
+.site-nav { border-bottom: 0; box-shadow: none; }
+.nav-book { box-shadow: none; text-decoration: underline; text-decoration-color: transparent; text-underline-offset: 6px; }
+.nav-book:hover { background: transparent; box-shadow: none; text-decoration-color: currentColor; }
+.menu-toggle { border-left: 0; }
+.g-strip, .g-figs, .g-figs > li, .g-figs .is-lead, .g-cases, .g-case, .g-more, .g-more-i, .g-src, .g-book, .g-terms, .g-policy,
+.request-sheet, .g-request-copy, .foot-legal, .site-footer, .pv-window, .pv-index, .pv-top, .pv-nav, .pv-step, .pv-co,
+.pv .rec-sum, .pv .rec-sum > div, .pv-tabs, .pv-tabs button, .g-plans table, .g-plans th, .g-plans td, .g-plans tr,
+.aud-lede, .aud-facts, .aud-facts > div, .aud-bars, .aud-plans, .aud-plans > li, .aud-request, .aud-policy, .aud-partners,
+.faq-item, .faq-item > summary, .fa .g-fold > summary, .g-fold > summary, .g-essay, .g-view, .g-steps > li, .aud-steps > li {
+  border-top: 0; border-bottom: 0; border-left: 0; border-right: 0; box-shadow: none; }
+.g-plans th, .g-plans td, .g-plans h3, .g-essay, .g-view, .faq-item, .aud-policy, .aud-partners, .aud-plans > li, .aud-facts > div,
+.aud-steps > li, .g-steps > li, .g-plans [data-label] { background-image: none; }
+.pv-grid > *, .pv-cell, .pv-grid .pv-h, .pv-grid .pv-mk { border: 0; box-shadow: none; }
+.fa-bar.is-you { box-shadow: none; }
+.pv .turn.is-lit::before, .pv .turn.is-lit::after { border: 0; }
+.weave { display: none; }
+
+/* ---------- Secondary actions are plain text links; the one filled button is the primary action ---------- */
+.btn-ghost { min-height: var(--tap); padding: 0; background: transparent; box-shadow: none; color: var(--ink); gap: 10px;
+  text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 6px; text-decoration-color: rgba(238, 243, 251, .45); }
+.btn-ghost:hover { background: transparent; box-shadow: none; text-decoration-color: var(--ink); }
+
+/* ---------- The sticky bar: the primary action fills the bar; "Book a call" is a plain text link beside it ---------- */
+.cta-bar-book { box-shadow: none; padding: 0 4px 0 12px; text-decoration: underline; text-underline-offset: 5px; text-decoration-color: rgba(238, 243, 251, .45); }
+.cta-bar-main { flex: 1 1 auto; }
+.cta-bar { border-top: 0; box-shadow: none; }
+
+.pv-cell, .pv-cell.is-recommended, .pv-cell.is-shortlisted, .pv-cell.is-mentioned { background: transparent; box-shadow: none; outline: 0; color: var(--ink); }
+.pv-cell[aria-pressed="true"] { background: var(--rim); box-shadow: none; }
+@media (hover: hover) and (pointer: fine) { .pv-cell:hover, .pv-cell:not(.is-recommended):hover { background: var(--rim); } }
+
+/* ---------- The outcome words (components.css, "R10: outcomes in words") win over every earlier layer's chip ---------- */
+.chip, .chip.o-rec, .chip.o-sho, .chip.o-men, .chip.o-not, .chip.o-neg, .chip.chip-co, .pv-co-v .chip, .pv .named .chip, .pr .chip, .mc .chip {
+  min-height: 0; padding: 0; border: 0; border-radius: 0; background: none; box-shadow: none; outline: 0; }
+.chip, .chip.o-rec, .chip.o-sho, .chip.o-men, .chip.o-not, .chip.o-neg, .pv-co-v .chip, .pv .named .chip, .pr .chip, .mc .chip, .pv-cell .chip, .pv-cell.is-recommended .chip, .pv-cell.is-shortlisted .chip, .pv-cell[aria-pressed="true"] .chip {
+  color: color-mix(in srgb, var(--o, var(--mute)) calc(var(--f, 1) * 100%), var(--mute)); font-weight: calc(400 + var(--w, 0) * var(--f, 1)); }
+.chip.chip-co, .pv-co-v .chip.chip-co, .co-sum .chip, .chip-co.o-not { color: var(--orange); }
+
+/* ---------- Lines, continued: the earlier layers' own selectors, one step stronger ---------- */
+:root .site-nav :is(.nav-book, .nav-cta) { border-left: 0; }
+:root .fa .g-fold:not(.g-steps .g-fold) > summary, :root .fa .g-aside.g-fold > summary, :root .fa .g-note.g-fold > summary { border-top: 0; }
+:root .g-more-i, :root .g-more-i + .g-more-i { border: 0; }
+:root .g-plans thead th, :root .g-plans thead th.is-start, :root .g-plans th, :root .g-plans td, :root .g-plans tr, :root .g-plans thead h3,
+:root .g-plans thead th:nth-of-type(n) h3, :root .g-plans thead th:nth-of-type(n + 2) h3, :root .g-plans tr.is-price td:nth-child(n),
+:root .g-plans tr.is-price td:nth-child(n + 3), :root .g-plans thead .g-product, :root .g-plans thead th:nth-of-type(n) .g-product { border: 0; box-shadow: none; background-image: none; }
+:root .g-steps li, :root .g-steps li:nth-child(n), :root .g-steps li:first-child { border-left: 0; border-bottom: 0; }
+:root .g-form .request-sheet { border-top: 0; }
+:root .aud .faq-item, :root .aud-faq > .faq-item, :root .aud-faq > .faq-item:first-child, :root .aud-plans > li, :root .aud-facts > div,
+:root .aud-facts > div:first-child, :root .faq-item { border: 0; background-image: none; }
+:root .pv-step { border: 0; }
+:root .pv-step:disabled { color: var(--mute); }
+@media (max-width: 760px) {
+  :root .pv-tabs button, :root .pv-tabs button:first-child { border-left: 0; }
+  :root .pv-tabs button[aria-pressed="true"] { box-shadow: none; color: var(--ink); font-weight: 600; }
+  :root .pv-tabs button { color: var(--mute); }
+  :root .g-plans tbody th, :root .g-plans tbody td[data-label]::before { font-size: 14px; }
+}
+:root .btn-ghost, :root .fa .btn-ghost, :root .g-after .btn-ghost, :root .g-actions .btn-ghost { box-shadow: none; background: transparent; }
+:root .aud-bars > div { border-bottom: 0; }
+:root .nav-links a[aria-current] { box-shadow: none; color: var(--ink); }
+:root .pv-cell[aria-pressed="true"], :root .pv-cell.is-recommended[aria-pressed="true"] { background: transparent; box-shadow: none; }
+:root .pv-cell[aria-pressed="true"] .chip { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 6px; text-decoration-color: var(--lit); }
+@media (max-width: 760px) { :root .fa .g-plans tbody tr th, :root .g-plans tbody tr th { font-size: 14px; } }
+/* Bars and their tracks are fills, never outlines */
+:root .sk, :root .sk.sk-other, :root .pv .sk-other, :root .fa-bar, :root .bar, :root .ty-bar { box-shadow: none; }
+:root .sk.sk-other, :root .pv .sk-other, :root .pv .sw-other { background: var(--track); box-shadow: none; }
+:root .g-plans tbody th, :root .g-plans tbody tr th, :root .g-plans tbody td { background-image: none; }
+
+/* ---------- The preview: the product on the band itself, no pane, no boxed company row, the key in the matrix's
+   own words (Rival A's outcome in Shortlisted's blue, as in its cells) ---------- */
+:root .pv-co { box-shadow: none; background: none; padding-left: 0; padding-right: 0; }
+:root .pv-read i { box-shadow: none; padding: 0; min-height: 0; border-radius: 0; color: var(--blue); font-weight: 500; }
+:root .pv-window, :root .pv-index, :root .pv-convo { background: transparent; }
+
+/* ---------- On phones the situation list is compact: two situations to a row, each situation beside its outcome, so
+   an assistant's fifteen conversations take eight rows, one screen. The open conversation still opens under its row. */
+@media (max-width: 760px) {
+  :root .pv-grid { grid-template-columns: minmax(0, .82fr) minmax(0, 1.18fr) minmax(0, .82fr) minmax(0, 1.18fr); grid-auto-flow: row dense; }
+  :root .pv-grid .pv-mk { min-height: 48px; padding: 4px 6px 4px 0; font: 400 14px/1.2 var(--sans); color: var(--mute); }
+  :root .pv-grid .pv-mk:nth-of-type(2n + 7) { padding-left: 12px; }
+  :root .pv-cell { min-height: 48px; padding: 0 6px 0 2px; }
+  :root .pv-cell::after { content: none; }
+  :root .pv-cell .chip { font-size: 14px; white-space: nowrap; }
+}
+
+/* ---------- Laptops: the policy line and the fold beside it share the row, so neither half is blank ---------- */
+@media (min-width: 1024px) {
+  :root .g-terms { grid-template-columns: repeat(12, minmax(0, 1fr)); align-items: start; }
+  :root .g-policy { grid-column: 1 / span 7; padding-bottom: 0; }
+  :root .g-terms .g-note { grid-column: 9 / -1; }
+}
+:root .pv .rec-sum, :root .pv .rec-sum > div, :root .pv .rec-sum dt, :root .pv .rec-sum dd { border: 0; box-shadow: none; }
+:root .g-after .btn-ghost, :root .btn-ghost { width: auto; justify-content: flex-start; }
+
+/* ---------- Audit: the steps are a timeline, drawn as they arrive. A rail runs down the left from node to node, each
+   step's segment and node drawing in turn (site.js, "steps": --rv draws the segment, --rd the node). No row rules. ---------- */
+:root .aud-steps > li { padding: 0 0 40px 44px; }
+:root .aud-steps > li:last-child { padding-bottom: 0; }
+:root .aud-steps > li::after { left: 4px; right: auto; top: 18px; bottom: -6px; width: 1px; height: auto; background: rgba(214, 231, 251, .5);
+  transform-origin: 50% 0; transform: scaleY(var(--rv, 1)); }
+:root .aud-steps > li:first-child::after { background: rgba(214, 231, 251, .5); }
+:root .aud-steps > li:last-child::after { content: none; }
+:root .aud-steps > li::before { left: 0; top: 8px; width: 9px; height: 9px; border-radius: 50%; background: var(--lit); transform: scale(var(--rd, 1)); }
+:root .aud-count { font-weight: inherit; font-variant-numeric: tabular-nums; display: inline-block; text-align: right; }
+@media (min-width: 1024px) {
+  /* The questions sit beside their heading, and the closing row is two-sided */
+  :root .aud-qs { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gap); align-items: start; }
+  :root .aud-qs > .g-head { grid-column: 1 / span 5; }
+  :root .aud-qs > .aud-faq { grid-column: 6 / -1; margin-top: 0; }
+  :root .aud-qs .g-head h2 { font-size: clamp(44px, 4.6vw, 76px); }
+  :root .aud-close-row { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gap); align-items: start; }
+  :root .aud-close-row > .aud-policy { grid-column: 1 / span 7; }
+  :root .aud-close-row > .aud-partners { grid-column: 9 / -1; margin-top: 0; }
+}
+:root .aud-faq > .faq-item > summary { padding-top: 20px; padding-bottom: 20px; }
+
+/* ---------- Home at 1440: the 1.7x paragraph is a pull-quote across ten columns, and the proof's reading line runs
+   the width under its figures, so no block leaves half the row blank ---------- */
+@media (min-width: 1024px) {
+  :root .g-view { grid-column: 1 / span 10; max-width: none; margin-top: 112px; padding-top: 0; font: 400 32px/1.38 var(--sans); letter-spacing: -0.015em; }
+  :root .g-read { max-width: 1080px; }
+}
+:root .btn-ghost:hover, :root .fa .btn-ghost:hover { color: var(--lit); text-decoration-color: var(--lit); }
+/* The paired list's label column is fixed, so "Recommended" fits its cell on an iPhone SE; under 360px a row holds one
+   situation, as in r09 */
+@media (max-width: 760px) {
+  :root .pv-grid { grid-template-columns: 62px minmax(0, 1fr) 74px minmax(0, 1fr); }
+}
+@media (max-width: 359px) {
+  :root .pv-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr); }
+  :root .pv-grid .pv-mk:nth-of-type(2n + 7) { padding-left: 0; }
+}
