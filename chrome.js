@@ -1,24 +1,45 @@
 // FlintRay chrome, loaded on every page (build_site.footer emits the tag). Owns the pinned phone bar and every
 // request form. The phone menu lives in site.js. No framework.
 
-// The pinned phone bar (760px and below, CSS): hidden on the first screen, shown from the second, and hidden
-// while any request form is on screen, so it never sits over the form it points to.
+// Phone chrome (760px and below), r06: at most one pinned element at a time, always opaque. On the first screen the
+// header is pinned. Scrolling down hides the header (html.chrome-down) and shows the bottom bar; scrolling up brings
+// the header back (html.chrome-up) and hides the bar, so the menu is one flick away. The bar also stays hidden
+// while a request form is on screen, or while the request section or the footer fills a quarter of the screen,
+// so it never sits over what it points to. Laptops keep the pinned header and no bar.
 (() => {
   const bar = document.querySelector("[data-cta-bar]");
-  if (!bar) return;
-  const onScreen = new Set();
-  const update = () => bar.classList.toggle("is-shown", scrollY > innerHeight * 0.6 && onScreen.size === 0);
-  if ("IntersectionObserver" in window) {
+  const root = document.documentElement;
+  const phone = matchMedia("(max-width: 760px)");
+  const share = new Map();
+  // The footer only blocks once it fills 40% of the screen, so a short page still shows the bar on its second screen
+  const blocked = () => [...share.entries()].some(([el, r]) => (el.matches(".audit-form") ? r > 0 : r >= (el.matches(".site-footer") ? 0.4 : 0.25)));
+  let anchor = scrollY, down = false;
+  const update = () => {
+    const y = scrollY;
+    if (Math.abs(y - anchor) > 8) { down = y > anchor; anchor = y; }
+    const past = y > innerHeight * 0.6;
+    const hide = phone.matches && past && down && !root.classList.contains("menu-open");
+    root.classList.toggle("chrome-down", hide);
+    root.classList.toggle("chrome-up", !hide);
+    if (bar) {
+      // Back on the first screen (a jump to the top), the bar goes at once rather than sliding over the hero
+      bar.classList.toggle("is-instant", !past);
+      bar.classList.toggle("is-shown", hide && !blocked());
+    }
+  };
+  if (bar && "IntersectionObserver" in window) {
     const io = new IntersectionObserver((entries) => {
-      for (const entry of entries) entry.isIntersecting ? onScreen.add(entry.target) : onScreen.delete(entry.target);
+      for (const entry of entries) share.set(entry.target, entry.isIntersecting ? entry.intersectionRect.height / innerHeight : 0);
       update();
-    });
-    document.querySelectorAll(".audit-form").forEach((form) => io.observe(form));
+    }, { threshold: Array.from({ length: 21 }, (_, i) => i / 20) });
+    document.querySelectorAll(".audit-form, #request, .site-footer").forEach((el) => io.observe(el));
   }
   let queued = false;
   const schedule = () => { if (!queued) { queued = true; requestAnimationFrame(() => { queued = false; update(); }); } };
   addEventListener("scroll", schedule, { passive: true });
   addEventListener("resize", schedule);
+  // A jump inside the page (a header link, "Request a free audit") lands with the header away, as a scroll down would
+  addEventListener("hashchange", () => { down = true; anchor = scrollY; schedule(); });
   update();
 })();
 

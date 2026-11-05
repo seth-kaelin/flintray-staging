@@ -255,144 +255,321 @@ const FR = (() => {
   else document.fonts.ready.then(() => { measure(); play(); });
 })();
 
-// The take-apart record on home. At 1024 and up, with motion allowed, the record pins (page-motion.css:
-// .takeapart-pin adds a 100vh spacer to its track and the record sticks with its foot near the viewport's), and scroll
-// position alone draws it. No timers: render() is a pure function of where the record sits in the viewport.
-//   approach  the record scrolls up into view; each buyer turn brightens (opacity .35 to 1) as its top
-//             rises from 85% to 40% of the viewport, so it brightens while it is being read
-//   pin, by pin progress q (0 when the record's foot reaches its sticky line, 1 when the track ends).
-//   While a beat plays, the rows it isn't about dim to 0.3, so the eye goes to the row that is changing:
-//     0.00-0.05  FOCUS    every row except Order dims (1 to 0.3)
-//     0.00-0.40  STAMPS   the order stamps land, 0.06 apart over 0.10 each, cubic-bezier(.2,.8,.2,1), scale
-//                         1.06 to 1; the subject's "Not named" lands last, after a beat of 0.08
-//     0.38-0.44  HANDOFF  Order dims; Quote and Sources come up (0.3 to 1)
-//     0.42-0.74  TRACE    the source line draws from the end of the [1] marker's visual line to its source row;
-//                         the cited source's underline arrives as the line reaches it, 0.70-0.76
-//     0.74-0.78  JOIN     Order comes back up beside Quote and Sources, so the three rows the payoff needs are lit
-//     0.78-0.90  OUTLINE  the subject's row takes its 1px orange outline (offset settles 8px to 3px)
-//     0.90-0.96  RELEASE  the other rows come back up (0.3 to 1)
-//     0.96-1.00  HOLD     the final state: the trace, the underlined source and the "Not named" outline together,
-//                         every row at full strength; then the record scrolls on
-// Anywhere else (track below the viewport, phones, reduced motion, no JS) the record shows that final state.
+// Home, r02. The take-apart's three buyer turns fold to their first lines; the row is the button, named by its own
+// callout, and opening it shows the whole turn. Without this script every turn reads in full.
 (() => {
-  const track = document.querySelector(".takeapart-pin");
-  const convo = track && track.querySelector("[data-takeapart]");
-  if (!convo) return;
-  const svg = convo.querySelector(".takeapart-trace");
-  const path = svg && svg.querySelector("path");
-  const turns = [...convo.querySelectorAll(".record.buyer")];
-  const stamps = [...convo.querySelectorAll(".order .stamp")];
-  const you = convo.querySelector(".order li.is-you");
-  const srcList = convo.querySelector(".sources-row [data-cited-source]");
-  const cited = srcList && srcList.querySelector(`[data-src="${srcList.dataset.citedSource}"]`);
-  if (cited) cited.classList.add("is-cited");
-  // Each row's part in the beats: the order row, the two rows the trace joins, or context
-  const rows = [...convo.querySelectorAll(".convo-row")].map((el) => ({
-    el, part: el.querySelector(".order") ? "order" : el.matches(".quote-row, .sources-row") ? "trace" : "context",
-  }));
-  const DIM = 0.3;
-  const pinning = matchMedia("(min-width: 1024px) and (prefers-reduced-motion: no-preference)");
-  const { clamp, easeOut, land } = FR;
-  const span = (q, a, b) => clamp((q - a) / (b - a));
-  let length = 0, raf = 0;
-
-  function citationRect(row) {
-    const marker = row.querySelector(".record");
-    if (!marker) return null;
-    const walker = document.createTreeWalker(marker, NodeFilter.SHOW_TEXT);
-    const range = document.createRange(); let node;
-    while ((node = walker.nextNode())) {
-      const match = node.textContent.match(/\[(\d+)\]/);
-      if (match) {
-        range.setStart(node, match.index);
-        range.setEnd(node, match.index + match[0].length);
-        const at = range.getBoundingClientRect();
-        // Leave from the end of the marker's visual line, so the trace never crosses the words after it.
-        // Measure inside the marker's own paragraph: a range over the whole record would count each
-        // paragraph's block box, which runs to the column's right edge.
-        range.selectNodeContents(node.parentElement.closest("p") || marker);
-        const row = [...range.getClientRects()].filter((r) => Math.abs(r.top + r.height / 2 - (at.top + at.height / 2)) < at.height / 2);
-        return row.length ? { top: at.top, height: at.height, right: Math.max(...row.map((r) => r.right)) } : at;
-      }
-    }
-    return null;
-  }
-
-  // Geometry only, relative to the record, so it holds wherever the sticky record sits
-  function measure() {
-    if (!svg || !path) return;
-    const quote = convo.querySelector(".quote-row");
-    const sources = convo.querySelector(".sources-row");
-    const citedId = sources && sources.querySelector("[data-cited-source]")?.dataset.citedSource;
-    const sourceList = sources && citedId && sources.querySelector(`[data-src="${citedId}"]`);
-    const cited = quote && citationRect(quote);
-    const box = convo.getBoundingClientRect();
-    svg.setAttribute("viewBox", `0 0 ${box.width} ${box.height}`);
-    if (!quote || !sources || !sourceList || !cited) { path.setAttribute("d", ""); length = 0; return; }
-    const callout = quote.children[0].getBoundingClientRect();
-    const content = quote.children[1].getBoundingClientRect();
-    const quoteBox = quote.getBoundingClientRect();
-    const source = sourceList.getBoundingClientRect();
-    const gutter = callout.right - box.left + (content.left - callout.right) / 2;
-    const x1 = cited.right - box.left + 4;
-    const y1 = cited.top - box.top + cited.height / 2;
-    const x2 = source.left - box.left - 8;
-    const y2 = source.top - box.top + source.height / 2;
-    const safeRight = content.right - box.left + 10;
-    const clearY = quoteBox.bottom - box.top - 8;
-    path.setAttribute("d", `M${x1} ${y1} H${safeRight} V${clearY} H${gutter} V${y2} H${x2}`);
-    length = path.getTotalLength();
-    path.style.strokeDasharray = `${length}`;
-  }
-
-  // The scroll state: where the track and the buyer turns sit in the viewport, read from layout
-  function state() {
-    const vh = innerHeight, t = track.getBoundingClientRect();
-    const pad = parseFloat(getComputedStyle(track, "::before").height) || 0;
-    const foot = vh - (parseFloat(getComputedStyle(convo).bottom) || 0);
-    return {
-      engaged: pinning.matches && t.top < vh && t.bottom > 0,
-      // pin progress: 0 when the record's foot reaches its sticky line, 1 when the track runs out
-      q: pad ? clamp((foot - t.bottom + pad) / pad) : 1,
-      turns: turns.map((el) => clamp((0.85 * vh - el.getBoundingClientRect().top) / (0.45 * vh))),
-    };
-  }
-
-  // Pure: the record's look for one scroll state. Final state when not engaged.
-  function render(s) {
-    const live = s.engaged;
-    turns.forEach((el, i) => (el.style.opacity = live ? String(0.35 + 0.65 * easeOut(s.turns[i])) : ""));
-    stamps.forEach((st, i) => {
-      const at = i === stamps.length - 1 ? Math.max(0, i - 1) * 0.06 + 0.1 + 0.08 : i * 0.06;
-      const k = live ? span(s.q, at, at + 0.1) : 1;
-      const p = land(k);
-      st.style.opacity = k >= 1 ? "" : String(p);
-      st.style.transform = k >= 1 ? "" : `scale(${1.06 - 0.06 * p})`;
+  for (const row of document.querySelectorAll(".convo-row.is-fold")) {
+    const name = row.querySelector(".callout b");
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "fold-toggle";
+    button.setAttribute("aria-expanded", "false");
+    if (name) button.setAttribute("aria-label", name.textContent);
+    button.addEventListener("click", () => {
+      const open = row.classList.toggle("is-folded") === false;
+      button.setAttribute("aria-expanded", String(open));
+      dispatchEvent(new Event("resize"));
     });
-    if (path && length) path.style.strokeDashoffset = String(live ? length * (1 - easeOut(span(s.q, 0.42, 0.74))) : 0);
-    if (cited) cited.style.setProperty("--lit", live ? easeOut(span(s.q, 0.7, 0.76)).toFixed(3) : "1");
-    // Focus: how far each row is dimmed (0 lit, 1 at DIM), from the beats above
-    const focus = easeOut(span(s.q, 0, 0.05)) * (1 - easeOut(span(s.q, 0.9, 0.96)));
-    const handoff = easeOut(span(s.q, 0.38, 0.44));
-    const dim = {
-      context: focus,
-      order: focus * handoff * (1 - easeOut(span(s.q, 0.74, 0.78))),
-      trace: focus * (1 - handoff),
-    };
-    rows.forEach(({ el, part }) => (el.style.opacity = live && dim[part] > 0 ? String(1 - (1 - DIM) * dim[part]) : ""));
-    if (you) {
-      const o = live ? easeOut(span(s.q, 0.78, 0.9)) : 1;
-      you.style.setProperty("--o", o.toFixed(3));
-      you.style.setProperty("--oo", `${(8 - 5 * o).toFixed(2)}px`);
+    row.classList.add("is-folded");
+    row.append(button);
+  }
+})();
+
+// Home, r02. The plans table on phones: each plan's name becomes a tab and the rows show that plan only
+// (pages.css reads data-show). Wider screens ignore data-show and show the whole table.
+(() => {
+  const plans = document.querySelector("[data-plans]");
+  if (!plans) return;
+  const heads = [...plans.querySelectorAll("thead h3")];
+  const show = (n) => {
+    plans.dataset.show = String(n + 1);
+    heads.forEach((h, i) => h.firstChild.setAttribute("aria-pressed", String(i === n)));
+  };
+  heads.forEach((h, i) => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.append(...h.childNodes);
+    button.addEventListener("click", () => show(i));
+    h.append(button);
+  });
+  show(0);
+})();
+
+// Home, r04. The live preview: the sample report's matrix as a working miniature beside its conversations, one at a
+// time, taken apart. The record is a native sideways swipe (scroll-snap, one conversation per snap, data-carousel):
+// nothing ever advances on its own and touching it starts no timer. Tapping a tile goes to that conversation; the
+// position shows as "24 of 60"; on laptops the prev/next buttons and the arrow keys step through. Each situation line
+// opens that conversation in full in the sample report, and each buyer turn still unfolds on a tap.
+// The matrix lays out from the inline data at once; the 60 conversations load from assets/sample-preview.json when
+// the preview nears the screen, or on the first tap. Exact sample text only (build_site.write_preview).
+// No JS: the record shows the showcase conversation and the matrix is a still image of itself.
+(() => {
+  const root = document.querySelector("[data-preview]");
+  const index = root && root.querySelector("[data-pv-index]");
+  const inline = index && index.querySelector("[data-pv-matrix]");
+  const first = root && root.querySelector("[data-takeapart]");
+  if (!inline || !first) return;
+  const M = JSON.parse(inline.textContent);
+  // One outcome code on every page (r06/TOKENS.md): each cell carries its own outcome's class
+  const STATE = { recommended: "recommended", shortlisted: "shortlisted", mentioned: "mentioned", cautioned: "cautioned", none: "none" };
+  const esc = (t) => String(t).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+  const reduced = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const order = M.scenarios.flatMap((s) => M.engines.map(([key]) => ({ sid: s.id, engine: key })));
+  const total = order.length;
+  const at = (sid, engine) => order.findIndex((o) => o.sid === sid && o.engine === engine);
+
+  // The matrix
+  const grid = document.createElement("div");
+  grid.className = "pv-grid";
+  grid.setAttribute("role", "group");
+  grid.setAttribute("aria-label", `${M.subject}, ${M.engines.map((e) => e[1]).join(", ")}`);
+  let html = `<div class="pv-mk" aria-hidden="true"></div>` + M.engines.map(([, n]) => `<div class="pv-h">${esc(n)}</div>`).join("");
+  for (const s of M.scenarios) {
+    // r06: each row names its situation in words (editorial's index), not its market
+    html += `<div class="pv-mk" title="${esc(s.title)}"><span>${esc(s.title)}</span></div>`;
+    html += s.roles.map((role, i) => {
+      const [key, name] = M.engines[i];
+      return `<button type="button" class="pv-cell is-${STATE[role]}" data-sid="${s.id}" data-engine="${key}" data-col="${i + 1}" aria-pressed="false"
+        aria-label="${esc(`${name}, ${s.title}, ${s.market}: ${M.subject} ${M.stamps[role]}`)}"><span class="pv-w">${esc(M.stamps[role])}</span></button>`;
+    }).join("");
+  }
+  grid.innerHTML = html;
+  // Phones (pages.css): one assistant's column at a time, chosen by these tabs, so every cell reads its outcome in
+  // words at 14px. Wider screens hide the tabs and show all four columns.
+  const tabs = document.createElement("div");
+  tabs.className = "pv-tabs";
+  tabs.setAttribute("role", "group");
+  tabs.innerHTML = M.engines.map(([, n], i) => `<button type="button" data-col="${i + 1}" aria-pressed="false">${esc(n)}</button>`).join("");
+  const showCol = (n) => {
+    grid.dataset.show = String(n);
+    tabs.querySelectorAll("button").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.col === String(n))));
+  };
+  tabs.addEventListener("click", (ev) => { const b = ev.target.closest("button"); if (b) showCol(Number(b.dataset.col)); });
+  showCol(Math.max(1, M.engines.findIndex((e) => e[0] === M.show[1]) + 1));
+  const box = document.createElement("div");
+  box.className = "pv-index-in";
+  box.append(tabs, grid);
+  index.replaceChildren(box);
+  const cells = [...grid.querySelectorAll(".pv-cell")];
+
+  // The record: a track of 60 slides, the server-rendered showcase conversation in its own place
+  const holder = first.closest(".takeapart-pin") || first;
+  const pane = holder.parentElement;
+  const template = first.cloneNode(true);
+  template.querySelectorAll(".fold-toggle").forEach((b) => b.remove());
+  template.querySelectorAll(".is-folded").forEach((r) => r.classList.remove("is-folded"));
+  const nav = document.createElement("div");
+  nav.className = "pv-nav";
+  nav.innerHTML = `<button type="button" class="pv-step" data-step="-1" aria-label="Previous">‹</button><p class="pv-pos" aria-live="polite"></p><button type="button" class="pv-step" data-step="1" aria-label="Next">›</button>`;
+  const track = document.createElement("div");
+  track.className = "pv-track";
+  track.dataset.carousel = "";
+  track.tabIndex = 0;
+  track.setAttribute("role", "region");
+  track.setAttribute("aria-label", M.subject);
+  const slides = order.map(() => { const d = document.createElement("div"); d.className = "pv-slide"; return d; });
+  const start = Math.max(0, at(M.show[0], M.show[1]));
+  slides[start].append(holder);
+  slides.forEach((d, i) => { if (i === start) track.append(d); });
+  pane.replaceChildren(nav, track);
+  root.classList.add("is-live");
+
+  const fold = (convo) => {
+    for (const row of convo.querySelectorAll(".convo-row.is-fold")) {
+      if (row.querySelector(".fold-toggle")) continue;
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "fold-toggle";
+      button.setAttribute("aria-expanded", "false");
+      const name = row.querySelector(".callout b");
+      if (name) button.setAttribute("aria-label", name.textContent);
+      button.addEventListener("click", () => button.setAttribute("aria-expanded", String(row.classList.toggle("is-folded") === false)));
+      row.classList.add("is-folded");
+      row.append(button);
     }
+  };
+  // The situation line opens the whole conversation in the sample report (its drawer)
+  const linkSituation = (convo, sid, engine) => {
+    const line = convo.querySelector(".convo-row .meta-line");
+    if (!line || line.querySelector("a")) return;
+    const a = document.createElement("a");
+    a.className = "pv-open";
+    a.href = `sample-report.html#conversation-${sid}-${engine}`;
+    a.append(...line.childNodes);
+    line.append(a);
+  };
+  linkSituation(first, M.show[0], M.show[1]);
+
+  let data = null, loading = null, built = false;
+  const fill = (convo, sid, engine) => {
+    const s = data.scenarios.find((x) => x.id === sid), c = s && s.c[engine];
+    if (!c) return;
+    const rows = [...convo.querySelectorAll(".convo-row")];
+    const part = (i, sel) => rows[i] && rows[i].querySelector(sel);
+    const name = M.engines.find((e) => e[0] === engine)[1];
+    part(0, ".meta-line").textContent = `${s.title}, ${s.market}`;
+    [1, 2, 3].forEach((i) => { const r = part(i, ".record"); if (r) r.textContent = c.prompts[i - 1] || ""; });
+    part(4, ".meta-line").textContent = `${name}, ${c.model || data.notShown}`;
+    part(5, ".record").innerHTML = c.lines.length ? c.lines.map((l) => {
+      let t = esc(l.text);
+      l.names.forEach((n) => (t = t.replace(esc(n), `<b>${esc(n)}</b>`)));
+      return `<p data-quote>${t}</p>`;
+    }).join("") : `<p data-quote>This engine named no company in its third answer.</p>`;
+    part(6, ".order").innerHTML = c.order.concat([[data.subject, c.role]]).map(([n, role]) =>
+      `<li${n === data.subject ? ' class="is-you"' : ""}><span>${esc(n)}</span><span class="stamp stamp-${role}">${esc(data.stamps[role])}</span></li>`).join("");
+    part(7, ".srcs").innerHTML = c.sources.length
+      ? c.sources.map(([d, k], i) => `<li data-src="${i + 1}"><span class="n">[${i + 1}]</span> ${esc(d)}, ${esc(k)}</li>`).join("")
+      : `<li>The app showed no sources for this answer.</li>`;
+  };
+  // Every conversation, built once the data is in: each slide a copy of the record in the same shape
+  const build = () => {
+    if (built || !data) return;
+    built = true;
+    const keep = track.scrollLeft;
+    track.replaceChildren(...slides);
+    order.forEach(({ sid, engine }, i) => {
+      if (i === start) return;
+      const convo = template.cloneNode(true);
+      fill(convo, sid, engine);
+      linkSituation(convo, sid, engine);
+      fold(convo);
+      slides[i].append(convo);
+    });
+    track.scrollLeft = keep + start * track.clientWidth;
+    mark(start);
+  };
+  const load = () => loading || (loading = fetch("assets/sample-preview.json").then((r) => r.json()).then((d) => { data = d; build(); }).catch(() => { loading = null; }));
+  if ("IntersectionObserver" in window) {
+    const io = new IntersectionObserver((es) => { if (es.some((e) => e.isIntersecting)) { io.disconnect(); load(); } }, { rootMargin: "800px 0px" });
+    io.observe(root);
   }
 
-  const update = () => { raf = 0; render(state()); };
-  const schedule = () => { if (!raf) raf = requestAnimationFrame(update); };
-  const relayout = () => { measure(); update(); };
-  addEventListener("scroll", schedule, { passive: true });
-  addEventListener("resize", () => { cancelAnimationFrame(raf); relayout(); });
-  pinning.addEventListener("change", relayout);
-  document.fonts.ready.then(relayout);
-  relayout();
+  // Where the track is: the tile pressed, the count, the steps at either end
+  let current = start;
+  const pos = nav.querySelector(".pv-pos");
+  const steps = [...nav.querySelectorAll(".pv-step")];
+  const mark = (i) => {
+    current = i;
+    const o = order[i];
+    cells.forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.sid === o.sid && b.dataset.engine === o.engine)));
+    pos.textContent = `${i + 1} of ${total}`;
+    if (getComputedStyle(tabs).display !== "none") showCol(M.engines.findIndex((e) => e[0] === o.engine) + 1);
+    steps[0].disabled = !built || i === 0;
+    steps[1].disabled = !built || i === total - 1;
+  };
+  mark(start);
+  let ticking = false;
+  track.addEventListener("scroll", () => {
+    if (!built || ticking) return;
+    ticking = true;
+    requestAnimationFrame(() => {
+      ticking = false;
+      const i = Math.max(0, Math.min(total - 1, Math.round(track.scrollLeft / track.clientWidth)));
+      if (i !== current) mark(i);
+    });
+  }, { passive: true });
+  const go = (i, smooth = true) => {
+    if (!built) return;
+    i = Math.max(0, Math.min(total - 1, i));
+    track.scrollTo({ left: i * track.clientWidth, behavior: smooth && !reduced() && Math.abs(i - current) <= 3 ? "smooth" : "auto" });
+    mark(i);
+  };
+  addEventListener("resize", () => { if (built) track.scrollLeft = current * track.clientWidth; });
+  nav.addEventListener("click", (ev) => { const b = ev.target.closest(".pv-step"); if (b) go(current + Number(b.dataset.step)); });
+  track.addEventListener("keydown", (ev) => {
+    if (ev.target !== track) return;
+    const d = { ArrowRight: 1, ArrowLeft: -1 }[ev.key];
+    if (d) { ev.preventDefault(); go(current + d); }
+  });
+  grid.addEventListener("click", async (ev) => {
+    const cell = ev.target.closest(".pv-cell");
+    if (!cell) return;
+    // Phones keep the record closed until a cell is tapped (pages.css), so the preview never stands between
+    // the visitor and the form; the first tap opens it on that conversation
+    const opening = !root.classList.contains("is-open");
+    root.classList.add("is-open");
+    await load();
+    go(at(cell.dataset.sid, cell.dataset.engine), !opening);
+    // Stacked (phones and tablets), bring the record up if it is below the screen
+    const top = pane.getBoundingClientRect().top;
+    if (getComputedStyle(root.querySelector(".pv-window")).gridTemplateColumns.split(" ").length === 1 && top > innerHeight * 0.7) {
+      scrollTo({ top: scrollY + top - parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop || 0), behavior: reduced() ? "auto" : "smooth" });
+    }
+  });
+  grid.addEventListener("keydown", (ev) => {
+    const cell = ev.target.closest(".pv-cell");
+    const one = getComputedStyle(tabs).display !== "none";
+    const move = one ? { ArrowDown: 4, ArrowUp: -4 }[ev.key] : { ArrowRight: 1, ArrowLeft: -1, ArrowDown: 4, ArrowUp: -4 }[ev.key];
+    if (!cell || !move) return;
+    const next = cells[cells.indexOf(cell) + move];
+    if (next) { ev.preventDefault(); next.focus(); }
+  });
+})();
+
+// r04. Scroll reveals for the counted figures, home and the sample report: as a figure group first comes well on
+// screen, its numbers count up from zero, its bars draw from zero to their value and the conversation marks wipe in
+// from the left, once, over 0.36 s (ease-out; the process line over 0.9 s). State is a pure function of the time since that group arrived (no
+// timers); a group already on screen at load, reduced motion and no JS all show the final state from frame 1.
+(() => {
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const groups = [...document.querySelectorAll("[data-reveal]")].filter((g) => g.getBoundingClientRect().top > innerHeight);
+  if (!groups.length) return;
+  // r06: the method's thread lays itself step to step over 2.7 s, 450 ms a step
+  const DUR = 360, ease = FR.easeOut, dur = (g) => (g.matches(".g-thread") ? 2700 : g.matches(".fa-steps") ? 900 : DUR);
+  const parts = (g) => ({
+    nums: [...g.querySelectorAll("[data-count]")].map((n) => [n, Number(n.dataset.count)]),
+    bars: [...g.querySelectorAll(".fa-bar i, .pick-bar, .src-bar span")],
+    marks: [...g.querySelectorAll(".fa-tally")],
+    // The process line (home): it draws itself from the first step to the last, each step's mark landing as the
+    // line reaches it, like a thread being laid (kurrent.io's idea, not its look)
+    steps: g.matches(".fa-steps") ? [...g.children] : [...g.querySelectorAll(".fa-steps > li")],
+    // r06: the threads above the steps (navy's idea): each strand draws over its own share of the arrival
+    draws: [...g.querySelectorAll("[data-draw]")].map((d) => [d, Number(d.dataset.from), Number(d.dataset.to)]),
+  });
+  const paint = (p, k) => {
+    const e = ease(k);
+    p.nums.forEach(([n, to]) => (n.textContent = String(Math.round(to * e))));
+    p.bars.forEach((b) => (b.style.transform = k >= 1 ? "" : `scaleX(${e})`));
+    p.marks.forEach((m) => (m.style.clipPath = k >= 1 ? "" : `inset(0 ${(1 - e) * 100}% 0 0)`));
+    p.draws.forEach(([d, from, to]) => {
+      d.style.strokeDashoffset = k >= 1 ? "" : String(1 - ease(Math.max(0, Math.min(1, (k - from) / (to - from)))));
+    });
+    const n = p.steps.length;
+    p.steps.forEach((li, i) => {
+      if (k >= 1) { li.style.removeProperty("--rv"); li.style.removeProperty("--rd"); return; }
+      li.style.setProperty("--rv", String(Math.max(0, Math.min(1, k * n - i))));
+      li.style.setProperty("--rd", String(Math.max(0, Math.min(1, (k * n - i) * 4))));
+    });
+  };
+  // A group starts the moment its top edge is on screen; one already scrolled past (a jump, a link) shows its
+  // final state at once, so no figure is ever left at zero
+  const pending = new Set(groups);
+  const run = (g) => {
+    const p = parts(g);
+    let t0 = null;
+    const frame = (now) => {
+      if (t0 === null) t0 = now;
+      const k = Math.min(1, (now - t0) / dur(g));
+      paint(p, k);
+      if (k < 1) requestAnimationFrame(frame);
+    };
+    requestAnimationFrame(frame);
+  };
+  const check = () => {
+    for (const g of pending) {
+      const r = g.getBoundingClientRect();
+      if (r.top > innerHeight - 24) continue;
+      pending.delete(g);
+      if (r.bottom < 0) paint(parts(g), 1); else run(g);
+    }
+    if (!pending.size) removeEventListener("scroll", onScroll);
+  };
+  let queued = false;
+  const onScroll = () => { if (!queued) { queued = true; requestAnimationFrame(() => { queued = false; check(); }); } };
+  for (const g of groups) {
+    const p = parts(g);
+    p.bars.forEach((b) => (b.style.transformOrigin = "0 50%"));
+    paint(p, 0);
+  }
+  addEventListener("scroll", onScroll, { passive: true });
 })();

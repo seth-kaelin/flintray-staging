@@ -8,6 +8,19 @@
   const ENGINES = ["chatgpt", "claude", "gemini", "perplexity"];
   const NAMES = { chatgpt: "ChatGPT", claude: "Claude", gemini: "Gemini", perplexity: "Perplexity" };
   const bodyFor = (sid, engine) => document.getElementById(`conversation-${sid}-${engine}`);
+  // r06, the LCP trim: the 60 conversations in full (assets/sample-convos.js, 470KB) load once the page has loaded,
+  // so the first paint never waits on them. Anything that opens a conversation before they arrive waits for them.
+  const convos = new Promise((done) => {
+    const host = document.querySelector("[data-convos]");
+    if (!host) { done(); return; }
+    const load = () => {
+      const s = document.createElement("script");
+      s.src = host.dataset.convos;
+      s.onload = s.onerror = () => done();
+      document.body.append(s);
+    };
+    if (document.readyState === "complete") load(); else addEventListener("load", load, { once: true });
+  });
 
   // The section bar sits under the site header when the header is pinned
   const nav = document.querySelector("body > header.site-nav");
@@ -31,12 +44,24 @@
     sections.forEach((s, k) => { if (s && s.getBoundingClientRect().top <= line) i = k; });
     if (i === current) return;
     current = i;
+    here.textContent = links[i].textContent;
     links.forEach((a, k) => (k === i ? a.setAttribute("aria-current", "true") : a.removeAttribute("aria-current")));
     const a = links[i], left = a.offsetLeft - strip.offsetLeft;
     if (left < strip.scrollLeft || left + a.offsetWidth > strip.scrollLeft + strip.clientWidth) {
       strip.scrollTo({ left: left - 24, behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
     }
   };
+  // On phones the bar is one slim row: the current section, which opens the full list, and the main action
+  const here = document.createElement("button");
+  here.type = "button"; here.className = "jump-here";
+  here.setAttribute("aria-expanded", "false"); here.setAttribute("aria-controls", strip.id);
+  jump.prepend(here);
+  jump.classList.add("has-menu");
+  const openMenu = (on) => { jump.classList.toggle("is-open", on); here.setAttribute("aria-expanded", String(on)); };
+  here.addEventListener("click", () => openMenu(!jump.classList.contains("is-open")));
+  strip.addEventListener("click", (e) => { if (e.target.closest("a")) openMenu(false); });
+  document.addEventListener("click", (e) => { if (!jump.contains(e.target)) openMenu(false); });
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape" && jump.classList.contains("is-open")) { openMenu(false); here.focus(); } });
   addEventListener("scroll", () => { if (!ticking) { ticking = true; requestAnimationFrame(mark); } }, { passive: true });
   mark();
 
@@ -61,12 +86,16 @@
   edges();
 
   // ---------------------------------------------------------------------------
-  // The drawer
+  // The drawer. r04 (Seth, Nov 4): one conversation at a time, so it swipes. Its body is a native sideways scroller
+  // (scroll-snap, one conversation per snap, data-carousel) through the conversations it was opened on: a finding's
+  // set, or all 60 in the matrix's order. Nothing advances on its own and touching it starts no timer. The position
+  // ("3 of 60") and Previous and Next stay in the head; the arrow keys step on laptops; the tabs jump to another
+  // assistant's answer to the same situation. Each slide is a copy of the conversation's markup in the page.
   const subject = document.getElementById("verdict-title").textContent;
-  // The mark on each tab is the sample company's outcome there; the key under the tabs says so, and screen readers hear it in the tab name
   const MARK = { put: "put forward", named: "mentioned", none: "not named" };
   const matrix = page.querySelector(".matrix");
   const modelsFor = (engine) => matrix.querySelector(`thead th[data-engine="${engine}"]`)?.dataset.models || "";
+  const ALL = [...matrix.tBodies[0].rows].flatMap((row) => [...row.querySelectorAll("a.cell")].map((c) => ({ sid: c.dataset.sid, engine: c.dataset.engine })));
   const cta = document.querySelector(".jump-cta");
   const root = document.createElement("div");
   root.className = "drawer-root";
@@ -77,30 +106,53 @@
         <div class="drawer-set" hidden>
           <p class="set-finding">Conversations behind <strong data-f="finding"></strong></p>
           <p class="set-note" data-f="note"></p>
-          <div class="set-row"><button type="button" data-step="-1">Previous</button><span class="set-count" data-f="count"></span><button type="button" data-step="1">Next</button></div>
           <p class="set-why" data-f="why"></p>
         </div>
         <div class="drawer-bar">
           <div class="drawer-titles"><h2 class="drawer-title" id="drawer-title" tabindex="-1" data-f="title"></h2><p class="drawer-market" data-f="market"></p></div>
           <button type="button" class="drawer-close" data-close>Close</button>
         </div>
+        <div class="set-row"><button type="button" data-step="-1">Previous</button><span class="set-count" data-f="count" aria-live="polite"></span><button type="button" data-step="1">Next</button></div>
         <div class="drawer-tabs" role="tablist" aria-label="Assistant">${ENGINES.map((x) =>
           `<button type="button" class="drawer-tab" role="tab" id="drawer-tab-${x}" data-engine="${x}" aria-controls="drawer-panel">${NAMES[x]}<span class="visually-hidden" data-outcome></span></button>`).join("")}</div>
         <ul class="drawer-key" aria-hidden="true"><li>${subject}:</li>${Object.entries(MARK).map(([k, v]) => `<li class="key is-${k}">${v}</li>`).join("")}</ul>
       </div>
-      <div class="drawer-body" id="drawer-panel" role="tabpanel" tabindex="0"></div>
+      <div class="drawer-body" id="drawer-panel" role="tabpanel" tabindex="0" data-carousel></div>
       <div class="drawer-foot"><a class="drawer-cta" href="${cta.getAttribute("href")}">${cta.textContent}</a></div>
     </section>`;
   document.body.append(root);
   const $ = (s) => root.querySelector(s);
   const panel = $(".drawer-body");
   const tabs = [...root.querySelectorAll(".drawer-tab")];
-  const state = { sid: null, engine: null, set: null, index: 0, trigger: null, pushed: false };
+  const reduced = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const state = { list: ALL, index: 0, set: null, trigger: null, pushed: false, slides: [] };
+  const item = () => state.list[state.index];
 
-  const show = (sid, engine) => {
-    const source = bodyFor(sid, engine);
-    if (!source) return false;
-    state.sid = sid; state.engine = engine;
+  // The slides: one per conversation in the list, filled with a copy of its markup when it is near the one showing
+  const layout = () => {
+    state.slides = state.list.map(() => { const d = document.createElement("div"); d.className = "drawer-slide"; return d; });
+    panel.replaceChildren(...state.slides);
+  };
+  const fillSlide = (i) => {
+    const slide = state.slides[i], it = state.list[i];
+    if (!slide || slide.childElementCount || !it) return;
+    const source = bodyFor(it.sid, it.engine);
+    if (!source) return;
+    const copy = source.cloneNode(true);
+    copy.removeAttribute("id");
+    copy.querySelectorAll("[id]").forEach((n) => n.removeAttribute("id"));
+    const models = document.createElement("p");
+    models.className = "drawer-models";
+    models.textContent = modelsFor(it.engine);
+    models.hidden = !models.textContent;
+    slide.append(models, copy);
+  };
+
+  // What the head says for the conversation showing
+  const markAt = (i) => {
+    state.index = i;
+    [i - 1, i, i + 1].forEach(fillSlide);
+    const { sid, engine } = item();
     const situation = document.getElementById(`situation-${sid}`);
     $('[data-f="title"]').textContent = situation.querySelector(".situation-title").textContent;
     $('[data-f="market"]').textContent = situation.querySelector(".situation-market").textContent;
@@ -108,40 +160,44 @@
       const on = t.dataset.engine === engine;
       t.setAttribute("aria-selected", String(on));
       t.tabIndex = on ? 0 : -1;
-      const mark = bodyFor(sid, t.dataset.engine).dataset.state;
-      t.className = `drawer-tab is-${mark}`;
-      t.querySelector("[data-outcome]").textContent = `, ${subject} ${MARK[mark]}`;
+      const m = bodyFor(sid, t.dataset.engine).dataset.state;
+      t.className = `drawer-tab is-${m}`;
+      t.querySelector("[data-outcome]").textContent = `, ${subject} ${MARK[m]}`;
     });
     panel.setAttribute("aria-labelledby", `drawer-tab-${engine}`);
-    const copy = source.cloneNode(true);
-    copy.removeAttribute("id");
-    copy.querySelectorAll("[id]").forEach((n) => n.removeAttribute("id"));
-    const models = document.createElement("p");
-    models.className = "drawer-models";
-    models.textContent = modelsFor(engine);
-    models.hidden = !models.textContent;
-    panel.replaceChildren(models, copy);
-    panel.scrollTop = 0;
-    if (state.set) {
-      const item = state.set.items[state.index];
-      const here = item.sid === sid && item.engine === engine;
-      $('[data-f="count"]').textContent = `${state.index + 1} of ${state.set.items.length}`;
-      const names = { chatgpt: "ChatGPT", claude: "Claude", gemini: "Gemini", perplexity: "Perplexity" };
-      // Keep the set line when another tab is open, and say which answer is showing
-      $('[data-f="why"]').textContent = here ? item.why : `${item.why} You're reading ${names[engine]}'s answer to the same situation.`;
-      root.querySelectorAll("[data-step]").forEach((b) => {
-        const to = state.index + Number(b.dataset.step);
-        b.disabled = to < 0 || to >= state.set.items.length;
-      });
-    }
+    $('[data-f="count"]').textContent = `${i + 1} of ${state.list.length}`;
+    root.querySelectorAll("[data-step]").forEach((b) => {
+      const to = i + Number(b.dataset.step);
+      b.disabled = to < 0 || to >= state.list.length;
+    });
+    if (state.set) $('[data-f="why"]').textContent = state.list[i].why || "";
     const hash = `#conversation-${sid}-${engine}`;
     if (location.hash !== hash) history.replaceState(history.state, "", hash);
-    return true;
   };
+  const go = (i, smooth = true) => {
+    i = Math.max(0, Math.min(state.list.length - 1, i));
+    fillSlide(i);
+    panel.scrollTo({ left: i * panel.clientWidth, behavior: smooth && !reduced() && Math.abs(i - state.index) <= 2 ? "smooth" : "auto" });
+    markAt(i);
+  };
+  let sliding = false;
+  panel.addEventListener("scroll", () => {
+    if (sliding || root.hidden) return;
+    sliding = true;
+    requestAnimationFrame(() => {
+      sliding = false;
+      const i = Math.max(0, Math.min(state.list.length - 1, Math.round(panel.scrollLeft / panel.clientWidth)));
+      if (i !== state.index) markAt(i);
+    });
+  }, { passive: true });
+  addEventListener("resize", () => { if (!root.hidden) panel.scrollLeft = state.index * panel.clientWidth; });
 
   const siblings = () => [...document.body.children].filter((n) => n !== root && n.tagName !== "SCRIPT");
-  const open = (sid, engine, { set = null, index = 0, trigger = null } = {}) => {
-    state.set = set; state.index = index;
+  const open = (sid, engine, opts) => convos.then(() => openNow(sid, engine, opts));
+  const openNow = (sid, engine, { set = null, index = 0, trigger = null } = {}) => {
+    if (!bodyFor(sid, engine)) return;
+    state.set = set;
+    state.list = set ? set.items : ALL;
     const setBox = $(".drawer-set");
     setBox.hidden = !set;
     if (set) { $('[data-f="finding"]').textContent = set.title; $('[data-f="note"]').textContent = set.note; }
@@ -151,15 +207,25 @@
       state.pushed = false;
       if (location.hash !== `#conversation-${sid}-${engine}`) { history.pushState({ sampleDrawer: true }, ""); state.pushed = true; }
     }
-    if (!show(sid, engine)) return;
+    layout();
+    const i = set ? index : Math.max(0, ALL.findIndex((o) => o.sid === sid && o.engine === engine));
     if (!wasOpen) {
       root.hidden = false;
-      panel.scrollTop = 0; // a hidden panel keeps the last conversation's scroll, so reset it once it can scroll
       document.documentElement.classList.add("drawer-open");
       siblings().forEach((n) => { if (!n.inert) { n.inert = true; n.dataset.drawerInert = ""; } });
       requestAnimationFrame(() => requestAnimationFrame(() => root.classList.add("is-open")));
     }
+    state.index = i;
+    go(i, false);
     tabs.find((t) => t.dataset.engine === engine).focus({ preventScroll: true });
+  };
+  // A tab: the same situation, another assistant. Inside a finding's set it stays in the set when that answer is in
+  // it; otherwise the drawer moves to the matrix's order of all 60, so swiping still walks the whole report.
+  const toEngine = (engine) => {
+    const { sid } = item();
+    const inList = state.list.findIndex((o) => o.sid === sid && o.engine === engine);
+    if (inList >= 0) { go(inList); return; }
+    open(sid, engine);
   };
 
   const hide = () => {
@@ -177,30 +243,28 @@
   };
   addEventListener("popstate", () => {
     const m = location.hash.match(/^#conversation-([A-Za-z0-9]+)-([a-z]+)$/);
-    if (m && !root.hidden) show(m[1], m[2]);
-    else { state.pushed = false; hide(); }
+    if (m && !root.hidden) {
+      const i = state.list.findIndex((o) => o.sid === m[1] && o.engine === m[2]);
+      if (i >= 0) go(i, false);
+    } else { state.pushed = false; hide(); }
   });
 
   root.addEventListener("click", (ev) => {
     const t = ev.target.closest("button, a, [data-close]");
     if (!t) return;
     if (t.matches("[data-close]")) { close(); return; }
-    if (t.matches(".drawer-tab")) { show(state.sid, t.dataset.engine); return; }
-    if (t.matches("[data-step]") && state.set) {
-      const to = state.index + Number(t.dataset.step);
-      if (to < 0 || to >= state.set.items.length) return;
-      state.index = to;
-      const item = state.set.items[to];
-      show(item.sid, item.engine);
+    if (t.matches(".drawer-tab")) { toEngine(t.dataset.engine); return; }
+    if (t.matches("[data-step]")) {
+      go(state.index + Number(t.dataset.step));
       (t.disabled ? root.querySelector(`[data-step="${-Number(t.dataset.step)}"]`) : t).focus();
       return;
     }
     if (t.matches(".citation")) {
-      // A citation points at the source list under its own answer, inside the drawer
+      // A citation points at the source list under its own answer, inside the slide it sits in
       ev.preventDefault();
-      const li = panel.querySelector(`[data-src="${t.dataset.cite}"]`);
+      const li = t.closest(".drawer-slide")?.querySelector(`[data-src="${t.dataset.cite}"]`);
       if (!li) return;
-      li.scrollIntoView({ block: "nearest", behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
+      li.scrollIntoView({ block: "nearest", inline: "nearest", behavior: reduced() ? "auto" : "smooth" });
       li.classList.add("is-flash");
       setTimeout(() => li.classList.remove("is-flash"), 1400);
       return;
@@ -217,12 +281,17 @@
       if (to === undefined) return;
       ev.preventDefault();
       const next = tabs[(to + tabs.length) % tabs.length];
-      show(state.sid, next.dataset.engine);
+      toEngine(next.dataset.engine);
       next.focus();
       return;
     }
+    // Arrow keys on the conversation step to the previous or next one
+    if ((ev.key === "ArrowRight" || ev.key === "ArrowLeft") && ev.target.closest(".drawer-body, .drawer-slide, .drawer-head") && !ev.target.matches("input, textarea")) {
+      ev.preventDefault();
+      go(state.index + (ev.key === "ArrowRight" ? 1 : -1));
+      return;
+    }
     if (ev.key === "Tab") {
-      // inert keeps focus out of the page; this keeps it cycling inside the drawer
       const focusable = [...root.querySelectorAll("button:not([disabled]), a[href], [tabindex='0']")].filter((n) => n.getClientRects().length && n.tabIndex >= 0);
       const first = focusable[0], last = focusable[focusable.length - 1];
       if (ev.shiftKey && document.activeElement === first) { ev.preventDefault(); last.focus(); }
@@ -269,5 +338,5 @@
 
   // A shared link to one conversation opens it
   const linked = location.hash.match(/^#conversation-([A-Za-z0-9]+)-([a-z]+)$/);
-  if (linked && bodyFor(linked[1], linked[2])) open(linked[1], linked[2]);
+  if (linked) open(linked[1], linked[2]);
 })();

@@ -99,47 +99,28 @@
 }
   </script>
 </head>
-<body>
-  <div class="hairlines" aria-hidden="true"></div>
-
+<body class="p-audit">
   <header class="site-nav">
-    <a class="wordmark" href="index.html">FlintRay</a>
+    <a class="wordmark" href="index.html"><svg class="hallmark" viewBox="0 0 100 46" aria-hidden="true" focusable="false"><path d="M2 7C15 23 31 31 50 30"/><path d="M44 30C50 21 51 11 47 2C61 10 79 21 97 26C89 28 83 29 78 31C74 37 70 41 66 44C64 38 61 34 55 32C51 31 47 30.5 44 30Z"/><path d="M86 25.5h.01"/></svg>FlintRay</a>
     <nav class="nav-links" aria-label="Main"><a href="how-it-works.html">How it works</a><a href="measurement-standard.html">Method</a><a href="sample-report.html">Sample report</a><a href="insights.html">Insights</a></nav>
     <a class="nav-book" href="https://calendar.app.google/9M8xRZvibsCU6EeSA">Book a call</a><a class="nav-cta" href="audit.html#request">Free audit</a>
     <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-menu"><span class="menu-icon" aria-hidden="true"></span><span class="menu-word">Menu</span></button>
     <div class="menu-sheet" id="site-menu" role="dialog" aria-modal="true" aria-label="Menu" hidden>
-      <div class="menu-sheet-head"><a class="wordmark" href="index.html" tabindex="-1">FlintRay</a><button class="menu-close" type="button">Close</button></div>
+      <div class="menu-sheet-head"><a class="wordmark" href="index.html" tabindex="-1"><svg class="hallmark" viewBox="0 0 100 46" aria-hidden="true" focusable="false"><path d="M2 7C15 23 31 31 50 30"/><path d="M44 30C50 21 51 11 47 2C61 10 79 21 97 26C89 28 83 29 78 31C74 37 70 41 66 44C64 38 61 34 55 32C51 31 47 30.5 44 30Z"/><path d="M86 25.5h.01"/></svg>FlintRay</a><button class="menu-close" type="button">Close</button></div>
       <nav aria-label="Main"><a href="how-it-works.html">How it works</a><a href="measurement-standard.html">Method</a><a href="sample-report.html">Sample report</a><a href="insights.html">Insights</a><a class="sheet-book" href="https://calendar.app.google/9M8xRZvibsCU6EeSA">Book a call</a><a class="sheet-cta" href="audit.html#request">Free audit</a></nav>
     </div>
   </header>
 
-  <main class="aud">
-    <div class="aud-split">
-      <header class="page-head aud-open">
-        <h1>Your free AI search audit</h1>
-        <p class="lede">When your buyers ask ChatGPT, Claude, Gemini or Perplexity who to call, the answer works like a referral. The audit shows you who gets it in your place, and why, across a real slice of your market.</p>
-        <p class="aud-proof"><a class="btn btn-ghost" href="https://calendar.app.google/9M8xRZvibsCU6EeSA">Book a call</a></p>
+  <main class="aud fa">
+    <section class="aud-top" aria-labelledby="aud-title">
+      <header class="aud-open">
+        <h1 id="aud-title">Your free AI search audit</h1>
+        <p class="aud-lede">When your buyers ask ChatGPT, Claude, Gemini or Perplexity who to call, the answer works like a referral. The audit shows you who gets it in your place, and why, across a real slice of your market.</p>
       </header>
-
-      <aside class="aud-side" aria-label="The free audit at a glance, and the request form">
-        <div class="aud-rail">
-          <section class="aud-card" aria-labelledby="card-title">
-            <h2 id="card-title">Who gets put forward</h2>
-            <dl class="aud-bars">
-              <div><dt>Trellisec</dt><dd><span class="bar" style="--share: 66.67%" aria-hidden="true"></span><span class="num">40 of 60</span></dd></div>
-              <div class="is-you"><dt>Corvane</dt><dd><span class="bar" style="--share: 10%" aria-hidden="true"></span><span class="num">6 of 60</span></dd></div>
-            </dl>
-            <p class="sample-caption">Illustrative sample. Companies and sources are fictional.</p>
-            <dl class="aud-facts">
-              <div><dt>Who it's for</dt><dd>B2B software and services companies with 20 to 500 people.</dd></div>
-              <div><dt>What we run</dt><dd>15 of your buyers' situations, three turns each, in ChatGPT, Claude, Gemini and Perplexity. That's about 60 conversations, a private report and a 30 to 40 minute walkthrough.</dd></div>
-              <div><dt>What it costs</dt><dd>Nothing, and there's no obligation after the walkthrough. It's free and selective.</dd></div>
-              <div><dt>When we reply</dt><dd>Within two working days.</dd></div>
-            </dl>
-          </section>
-          <section class="aud-request" id="request" aria-labelledby="request-title">
-            <h2 id="request-title">Request your audit</h2>
-            <div class="request">
+      <div class="aud-side">
+        <section class="aud-request" id="request" aria-labelledby="request-title">
+          <h2 id="request-title">Request your audit</h2>
+          <div class="request">
         <div class="request-sheet">
           <form class="audit-form letter" action="https://formspree.io/f/xoeerlpj" method="POST">
             <label>Company website<input type="url" name="site" placeholder="https://" required></label>
@@ -152,69 +133,82 @@
           </form>
         </div>
       </div>
-          </section>
+        </section>
+      </div>
+    </section>
+
+    <section class="g-sec aud-pick" aria-labelledby="card-title">
+      <header class="g-head">
+        <h2 id="card-title">Who gets put forward</h2>
+      </header>
+      <div class="aud-pick-body">
+        <div class="aud-pick-bars" data-reveal>
+            <dl class="aud-bars">
+              <div><dt>Trellisec</dt><dd><span class="fa-bar" style="--v: 66.67%" aria-hidden="true"><i></i></span><span class="num">40 of 60</span></dd></div>
+              <div class="is-you"><dt>Corvane</dt><dd><span class="fa-bar" style="--v: 10%" aria-hidden="true"><i></i></span><span class="num">6 of 60</span></dd></div>
+            </dl>
+            <p class="sample-caption">Illustrative sample. Companies and sources are fictional.</p>
         </div>
-      </aside>
+            <dl class="aud-facts">
+              <div><dt>Who it's for</dt><dd>B2B software and services companies with 20 to 500 people.</dd></div>
+              <div><dt>What we run</dt><dd>15 of your buyers' situations, three turns each, in ChatGPT, Claude, Gemini and Perplexity. That's about 60 conversations, a private report and a 30 to 40 minute walkthrough.</dd></div>
+              <div><dt>What it costs</dt><dd>Nothing, and there's no obligation after the walkthrough. It's free and selective.</dd></div>
+              <div><dt>When we reply</dt><dd>Within two working days.</dd></div>
+            </dl>
+      </div>
+    </section>
 
-
-      <div class="aud-main">
-        <section class="section" aria-labelledby="steps">
-          <h2 id="steps">How the free audit runs</h2>
-          <ul class="ledger">
+    <section class="g-sec aud-how" aria-labelledby="steps">
+      <header class="g-head">
+        <h2 id="steps">How the free audit runs</h2>
+      </header>
+          <ul class="aud-steps fa-steps" data-reveal>
             <li><h3>You ask</h3><p>Tell us your website and the competitor you lose to most.</p></li>
             <li><h3>We research</h3><p>We study your buyers and write the situations. We never name you in the questions.</p></li>
             <li><h3>We run it</h3><p>Every situation goes through all four assistants, and a person reads every answer word for word. Each one runs the way a real buyer's does, from the problem to the shortlist.</p></li>
             <li><h3>Results arrive within two working days</h3><p>The report arrives as a private, unindexed link, and your team can keep it. <a class="link link-arrow" href="sample-report.html">Read the sample report</a></p></li>
             <li><h3>We walk you through it</h3><p>We go through the results with you on a call. The walkthrough takes 30 to 40 minutes.</p></li>
           </ul>
-          <div class="aud-founder">
-            <section class="founder" aria-labelledby="founder-name">
-        <img class="founder-photo" src="assets/founder.jpg" alt="Seth Kaelin" width="160" height="200">
-        <div class="founder-text">
-          <h3 class="founder-name" id="founder-name">Seth Kaelin, founder</h3>
-          <p class="founder-contact"><a class="btn btn-ghost" href="https://calendar.app.google/9M8xRZvibsCU6EeSA">Book a call</a></p>
-        </div>
-      </section>
-          </div>
-        </section>
+    </section>
 
-        <section class="section" aria-labelledby="faq-title">
-          <h2 id="faq-title">Questions people ask first</h2>
+    <section class="g-sec aud-qs" aria-labelledby="faq-title">
+      <header class="g-head">
+        <h2 id="faq-title">Questions people ask first</h2>
+      </header>
           <div class="aud-faq">
-            <div class="faq-item">
-              <h3>What does the audit add to a cheap tracking tool?</h3>
+            <details class="faq-item" open>
+              <summary><h3>What does the audit add to a cheap tracking tool?</h3></summary>
               <p>Tracking tools run from about $30 to $1,000 a month on published plans, and they'll tell you how often your name comes up. The audit runs your real buyer situations as full conversations, and a person reads every turn exactly as it was given, so you see where the decision started to form. You also see the sources behind each answer and the first fixes to make.</p>
-            </div>
-            <div class="faq-item">
-              <h3>We already use a tracker. Do we still need this?</h3>
+            </details>
+            <details class="faq-item">
+              <summary><h3>We already use a tracker. Do we still need this?</h3></summary>
               <p>Keep it. Your tracker tells you when your numbers move, and the audit shows you why they move, with the answers and the sources behind them.</p>
-            </div>
-            <div class="faq-item">
-              <h3>Is the audit really free?</h3>
+            </details>
+            <details class="faq-item">
+              <summary><h3>Is the audit really free?</h3></summary>
               <p>Yes. We're selective, and we take B2B software and services companies with 20 to 500 people. You keep the report. It covers 15 of your buyers' situations in all four assistants, which is one real slice of your market, and the paid work covers the rest.</p>
-            </div>
-            <div class="faq-item">
-              <h3>Do you work with my competitors?</h3>
+            </details>
+            <details class="faq-item">
+              <summary><h3>Do you work with my competitors?</h3></summary>
               <p>Free audits are open to every company, your rivals included. On Lens Engage, you name 3 to 5 rivals, and none of them can become a paying client while you're on Engage. We never use one client's data to pitch another company.</p>
-            </div>
+            </details>
           </div>
-        </section>
+    </section>
 
-        <section class="section" aria-labelledby="after">
-          <h2 id="after">After the audit</h2>
-          <p class="intro">If you want the full picture and the fixes, there are two ways to keep going, both monthly.</p>
-          <ul class="ledger">
-            <li><h3>Lens Monitor</h3><div><p>We measure and your team fixes. Your situations rerun on a set schedule, with a live report, the pages behind every answer, and a fix plan your team works through.</p></div></li>
-            <li><h3>Lens Engage</h3><div><p>We measure and we do the fixes. Your situations rerun every week, we write and place the fixes, and we review the results with you each month. You name 3 to 5 rivals, and none of them can become a paying client while you're on Engage. Your first month includes the full audit and the first fixes.</p></div></li>
-            <li><h3>How we make fixes</h3><p>When we make the fixes on Lens Engage, we never post under fake names, buy reviews or invent quotes.</p></li>
-          </ul>
-          <p class="price-line num">Lens Engage starts at $5,000 a month.</p>
-          <p class="aud-body">Both plans are monthly. Lens Monitor is scoped on the call.</p>
-          <p class="aud-body">Agencies and advisory firms can offer all of this under their own name, on a private quote. <a class="link link-arrow" href="partners.html">White-label for partners</a></p>
-        </section>
-
-      </div>
-    </div>
+    <section class="g-sec aud-after" aria-labelledby="after">
+      <header class="g-head">
+        <h2 id="after">After the audit</h2>
+        <p class="g-aside">If you want the full picture and the fixes, there are two ways to keep going, both monthly.</p>
+      </header>
+        <ul class="aud-plans">
+          <li><h3>Lens Monitor</h3><p>We measure and your team fixes. Your situations rerun on a set schedule, with a live report, the pages behind every answer, and a fix plan your team works through.</p><p class="aud-body">Both plans are monthly. Lens Monitor is scoped on the call.</p></li>
+          <li><h3>Lens Engage</h3><p>We measure and we do the fixes. Your situations rerun every week, we write and place the fixes, and we review the results with you each month. You name 3 to 5 rivals, and none of them can become a paying client while you're on Engage. Your first month includes the full audit and the first fixes.</p><p class="price-line num">Lens Engage starts at $5,000 a month.</p></li>
+        </ul>
+        <div class="aud-close-row">
+          <div class="aud-policy"><h3>How we make fixes</h3><p>When we make the fixes on Lens Engage, we never post under fake names, buy reviews or invent quotes.</p></div>
+          <p class="aud-body aud-partners">Agencies and advisory firms can offer all of this under their own name, on a private quote. <a class="link link-arrow" href="partners.html">White-label for partners</a></p>
+        </div>
+    </section>
   </main>
 
   <footer class="site-footer">
