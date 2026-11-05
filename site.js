@@ -288,10 +288,16 @@ const FR = (() => {
   heads.forEach((h, i) => {
     const button = document.createElement("button");
     button.type = "button";
-    button.append(...h.childNodes);
+    // r10.2: the name sits in its own span, so Engage's tab can keep it out of sight where its price line already says it
+    const name = document.createElement("span");
+    name.className = "g-plan-name";
+    name.append(...h.childNodes);
+    button.append(name);
     button.addEventListener("click", () => show(i));
     h.append(button);
   });
+  // r10.2: each plan's price line, under its tab on phones, picks that plan too
+  plans.querySelectorAll("tr.is-price td").forEach((td, i) => td.addEventListener("click", () => show(i)));
   show(0);
 })();
 
@@ -314,6 +320,8 @@ const FR = (() => {
   const STATE = { recommended: "recommended", shortlisted: "shortlisted", mentioned: "mentioned", cautioned: "cautioned", none: "none" };
   const esc = (t) => String(t).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
   const reduced = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
+  // Phones (pages.css): one assistant's column, and the record opens under the tapped row
+  const phone = matchMedia("(max-width: 760px)");
   const order = M.scenarios.flatMap((s) => M.engines.map(([key]) => ({ sid: s.id, engine: key })));
   const total = order.length;
   const at = (sid, engine) => order.findIndex((o) => o.sid === sid && o.engine === engine);
@@ -453,14 +461,16 @@ const FR = (() => {
   const sized = "ResizeObserver" in window ? new ResizeObserver(() => fit()) : null;
   if (sized) slides.forEach((d) => sized.observe(d));
 
-  // Where the track is: the tile pressed, the count, the steps at either end
+  // Where the track is: the tile pressed, the count, the steps at either end. r10.2: on phones a tile is pressed only
+  // while the record is open under it, so a closed matrix never rings a tile that shows nothing
   let current = start;
   const pos = nav.querySelector(".pv-pos");
   const steps = [...nav.querySelectorAll(".pv-step")];
+  const shown = () => !phone.matches || root.classList.contains("is-open");
   const mark = (i) => {
     current = i;
     const o = order[i];
-    cells.forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.sid === o.sid && b.dataset.engine === o.engine)));
+    cells.forEach((b) => b.setAttribute("aria-pressed", String(shown() && b.dataset.sid === o.sid && b.dataset.engine === o.engine)));
     pos.textContent = `${i + 1} of ${total}`;
     if (getComputedStyle(tabs).display !== "none") showCol(M.engines.findIndex((e) => e[0] === o.engine) + 1);
     steps[0].disabled = !built || i === 0;
@@ -470,8 +480,8 @@ const FR = (() => {
   mark(start);
   // r10.1, phones: the record waits for a tap, so every tile carries a disclosure mark (pages.css), and the tile of the
   // conversation the record holds rings once as it comes up the screen. Reduced motion: the marks only.
-  const pressed = cells.find((b) => b.getAttribute("aria-pressed") === "true");
-  if (pressed && "IntersectionObserver" in window && !reduced()) {
+  const pressed = cells.find((b) => b.dataset.sid === M.show[0] && b.dataset.engine === M.show[1]);
+  if (pressed && phone.matches && "IntersectionObserver" in window && !reduced()) {
     const cue = new IntersectionObserver((es) => {
       if (!es.some((e) => e.isIntersecting)) return;
       cue.disconnect();
@@ -479,9 +489,41 @@ const FR = (() => {
     }, { rootMargin: "0px 0px -35% 0px" });
     cue.observe(pressed);
   }
-  let ticking = false;
+  // r10.2, phones: the record opens in place, straight under the tapped row, so the reader keeps their place in the
+  // matrix. It moves by moving rows past it, never by moving the record itself, so its sideways scroll survives, and
+  // the page scrolls by the shift so the element in hand (the tapped tile, or the record after a swipe) stays put.
+  const window_ = root.querySelector(".pv-window");
+  const rowEnd = (sid) => cells.filter((b) => b.dataset.sid === sid).pop();
+  const place = (sid, hold) => {
+    const end = rowEnd(sid);
+    if (!end || pane.previousElementSibling === end) return false;
+    const y = hold.getBoundingClientRect().top;
+    if (pane.parentElement !== grid) end.after(pane);
+    else {
+      const kids = [...grid.children], from = kids.indexOf(pane), to = kids.indexOf(end);
+      if (to > from) pane.before(...kids.slice(from + 1, to + 1));
+      else pane.after(...kids.slice(to + 1, from));
+    }
+    // At once, past the page's smooth scrolling (base.css), so the element in hand never drifts
+    const html = document.documentElement.style, was = html.scrollBehavior;
+    html.scrollBehavior = "auto";
+    scrollBy(0, hold.getBoundingClientRect().top - y);
+    html.scrollBehavior = was;
+    return true;
+  };
+  const unplace = () => { if (pane.parentElement === grid) window_.append(pane); };
+  phone.addEventListener("change", () => {
+    if (!phone.matches) unplace();
+    else if (root.classList.contains("is-open")) place(order[current].sid, pane);
+    mark(current);
+  });
+  let ticking = false, rest = 0;
   track.addEventListener("scroll", () => {
-    if (!built || ticking) return;
+    if (!built) return;
+    // A swipe into another situation's conversations takes the record to that row once the track comes to rest
+    clearTimeout(rest);
+    rest = setTimeout(() => { if (phone.matches && root.classList.contains("is-open")) place(order[current].sid, pane); }, 180);
+    if (ticking) return;
     ticking = true;
     requestAnimationFrame(() => {
       ticking = false;
@@ -506,15 +548,26 @@ const FR = (() => {
     const cell = ev.target.closest(".pv-cell");
     if (!cell) return;
     // Phones keep the record closed until a cell is tapped (pages.css), so the preview never stands between
-    // the visitor and the form; the first tap opens it on that conversation
+    // the visitor and the form; the first tap opens it on that conversation, under its row (r10.2), and a second tap
+    // on the same tile closes it again
+    if (phone.matches && root.classList.contains("is-open") && cell.getAttribute("aria-pressed") === "true") {
+      root.classList.remove("is-open");
+      mark(current);
+      return;
+    }
     const opening = !root.classList.contains("is-open");
     root.classList.add("is-open");
+    const moved = phone.matches && place(cell.dataset.sid, cell);
     await load();
-    go(at(cell.dataset.sid, cell.dataset.engine), !opening);
-    // Stacked (phones and tablets), bring the record up if it is below the screen
+    go(at(cell.dataset.sid, cell.dataset.engine), !opening && !moved);
+    const scrollPad = parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop || 0);
     const top = pane.getBoundingClientRect().top;
-    if (getComputedStyle(root.querySelector(".pv-window")).gridTemplateColumns.split(" ").length === 1 && top > innerHeight * 0.7) {
-      scrollTo({ top: scrollY + top - parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop || 0), behavior: reduced() ? "auto" : "smooth" });
+    if (phone.matches) {
+      // Under the row, the record's start shows; a tile tapped low on the screen comes up to the top with it
+      if (top > innerHeight * 0.7) scrollTo({ top: scrollY + cell.getBoundingClientRect().top - scrollPad, behavior: reduced() ? "auto" : "smooth" });
+    } else if (getComputedStyle(window_).gridTemplateColumns.split(" ").length === 1 && top > innerHeight * 0.7) {
+      // Stacked tablets: bring the record up if it is below the screen
+      scrollTo({ top: scrollY + top - scrollPad, behavior: reduced() ? "auto" : "smooth" });
     }
   });
   grid.addEventListener("keydown", (ev) => {
@@ -533,7 +586,9 @@ const FR = (() => {
 // timers); a group already on screen at load, reduced motion and no JS all show the final state from frame 1.
 (() => {
   if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-  const groups = [...document.querySelectorAll("[data-reveal]")].filter((g) => g.getBoundingClientRect().top > innerHeight);
+  // r10.2: on phones the method's thread draws by scroll position instead (below), one step at a time
+  const phoneThread = matchMedia("(max-width: 760px)").matches;
+  const groups = [...document.querySelectorAll("[data-reveal]")].filter((g) => g.getBoundingClientRect().top > innerHeight && !(phoneThread && g.matches(".g-thread")));
   if (!groups.length) return;
   // r06: the method's thread lays itself step to step over 2.7 s, 450 ms a step
   const DUR = 360, ease = FR.easeOut, dur = (g) => (g.matches(".g-thread") ? 2700 : g.matches(".fa-steps") ? 900 : DUR);
@@ -593,4 +648,35 @@ const FR = (() => {
     paint(p, 0);
   }
   addEventListener("scroll", onScroll, { passive: true });
+})();
+
+// r10.2, phones: the method's threads run down the left of the steps (pages.css). Each step's rule, node and hop to the
+// next draw as that step comes up the screen, from 85% to 45% of its height, a pure function of scroll position that
+// only ever moves forward (nothing undraws on the way back up), and the rerun's return to the first step draws with the
+// last step. A step already above that band at load is drawn; reduced motion and no JS show them all drawn.
+(() => {
+  const list = document.querySelector(".g-thread .fa-steps");
+  if (!list || !matchMedia("(max-width: 760px)").matches || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const steps = [...list.children];
+  const done = steps.map(() => 0);
+  const paint = () => {
+    const h = innerHeight;
+    steps.forEach((li, i) => {
+      const k = Math.max(done[i], FR.clamp((h * 0.85 - li.getBoundingClientRect().top) / (h * 0.4)));
+      done[i] = k;
+      const e = FR.easeOut(k);
+      li.style.setProperty("--rv", String(e));
+      li.style.setProperty("--rd", String(FR.clamp(k * 4)));
+    });
+    list.style.setProperty("--rl", String(FR.easeOut(done[done.length - 1])));
+    if (done.every((k) => k >= 1)) {
+      removeEventListener("scroll", onScroll);
+      steps.forEach((li) => { li.style.removeProperty("--rv"); li.style.removeProperty("--rd"); });
+      list.style.removeProperty("--rl");
+    }
+  };
+  let queued = false;
+  const onScroll = () => { if (!queued) { queued = true; requestAnimationFrame(() => { queued = false; paint(); }); } };
+  addEventListener("scroll", onScroll, { passive: true });
+  paint();
 })();
