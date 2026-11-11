@@ -1,49 +1,34 @@
-/* tokens: fonts and design tokens. Built into ../../fr.css by tools/build_site.py; edit here, never there.
-   r06: one ground, the manta navy, on every page and every section; a raised navy block is the only surface step.
-   Type carries provenance: Geist = FlintRay speaking, Newsreader = words quoted from an engine or a buyer,
-   Geist Mono = counted or recorded. Nothing under 13px. One accent: FlintRay orange, once per region. */
-
 @font-face { font-family: "Geist"; font-style: normal; font-weight: 300 600; font-display: swap; src: url("assets/fonts/geist-latin.woff2") format("woff2"); }
 @font-face { font-family: "Geist Mono"; font-style: normal; font-weight: 400 500; font-display: swap; src: url("assets/fonts/geist-mono-latin.woff2") format("woff2"); }
 @font-face { font-family: "Newsreader"; font-style: normal; font-weight: 400 600; font-display: swap; src: url("assets/fonts/newsreader-latin.woff2") format("woff2"); }
 @font-face { font-family: "Newsreader"; font-style: italic; font-weight: 400 600; font-display: swap; src: url("assets/fonts/newsreader-italic-latin.woff2") format("woff2"); }
-
 :root {
-  /* r06 merge: navy's manta navy system (sampled from brand/flintray-manta.jpg body pixels), grid's structure,
-     editorial's one orange. Written up for both builders in r06/TOKENS.md. */
-  /* Ground and surfaces */
-  --black: #0F172A;          /* the ground on every page; the name stays so every rule that reads it turns navy */
-  --deep: #0B1120;           /* the footer, input wells */
-  --raised: #161C32;         /* the one surface step: a raised block, opaque */
+  --black: #0F172A;
+  --deep: #0B1120;
+  --raised: #161C32;
   --panel: #161C32;
-  --rim: #1C2B48;            /* hover and pressed */
-  --lit: #D6E7FB;            /* the manta's lit underside: focus, Recommended, drawn threads */
-  --ink: #EEF3FB;            /* 16.0:1 on the ground */
-  --soft: #B9C4D6;           /* ledes and secondary body, 10.4:1 */
-  --mute: #8E9BB3;           /* captions and metadata, 14px and up, 6.3:1 */
+  --rim: #1C2B48;
+  --lit: #D6E7FB;
+  --ink: #EEF3FB;
+  --soft: #B9C4D6;
+  --mute: #8E9BB3;
   --cap: #8E9BB3;
-  --hard: rgba(214, 231, 251, .55);   /* a section's opening rule */
-  --line: #253150;           /* cell and row rules */
+  --hard: rgba(214, 231, 251, .55);
+  --line: #253150;
   --cell: #253150;
   --hair: rgba(190, 214, 245, .12);
   --rule-dark: rgba(190, 214, 245, .2);
-  --edge: rgba(214, 231, 251, .42);   /* a secondary button's outline */
+  --edge: rgba(214, 231, 251, .42);
   --grid: rgba(192, 216, 240, 0.2);
   --beam: #D6E7FB;
-
-  /* The old Silt sheet, remapped onto navy: any light sheet left in a page becomes a raised navy block */
   --silt: #161C32;
   --silt-2: #1C2B48;
   --manta: #EEF3FB;
   --manta-soft: #B9C4D6;
   --rule: #253150;
   --ray-ink: #D6E7FB;
-
-  /* The one accent: the measured subject only, as type or a 1px outline, never a fill */
-  --orange: #E8743B;         /* 6.0:1 on the ground */
+  --orange: #E8743B;
   --orange-ink: #E8743B;
-
-  /* Type */
   --sans: "Geist", ui-sans-serif, system-ui, sans-serif;
   --mono: "Geist Mono", ui-monospace, "SFMono-Regular", monospace;
   --serif: "Newsreader", Georgia, "Times New Roman", serif;
@@ -55,43 +40,30 @@
   --t-h2: clamp(40px, 5.4vw, 92px);
   --t-h3: clamp(20px, 1.6vw, 24px);
   --t-display: clamp(52px, 9.2vw, 168px);
-  --t-figure: clamp(96px, 17vw, 252px);    /* counted figures: Geist light, tabular, one baseline */
+  --t-figure: clamp(96px, 17vw, 252px);
   --t-figure-s: clamp(56px, 6vw, 96px);
-
-  /* Frame */
-  --m: clamp(20px, 3.4vw, 56px);   /* outer margin, every page */
+  --m: clamp(20px, 3.4vw, 56px);
   --x: var(--m);
-  --gap: clamp(20px, 2.2vw, 36px); /* the gutter inside a ruled cell */
-  --sec: 96px;                     /* section padding, top and bottom: the only value (R08: Opus caps it at 96px, 64px on phones) */
-  --gm: 44px;                /* grid margin around the evidence sheet */
-
-  /* Motion (motion.md section 2), mirrored in site.js where it applies */
+  --gap: clamp(20px, 2.2vw, 36px);
+  --sec: 96px;
+  --gm: 44px;
   --dur-micro: 120ms; --dur-ui: 200ms; --dur-panel: 560ms; --dur-trace: 700ms; --dur-thread: 900ms;
   --ease-surface: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-standard: cubic-bezier(0.2, 0, 0, 1);
   --ease-exit: cubic-bezier(0.4, 0, 1, 1);
-
   --z-field: 1; --z-plate: 3; --z-content: 5; --z-nav: 20; --z-ribbon: 24; --z-bar: 25; --z-banner: 30;
-
-  /* Chrome: the sticky header's height, and the pinned phone bar's (0 above 760px, where there's no bar) */
   --nav-h: 68px;
   --cta-bar-h: 0px;
-  --tap: 44px;               /* the smallest tap target, everywhere */
+  --tap: 44px;
 }
-
-/* Registered @keyframes (components.css): ray-sweep, the beam of the ray, -14deg to 14deg, 9s each way; ray-glide, the manta, 6px, 11s each way. */
-
 @media (max-width: 760px) {
   :root { --m: 20px; --gm: 14px; --sec: 64px; --t-cap: 14px; --t-lede: 18px; --nav-h: 56px; --cta-bar-h: calc(60px + env(safe-area-inset-bottom, 0px)); }
 }
 @media (prefers-reduced-motion: reduce) {
   :root { --dur-micro: 0ms; --dur-ui: 0ms; --dur-panel: 0ms; --dur-trace: 0ms; --dur-thread: 0ms; }
 }
-
-/* base: element defaults, the field (grain). Built into ../../fr.css by tools/build_site.py. */
 * { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; overflow-x: clip; scroll-behavior: smooth; scroll-padding-top: calc(var(--nav-h) + 12px); }
-/* padding-bottom keeps the end of every page clear of the pinned phone bar (0 above 760px) */
 body { position: relative; margin: 0; padding-bottom: var(--cta-bar-h); background: var(--black); color: var(--ink); font: 400 var(--t-body)/1.55 var(--sans); -webkit-font-smoothing: antialiased; }
 img, svg { display: block; max-width: 100%; }
 a { color: inherit; }
@@ -100,42 +72,21 @@ p, ul, ol, dl, dd, figure, blockquote { margin: 0; }
 button, input { font: inherit; color: inherit; }
 ::selection { background: var(--beam); color: var(--manta); }
 .visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
-
-/* The field: a faint static grain, nothing else. No column lines (r02: they read as a template). */
 body::before { content: ""; position: absolute; inset: 0; pointer-events: none; z-index: var(--z-field); opacity: .035; mix-blend-mode: screen;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .35 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E"); }
 main, .site-footer { position: relative; z-index: var(--z-content); }
-
-/* Page grid: four columns between the margins */
 .cols { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); padding: 0 var(--m); }
-
 :focus-visible { outline: 2px solid var(--beam); outline-offset: 2px; }
 .on-silt :focus-visible, .sheet :focus-visible, .request-sheet :focus-visible { outline-color: var(--ray-ink); }
-
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
 }
-
-/* components: the one frame every page shares. Built into ../../fr.css by tools/build_site.py; edit here, never there.
-   Writing rules apply to the chrome too (tools/qa/copy_lint.py): no tag strings, no eyebrows, no numbering.
-   Labels are sentence case; Geist Mono is for counted values only. */
-
-/* Review ribbon ("Draft" in the source build, "Staging" on staging, gone in production). r04: a small tab hung
-   from the top edge at the page's centre line, in the header's empty top margin, scrolling away with the page, so
-   it never sits over a word, a field or a button (judges, r03: the left-edge tab covered form labels). No taps. */
 .draft-bar { position: absolute; top: 0; left: 50%; z-index: var(--z-banner); transform: translateX(-50%); padding: 1px 8px 2px;
   font: 500 13px/1 var(--sans); letter-spacing: .02em; background: var(--raised); color: var(--mute); box-shadow: inset 0 -1px 0 var(--line); white-space: nowrap; pointer-events: none; }
-/* r07 (judges A fix 8, B fix 6): staging chrome in the ground's own greys, so it is never the first colour the eye meets */
 html.menu-open .draft-bar { display: none; }
-
-/* Quiet metadata: dates, sources, provenance lines */
 .meta { font: 400 15px/1.5 var(--sans); color: var(--mute); }
 .num { font-family: var(--mono); font-variant-numeric: tabular-nums; }
-
-/* Header: sticky at every width. The wordmark, four routes, then Book a call (secondary) and Free audit (primary).
-   Phones keep the wordmark, Free audit and Menu; the sheet carries everything else. Solid ground, so nothing
-   ghosts through it on scroll. */
 .site-nav { position: sticky; top: 0; z-index: var(--z-nav); height: var(--nav-h); display: flex; align-items: center; gap: 24px; padding: 0 var(--m); background: var(--black); border-bottom: 1px solid var(--hair); }
 .wordmark { flex: none; display: inline-flex; align-items: center; min-height: var(--tap); font: 600 20px/1 var(--sans); letter-spacing: .03em; text-transform: uppercase; color: var(--ink); text-decoration: none; }
 .wordmark .hallmark { flex: none; width: 30px; margin-right: 10px; color: var(--ink); }
@@ -147,7 +98,6 @@ html.menu-open .draft-bar { display: none; }
 .nav-book { margin-left: 8px; color: var(--ink); box-shadow: inset 0 0 0 1px var(--edge); }
 .nav-cta { margin-left: -12px; background: var(--ink); color: var(--black); }
 .menu-toggle { display: none; margin-left: auto; align-items: center; gap: 10px; min-width: 44px; min-height: 44px; padding: 0 14px; background: transparent; color: var(--ink); border: 1px solid var(--edge); font: 500 16px/1 var(--sans); cursor: pointer; }
-/* r07: the chrome carries no span (a rival in the real report shares the word; its leak check reads every file) */
 .menu-word { font-weight: inherit; }
 .menu-icon { position: relative; width: 18px; height: 12px; border-top: 2px solid currentColor; border-bottom: 2px solid currentColor; }
 .menu-icon::after { content: ""; position: absolute; left: 0; right: 0; top: 3px; border-top: 2px solid currentColor; }
@@ -171,8 +121,6 @@ html.menu-open { overflow: hidden; }
   .wordmark:hover { color: var(--beam); }
   .menu-toggle:hover, .menu-close:hover { border-color: var(--ink); }
 }
-
-/* Buttons: white solid plus a ghost. Never orange-on-orange, never red. */
 .btn { display: inline-flex; align-items: center; gap: 16px; min-height: 56px; padding: 0 24px; background: var(--ink); color: var(--black); font: 500 17px/1 var(--sans); text-decoration: none; border: 0; cursor: pointer; transition: background var(--dur-ui) var(--ease-standard), transform var(--dur-micro) var(--ease-standard); }
 .btn::after { content: "\2192"; }
 .btn-ghost { background: transparent; color: var(--ink); box-shadow: inset 0 0 0 1px var(--edge); }
@@ -186,36 +134,25 @@ html.menu-open { overflow: hidden; }
   .on-silt .btn:hover { background: #24324B; }
   .request-sheet .btn:hover { background: #FFFFFF; }
 }
-
-/* Links */
 .link { color: var(--ink); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 4px; transition: text-underline-offset var(--dur-ui) var(--ease-standard); }
 .on-silt .link, .sheet .link { color: var(--ray-ink); }
 .link-arrow::after { content: "\2192"; display: inline-block; margin-left: 6px; text-decoration: none; }
-/* An arrow link on its own line is a tap target: give it a 44px row. Inside a sentence it stays inline. */
 :is(p, li, div):has(> .link-arrow:only-child) > .link-arrow, .after-link > .link { display: inline-flex; align-items: center; min-height: var(--tap); }
 @media (hover: hover) and (pointer: fine) { .link:hover { text-underline-offset: 6px; text-decoration-thickness: 2px; } }
-
-/* Disclaimers and provenance: one plain line, never a tag */
 .note { font: 400 15px/1.5 var(--sans); color: var(--mute); max-width: 60ch; }
 .on-silt .note, .sheet .note { color: var(--manta-soft); }
-
-/* Classification stamps: Recommended, Shortlisted, Mentioned, Named negatively, Not named */
 .stamp { font: 500 13px/1.5 var(--sans); padding: 0 7px; border: 1px solid currentColor; white-space: nowrap; }
 .stamp-recommended { color: #fff; background: var(--manta); border-color: var(--manta); }
 .stamp-shortlisted { color: var(--manta); }
 .stamp-mentioned { color: var(--manta-soft); border-style: dashed; }
 .stamp-none { color: var(--orange-ink); border-color: var(--orange); }
 .stamp-negative, .stamp-cautioned { color: #fff; background: var(--orange-ink); border-color: var(--orange-ink); }
-
-/* Page head: every page but home opens with its title and one lede */
 .page-head { padding: 104px var(--m) 72px; border-bottom: 1px solid var(--hair); }
 .page-head h1 { font: 500 clamp(44px, 6.4vw, 96px)/0.98 var(--sans); letter-spacing: -0.045em; max-width: 15ch; text-wrap: balance; padding-left: 16px; }
 .page-head .lede { margin-top: 28px; padding-left: 16px; font-size: var(--t-lede); line-height: 1.5; color: var(--soft); max-width: 46ch; }
 .page-head .lede strong { color: var(--ink); font-weight: 500; }
 .page-head .meta { margin-top: 20px; padding-left: 16px; }
 .page-head .page-cta { margin-top: 32px; padding-left: 16px; }
-
-/* Sections on the field: the heading and body sit in columns two to four */
 .section { position: relative; padding: 112px 0; border-top: 1px solid var(--hair); }
 .section-body { grid-column: 2 / -1; padding-left: 1px; }
 .section h2 { font: 500 var(--t-h2)/0.98 var(--sans); letter-spacing: -0.04em; max-width: 16ch; text-wrap: balance; }
@@ -224,8 +161,6 @@ html.menu-open { overflow: hidden; }
 .on-silt .meta { color: var(--manta-soft); }
 .on-silt .intro { color: var(--manta-soft); }
 .section.on-silt { border-top: 0; }
-
-/* Ledger: rows separated by rules, never boxes, never numbered */
 .ledger { list-style: none; padding: 0; margin-top: 56px; border-top: 1px solid var(--rule-dark); }
 .ledger > li { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr); gap: 24px; padding: 22px 0; border-bottom: 1px solid var(--rule-dark); }
 .ledger h3 { font: 500 22px/1.25 var(--sans); letter-spacing: -0.01em; }
@@ -233,8 +168,6 @@ html.menu-open { overflow: hidden; }
 .on-silt .ledger { border-top-color: var(--manta); }
 .on-silt .ledger > li { border-bottom-color: var(--rule); }
 .on-silt .ledger p { color: var(--manta-soft); }
-
-/* Prose: guides, privacy and any long-form text */
 .prose { max-width: 68ch; font-size: 18px; line-height: 1.65; color: var(--soft); }
 .prose > * + * { margin-top: 20px; }
 .prose h2 { margin-top: 64px; font: 500 clamp(28px, 3vw, 40px)/1.1 var(--sans); letter-spacing: -0.03em; color: var(--ink); }
@@ -248,12 +181,6 @@ html.menu-open { overflow: hidden; }
 .prose .num, .prose td.num { white-space: nowrap; }
 .prose blockquote { padding-left: 20px; border-left: 2px solid var(--beam); font: italic 400 21px/1.5 var(--serif); color: var(--ink); }
 .prose .note { font-size: 15px; }
-
-/* Articles (Insights): a reading column set in the frame's second column, a quiet byline, footnoted sources.
-   The recurring device: a source margin. At 1280 and up each cited block's sources sit beside it in the empty first
-   column (.margin, placed by the build just before its block), and the block that states the article's counted
-   figure carries it there as a pull figure. Below 1280 the notes give way to the Sources list and the pull figure
-   sits inline above its paragraph. */
 .article-head { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); padding: 112px var(--m) 64px; border-bottom: 1px solid var(--hair); }
 .article-head > * { grid-column: 2 / -1; padding-left: 1px; }
 .article-head h1 { font: 500 clamp(40px, 5.4vw, 80px)/1.0 var(--sans); letter-spacing: -0.04em; max-width: 17ch; text-wrap: balance; }
@@ -295,10 +222,6 @@ html.menu-open { overflow: hidden; }
 .footnotes a { color: var(--soft); }
 .footnotes .fn-back { margin-left: 4px; text-decoration: underline; text-underline-offset: 3px; color: var(--beam); }
 :target { scroll-margin-top: 96px; }
-
-/* Insights index: cover cards. Each guide's counted figure on a Silt plate (the evidence ground), the lead story's
-   plate across the first two columns, the rest in the first column; the title link covers the whole card.
-   Related reads at the foot of an article stay a plain ledger. */
 .insights-index { padding-top: 64px; border-top: 0; }
 .insight-covers { grid-column: 1 / -1; list-style: none; padding: 0; }
 .insight-cover { position: relative; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); padding: 48px 0; border-top: 1px solid var(--rule-dark); }
@@ -321,7 +244,6 @@ html.menu-open { overflow: hidden; }
 .cover-dek { margin-top: 16px; color: var(--soft); max-width: 48ch; }
 .is-lead .cover-dek { font-size: var(--t-lede); line-height: 1.5; }
 @media (hover: hover) and (pointer: fine) { .insight-cover:hover .cover-plate { background: #EEEEEF; } }
-/* A title on its own line is a tap target: at least 44px, even when the title fits on one line */
 .insight-title .link { display: inline-block; min-height: var(--tap); }
 .insight-list { list-style: none; padding: 0; }
 .insight-list > li { display: block; padding: 28px 0; }
@@ -336,25 +258,16 @@ html.menu-open { overflow: hidden; }
   .is-lead .cover-plate { min-height: 320px; padding: 24px 22px 26px; }
   .cover-text { margin-top: 26px; padding-left: 0; }
 }
-
-/* Questions and answers (the build reads these for FAQPage data) */
 .faq-item { padding: 24px 0; border-bottom: 1px solid var(--rule-dark); }
 .faq-item h3 { font: 500 21px/1.3 var(--sans); color: var(--ink); }
 .faq-item p { margin-top: 10px; color: var(--soft); max-width: 62ch; }
-
-/* The closing action: one short invitation and one button */
 .cta-band { position: relative; padding: 104px 0; }
 .cta-band h2 { font: 500 clamp(36px, 4.4vw, 64px)/1 var(--sans); letter-spacing: -0.035em; max-width: 18ch; text-wrap: balance; }
 .cta-band p { margin-top: 22px; font-size: var(--t-lede); line-height: 1.5; max-width: 46ch; }
 .cta-band .btn { margin-top: 32px; }
 .cta-band.on-silt p { color: var(--manta-soft); }
-
-/* Hallmark: the engraved single-weight manta */
 .hallmark { width: 56px; height: auto; color: var(--beam); }
 .hallmark path { fill: none; stroke: currentColor; stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; }
-
-/* Forms (r06): a short letter on the raised navy block, the same on every page. Fields are ruled lines, the label
-   above in --soft, the value in --ink; focus draws the rule in --lit. One primary button, full width. */
 .letter { display: grid; gap: 0; }
 .letter label { display: grid; gap: 2px; padding: 18px 0 4px; border-bottom: 1px solid var(--edge); font: 500 14px/1.3 var(--sans); color: var(--soft); transition: box-shadow var(--dur-ui) var(--ease-standard); }
 .letter label:focus-within { box-shadow: inset 0 -2px 0 var(--lit); }
@@ -367,8 +280,6 @@ html.menu-open { overflow: hidden; }
 .form-note.is-ok { color: var(--ray-ink); font-weight: 500; }
 .form-note.is-error { color: #F2A07A; font-weight: 500; }
 .hp { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
-
-/* Footer: a research firm's colophon, linking every page */
 .site-footer { border-top: 1px solid var(--hair); padding: 96px 0 40px; }
 .foot-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); row-gap: 48px; padding: 0 var(--m); }
 .colophon { grid-column: 1; display: grid; gap: 18px; align-content: start; padding: 0 32px 0 16px; color: var(--soft); }
@@ -378,7 +289,6 @@ html.menu-open { overflow: hidden; }
 .foot-col a { display: inline-flex; align-items: center; min-height: var(--tap); color: var(--ink); text-decoration: none; font-size: 16px; }
 .foot-legal { grid-column: 1 / -1; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; padding: 28px 16px 0; border-top: 1px solid var(--hair); }
 @media (hover: hover) and (pointer: fine) { .foot-col a:hover { text-decoration: underline; text-underline-offset: 4px; } }
-
 @media (max-width: 1023px) {
   .nav-links, .nav-book { display: none; }
   .nav-cta { margin-left: auto; padding: 0 14px; }
@@ -406,7 +316,6 @@ html.menu-open { overflow: hidden; }
   .site-footer { padding-top: 56px; }
   .foot-grid { row-gap: 32px; column-gap: 16px; }
 }
-/* Phones: one column on a solid ground, so the field's column hairlines never run through the links */
 @media (max-width: 430px) {
   .site-footer { background: var(--black); }
   .foot-grid { padding: 0 var(--m); row-gap: 24px; }
@@ -416,16 +325,9 @@ html.menu-open { overflow: hidden; }
   .cta-band { padding: 80px 0; }
   .prose { font-size: 17px; }
 }
-/* Phones under 600: the pinned bar owns the main action, so the header is the wordmark and Menu */
 @media (max-width: 599px) { .nav-cta { display: none; } .menu-toggle { margin-left: auto; } }
-/* Very narrow phones (360 to 400): tighter gaps keep the wordmark, Free audit and Menu on one row inside the margins */
 @media (max-width: 400px) { .site-nav { gap: 8px; } .menu-toggle { padding: 0 10px; } }
-/* Under 380 the icon carries the menu; the word stays as its accessible name */
 @media (max-width: 379px) { .menu-word { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; } .menu-toggle { min-width: 44px; justify-content: center; } }
-
-/* The pinned phone bar (760px and below): the page's main action, wide, and Book a call. chrome.js adds
-   .is-shown from the second screen and drops it while a request form is on screen. Above 760 there's no bar,
-   and --cta-bar-h is 0. Reduced motion: no slide, it just appears. */
 .cta-bar { display: none; }
 @media (max-width: 760px) {
   .cta-bar { position: fixed; left: 0; right: 0; bottom: 0; z-index: var(--z-bar); height: var(--cta-bar-h); display: flex; align-items: center; gap: 8px; padding: 0 var(--m) env(safe-area-inset-bottom, 0px);
@@ -440,12 +342,9 @@ html.menu-open { overflow: hidden; }
   .cta-bar a:active { transform: translateY(1px); }
   .cta-bar a { white-space: nowrap; }
 }
-/* Narrow phones: a long main action (partners: "Talk to us about partnering") wraps to two lines inside its 44px */
 @media (max-width: 400px) {
   .cta-bar-main { min-width: 0; white-space: normal !important; line-height: 1.15; }
 }
-/* Phones, r06: one pinned element at a time. The header slides away while the reader scrolls down (chrome.js sets
-   html.chrome-down) and comes back on the way up, when the bar slides away. Both are opaque. */
 @media (max-width: 760px) {
   .site-nav { transition: transform var(--dur-panel) var(--ease-surface); }
   html.chrome-down .site-nav { transform: translateY(-100%); }
@@ -454,9 +353,6 @@ html.menu-open { overflow: hidden; }
   .cta-bar, .cta-bar.is-shown, .site-nav { transform: none; transition: none; }
   html.chrome-down .site-nav { transform: translateY(-100%); }
 }
-
-/* The request form (<!-- audit-form -->): one Silt sheet, the same on every page. It fills its container up to
-   640px; at 520px and wider the three safety lines sit beside the button, and below that directly under it. */
 .request { position: relative; z-index: 1; width: 100%; max-width: 640px; container-type: inline-size; }
 .request-sheet { background: var(--silt); color: var(--manta); padding: 32px 40px 28px; }
 .request .letter { gap: 0; }
@@ -465,9 +361,6 @@ html.menu-open { overflow: hidden; }
   .request-sheet { padding: 24px 20px; }
   .request .letter .btn { width: 100%; justify-content: space-between; }
 }
-
-/* Seth (<!-- founder -->): the photo slot, his name, the one line, the bio and two ways to reach him.
-   Until his photo is approved the slot is a neutral block marked .is-placeholder (production refuses it). */
 .founder { display: grid; grid-template-columns: 160px minmax(0, 1fr); gap: 28px; align-items: start; max-width: 760px; margin-top: 32px; }
 .founder-photo { width: 160px; aspect-ratio: 4 / 5; height: auto; object-fit: cover; background: var(--raised); }
 .founder-photo.is-placeholder { box-shadow: inset 0 0 0 1px var(--rule-dark);
@@ -488,34 +381,13 @@ html.menu-open { overflow: hidden; }
   .founder-bio { margin-top: 18px; }
   .founder-contact .btn { width: 100%; justify-content: space-between; }
 }
-
-/* The fictional-sample caption: once per sample object, small, directly under it */
 .sample-caption { margin-top: 10px; font: 400 14px/1.4 var(--sans); color: var(--mute); }
 .on-silt .sample-caption, .sheet .sample-caption { color: var(--manta-soft); }
-
-/* A price line in an offer card, off until Seth decides (build_site.PRICE_LINE) */
 .price-line { margin-top: 28px; font: 500 22px/1.3 var(--sans); letter-spacing: -0.01em; color: var(--ink); }
-
-/* ray: begin (build_real_report.py copies this block into the standalone report) */
-/* The ray (build_site.render_ray). R08 made the beam its own layer; R09 swept it 12deg, and judges still saw eight idle
-   frames 1 s apart as the same: at a difference someone sees in a still (0.3), r09's phone hero changed 1.5% of the
-   screen in 8 s. R10 (R10.md, "the ray travels"; motiongate's 8 s idle check):
-     0.00 s  FRAME 1   the manta, dark dorsal and lit underside, on the navy; the lamp is off
-     0.15 s  LIGHT UP  the lamp (the cone and the eye's glow) comes up over 1 s, the eye flaring first
-     1.50 s  SWEEP     with the lamp up, the beam travels --ray-swing (20deg, 24 on phones) either side of its resting
-                       angle, 4 s each way, eased in and out: one cycle in 8 s, 0.125 Hz, under the 0.15 Hz cap
-     1.50 s  GLIDE     the whole figure glides 40px across and 24px up with 2.4deg of roll on laptops (48px and 28px on
-                       phones), 12 s each way (0.042 Hz), slower than the sweep and never in step with it; the page's
-                       parallax moves it against the words on scroll
-   The beam is a searchlight with a bright core and crisp sides (a 1.4deg feather) across a 40deg spread, holding its light along its length
-   and ending in a short, clean fade inside its hero, with no haze. Every page sets its own resting angle (--ray-aim),
-   length (--ray-len) and swing, so the beam never reaches the headline, the form card or the screen edge. Everything
-   animates transform and opacity only. Reduced motion or html.ray-still: the lamp is on and the beam rests. */
 .ray { position: relative; display: block; width: 100%; aspect-ratio: 1240 / 700; --ray-swing: 20deg; --glide-x: 20px; --glide-y: 12px; }
 .ray-body { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
 .ray-lamp, .ray-aim, .ray-cone, .ray-eye { position: absolute; display: block; pointer-events: none; }
 .ray-lamp { inset: 0; }
-/* The pivot is the light point under the head; the cone's box has its corner there and opens down and to the right */
 .ray-aim { left: 72.016%; top: 42.143%; width: var(--ray-len, 34%); aspect-ratio: 1; transform-origin: 0 0; transform: rotate(var(--ray-aim, 0deg)); }
 .ray-cone { inset: 0; transform-origin: 0 0;
   background: conic-gradient(from 0deg at 0 0, rgba(214, 231, 251, 0) 124deg, rgba(220, 234, 252, .56) 125.4deg, rgba(228, 239, 253, .66) 132deg,
@@ -524,7 +396,6 @@ html.menu-open { overflow: hidden; }
   mask-image: radial-gradient(farthest-side at 0 0, #000 0, rgba(0, 0, 0, .96) 20%, rgba(0, 0, 0, .88) 72%, rgba(0, 0, 0, .8) 91%, transparent 98%); }
 .ray-eye { left: 72.016%; top: 42.143%; width: 6%; aspect-ratio: 1; margin: -3% 0 0 -3%; border-radius: 50%;
   background: radial-gradient(closest-side, rgba(255, 255, 255, .9), rgba(230, 240, 255, .34) 45%, rgba(214, 231, 251, 0)); }
-/* Laptops: a narrower, more focused cone (32deg), its light gathered in the core */
 @media (min-width: 761px) {
   .ray-cone { background: conic-gradient(from 0deg at 0 0, rgba(214, 231, 251, 0) 128deg, rgba(220, 234, 252, .42) 129.4deg, rgba(228, 239, 253, .58) 135deg,
     rgba(248, 251, 255, .95) 144deg, rgba(228, 239, 253, .58) 153deg, rgba(220, 234, 252, .42) 158.6deg, rgba(214, 231, 251, 0) 160deg); }
@@ -541,11 +412,6 @@ html.menu-open { overflow: hidden; }
 @keyframes ray-flare { from { transform: scale(.4); } 45% { transform: scale(1.5); } to { transform: none; } }
 @keyframes ray-glide { from { transform: translate3d(calc(-1 * var(--glide-x)), var(--glide-y), 0) rotate(1.2deg); } to { transform: translate3d(var(--glide-x), calc(-1 * var(--glide-y)), 0) rotate(-1.2deg); } }
 [data-parallax] { will-change: transform; }
-/* ray: end */
-/* Reveals (site.js, "reveal: begin"). The start state of each kind, held only under html.rv (the script adds it) and
-   only while the element waits below the screen (data-reveal-wait), so without JS, under reduced motion and once
-   revealed, every element is its finished self. R09: no start state touches a word's opacity; only the graphics wait
-   (an undrawn rule or stroke, an unscaled bar or node, an unfilled mark or chip) and a heading sits 8px low. */
 .rv [data-reveal="rise"][data-reveal-wait] { transform: translate3d(0, 8px, 0); }
 .rv [data-reveal="rows"][data-reveal-wait] > *, .rv [data-reveal="rule"][data-reveal-wait] { --k: 0; }
 .rv [data-reveal="bars"][data-reveal-wait] :is(.fa-bar i, .bar i, .sk, .sg, .ty-bar i) { transform: scaleX(0); }
@@ -555,8 +421,6 @@ html.menu-open { overflow: hidden; }
 .rv [data-reveal="steps"][data-reveal-wait] [data-draw], .rv [data-reveal="weave"][data-reveal-wait] path { stroke-dashoffset: 1; }
 .rv [data-reveal="weave"][data-reveal-wait] i[style] { opacity: 0; }
 :is(.bar i, .sk, .sg, .ty-bar i) { transform-origin: 0 50%; }
-/* R10: outcomes in words, no pills, outlines or fills: weight and colour carry the rank. Recommended is the
-   brightest ink at 600, Shortlisted the brand's light blue at 500, Mentioned quiet, Not named a visible word */
 .chip, .chip.o-rec, .chip.o-sho, .chip.o-men, .chip.o-not, .chip.o-neg, .chip.chip-co { min-height: 0; padding: 0; border: 0; border-radius: 0;
   background: none; box-shadow: none; outline: 0; line-height: 1.2; letter-spacing: 0; }
 .chip { --f: 1; font-weight: calc(400 + var(--w, 0) * var(--f)); color: color-mix(in srgb, var(--o, var(--mute)) calc(var(--f) * 100%), var(--mute)); }
@@ -566,32 +430,20 @@ html.menu-open { overflow: hidden; }
 .chip.o-not { --o: var(--mute); --w: 0; }
 .chip.o-neg { --o: #A7B2C6; --w: 0; text-decoration: underline wavy rgba(214, 231, 251, .55) 1px; text-underline-offset: 4px; }
 .chip.chip-co { --o: var(--orange); color: var(--orange); }
-/* The matrix stamps in (fill): row by row, each word settles from the quiet tone to its rank's colour and weight and
-   rises 4px, at full opacity throughout */
 .rv [data-reveal="fill"][data-reveal-wait] .chip { --f: 0; transform: translateY(4px); }
 .chip { display: inline-block; }
-/* reveal: end */
 @media (max-width: 359px) {
-  /* iPhone SE in Safari: both phone-bar buttons stay on one line */
   .cta-bar { gap: 6px; padding-left: 12px; padding-right: 12px; }
   .cta-bar a { padding: 0 10px; font-size: 15px; }
 }
-
-/* Home, r06 merge (2026-11-05). grid's structure (one 12-column grid, every section opening on a hard full-width
-   rule, content in ruled cells, never cards, very large type, figures in Geist light with "of N" in mono on one
-   baseline) on navy's manta navy ground, with editorial's one orange for the measured subject only, as type.
-   The grey bands are gone: the argument and the letter sit on the raised navy surface. Tokens: tokens.css and
-   r06/TOKENS.md. Scoped to .p-home and .fa. */
 .p-home {
-  --paper: var(--raised);                /* the old grey bands, now the one surface step */
+  --paper: var(--raised);
   --paper-ink: var(--ink);
   --paper-soft: var(--soft);
 }
 .fa h1, .fa h2, .fa h3 { text-wrap: balance; }
 .fa .note { font-size: var(--t-cap); line-height: 1.5; color: var(--cap); }
 .fa .link-arrow { display: inline-flex; align-items: center; min-height: var(--tap); }
-
-/* ---------- The header, as one ruled bar of cells, on every page (r06) ---------- */
 .site-nav { gap: 0; padding: 0 0 0 var(--x); height: var(--nav-h); border-bottom: 1px solid var(--hard); }
 .nav-links { gap: 0; height: 100%; }
 .nav-links a { height: 100%; padding: 0 clamp(14px, 1.6vw, 26px); border-bottom: 0; border-left: 1px solid var(--cell); font-size: 15px; }
@@ -605,21 +457,14 @@ html.menu-open { overflow: hidden; }
   .nav-links a:hover { background: var(--raised); }
   .nav-book:hover { box-shadow: none; }
 }
-
-/* Buttons on home: square, full-height, one arrow */
 .fa .btn { min-height: 56px; padding: 0 22px; justify-content: space-between; font-size: 16px; }
 .fa .btn-ghost { box-shadow: inset 0 0 0 1px var(--hard); }
 @media (hover: hover) and (pointer: fine) { .fa .btn-ghost:hover { background: var(--rim); box-shadow: inset 0 0 0 1px var(--ink); } }
-
-/* ---------- Sections: a hard rule, a heading that spans the grid, an aside in the last third ---------- */
 .g-sec { position: relative; padding: var(--sec) var(--x); border-top: 1px solid var(--hard); }
 .g-head { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gap); row-gap: 24px; align-items: start; }
 .g-head h2 { grid-column: 1 / span 8; font: 500 var(--t-h2)/.95 var(--sans); letter-spacing: -0.05em; }
-/* The caption sits directly under its heading, at its left edge (r05 judge: captions floated 400 to 500px away) */
 .g-aside { grid-column: 1 / span 6; max-width: 56ch; font-size: 17px; line-height: 1.55; color: var(--soft); }
 .g-aside p + p { margin-top: 14px; }
-
-/* ---------- Hero: the ray across the top right, the claim set across the grid, one ruled strip ---------- */
 .g-hero { position: relative; }
 .g-hero-stage { --rw: min(64vw, 1100px); --h1: clamp(52px, 9.6vw, 176px); position: relative; display: grid; padding: 16px var(--x) 0; min-height: calc(var(--rw) * .5645 + 0.36 * var(--h1)); }
 .g-ray { grid-area: 1 / 1; justify-self: end; align-self: start; width: var(--rw); pointer-events: none; }
@@ -635,8 +480,6 @@ html.menu-open { overflow: hidden; }
 .g-actions .btn { flex: none; gap: 28px; white-space: nowrap; }
 .g-sample { grid-column: 10 / -1; }
 .g-sample .link { font-size: 16px; }
-
-/* ---------- Proof: two very large figures in two cells, a mark per conversation, then three ruled cases ---------- */
 .g-proof .g-head h2 { grid-column: 1 / span 7; }
 .g-proof .g-aside { font-size: var(--t-cap); color: var(--cap); }
 .g-figs { list-style: none; padding: 0; margin-top: clamp(48px, 5vw, 88px); display: grid; grid-template-columns: 1fr 1fr; border-top: 1px solid var(--cell); }
@@ -658,8 +501,6 @@ html.menu-open { overflow: hidden; }
 .g-case:first-child { padding-left: 0; border-left: 0; }
 .g-case:last-child { padding-right: 0; }
 .g-n-s { font-size: clamp(72px, 6.6vw, 116px); }
-/* r06: the second and third cases lead with one mark per conversation (8 of 16 and 5 of 44 put forward; 0 of 60),
-   the same device as the 592 above, wordless, so it adds no text */
 .g-mk { display: grid; align-content: end; gap: 10px; }
 .g-mk .fa-tally { height: auto; }
 .g-mk .fa-tally-16 { width: 224px; }
@@ -672,15 +513,8 @@ html.menu-open { overflow: hidden; }
 .g-case .g-claim { margin-top: 28px; font: 500 clamp(19px, 1.5vw, 23px)/1.3 var(--sans); letter-spacing: -0.012em; color: var(--ink); }
 .g-case .g-body { margin-top: 14px; font-size: 16px; line-height: 1.55; color: var(--soft); }
 .g-src { margin-top: 28px; padding: 14px 0 0; border-top: 1px solid var(--cell); font-size: var(--t-cap); line-height: 1.5; color: var(--cap); }
-/* r10.2: the dashboard line moved up from the plans' notes, so it closes the proof, where a visitor tired of dashboards
-   meets it before the take-apart */
 .g-dash { margin-top: clamp(56px, 5.6vw, 96px); padding-top: 24px; border-top: 1px solid var(--hard); font: 400 clamp(20px, 1.8vw, 28px)/1.35 var(--sans); letter-spacing: -0.015em; color: var(--soft); max-width: 44ch; }
-
-/* ---------- The live preview: the sample report's matrix beside one conversation, on a light pool ----------
-   site.js builds the matrix from the inline data; tapping a cell opens that conversation beside it. Without JS the
-   record shows the showcase conversation and the matrix is a still of itself. */
 .pv { position: relative; margin-top: clamp(48px, 5vw, 88px); }
-/* The underglow: a flat pool of light on the field under the panel's foot, as if the panel were lit from above */
 .pv::after { content: ""; position: absolute; left: 3%; right: 3%; top: calc(100% - 40px); height: 200px; pointer-events: none; z-index: 0;
   background: radial-gradient(50% 50% at 50% 30%, rgba(214, 231, 251, .16), rgba(214, 231, 251, .05) 50%, transparent 100%); }
 .pv-window { position: relative; z-index: 1; display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); background: var(--raised); border: 1px solid var(--rule-dark);
@@ -689,20 +523,15 @@ html.menu-open { overflow: hidden; }
 .pv-index-in { position: sticky; top: var(--nav-h); }
 .pv-still { width: 100%; height: auto; }
 .pv-convo { min-width: 0; padding: 0 clamp(20px, 2.4vw, 40px) 32px; }
-/* Tabs (phones only): one assistant at a time, so each outcome reads in words */
 .pv-tabs { display: none; }
-/* The matrix: the assistants across, the 15 situations down, each cell its outcome in words */
 .pv-grid { display: grid; grid-template-columns: minmax(0, 1.5fr) repeat(4, minmax(0, 1fr)); }
 .pv-grid > * { border-bottom: 1px solid var(--line); }
 .pv-grid .pv-h { display: flex; align-items: center; min-height: 52px; padding: 0 10px; border-bottom-color: var(--rule-dark); border-left: 1px solid var(--line); font: 500 14px/1.2 var(--sans); color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-/* Each row names its situation in words (editorial's index); phones let it wrap */
 .pv-grid .pv-mk { display: flex; align-items: center; min-width: 0; min-height: 40px; padding: 0 10px 0 clamp(16px, 1.6vw, 24px); font: 400 14px/1.2 var(--sans); color: var(--soft); }
 .pv-grid .pv-mk span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .pv-grid .pv-mk[aria-hidden] { border-bottom-color: var(--rule-dark); min-height: 52px; }
 .pv-cell { position: relative; display: flex; align-items: center; min-width: 0; min-height: 40px; padding: 0 10px; border: 0; border-left: 1px solid var(--line); border-bottom: 1px solid var(--line); background: transparent;
   color: var(--mute); font: 400 14px/1.1 var(--sans); text-align: left; cursor: pointer; -webkit-tap-highlight-color: transparent; transition: background var(--dur-micro) var(--ease-standard); }
-/* One outcome code on every page (r06/TOKENS.md): Recommended a solid lit fill, Shortlisted a 1px lit outline,
-   Mentioned a dotted outline, Named negatively a wavy underline, Not named plain muted words */
 .pv-cell.is-recommended { background: var(--lit); color: var(--black); font-weight: 500; }
 .pv-cell.is-shortlisted { color: var(--ink); font-weight: 500; box-shadow: inset 0 0 0 1px var(--lit); }
 .pv-cell.is-mentioned { color: var(--ink); outline: 1px dotted var(--soft); outline-offset: -4px; }
@@ -713,8 +542,6 @@ html.menu-open { overflow: hidden; }
 .pv-w { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 @media (hover: hover) and (pointer: fine) { .pv-cell:not(.is-recommended):hover { background: var(--rim); } }
 .pv-key { display: none; }
-
-/* The record's swipe (site.js): one conversation per snap, sideways; the position and the two steps above it */
 .pv-nav { display: flex; align-items: center; justify-content: flex-end; gap: 0; min-height: 52px; margin: 0 calc(-1 * clamp(20px, 2.4vw, 40px)); padding: 0 clamp(20px, 2.4vw, 40px); border-bottom: 1px solid var(--rule-dark); }
 .pv-pos { min-width: 9ch; text-align: center; font: 400 14px/1 var(--mono); font-variant-numeric: tabular-nums; color: var(--soft); }
 .pv-step { display: grid; place-items: center; width: 52px; height: 51px; border: 0; border-left: 1px solid var(--rule-dark); background: transparent; color: var(--ink); font: 400 24px/1 var(--sans); cursor: pointer; -webkit-tap-highlight-color: transparent; }
@@ -727,17 +554,11 @@ html.menu-open { overflow: hidden; }
 .pv-track:focus-visible { outline: 2px solid var(--beam); outline-offset: 4px; }
 .pv-slide { flex: 0 0 100%; min-width: 0; scroll-snap-align: start; scroll-snap-stop: always; }
 .pv-open { color: inherit; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 4px; }
-.pv-open::after { content: "\00a0\2192"; } /* r10.2: a no-break space, so the arrow never wraps alone */
-/* r10.1: no inner scroll at any width. The track takes the height of the conversation showing (site.js), so the
-   quote, the order and the sources read on the page, and on laptops the matrix stays pinned beside them */
+.pv-open::after { content: "\00a0\2192"; }
 .pv-track { transition: height var(--dur-ui) var(--ease-standard); }
-/* r10.2: whole pixels. site.js steps the track by clientWidth (an integer); a fractional track (489.27px at 1440) let
-   the slides drift past its clip, shaving the right edge off the "+" buttons and the orange row */
 .pv-track { width: round(down, 100%, 1px); }
 .g-after { margin-top: clamp(56px, 4.8vw, 80px); display: flex; }
 .g-look { padding-bottom: clamp(72px, 6vw, 96px); }
-
-/* The record: one conversation taken apart, as ruled rows */
 .convo { position: relative; }
 .convo-row { position: relative; display: grid; grid-template-columns: minmax(150px, 2fr) minmax(0, 5fr); gap: 28px; padding: 20px 0; border-bottom: 1px solid var(--line); }
 .convo-row:last-child { border-bottom: 0; }
@@ -760,9 +581,7 @@ html.menu-open { overflow: hidden; }
 .convo .stamp-shortlisted { color: var(--ink); box-shadow: inset 0 0 0 1px var(--lit); }
 .convo .stamp-mentioned { color: var(--ink); outline: 1px dotted var(--soft); outline-offset: -1px; }
 .convo :is(.stamp-cautioned, .stamp-negative) { color: var(--ink); text-decoration: underline wavy var(--soft) 1px; text-underline-offset: 4px; }
-/* the subject's own line: orange type in a 1px orange outline, never a fill */
 .convo .is-you .stamp { color: var(--orange); }
-/* The buyer's turns fold to their first two lines (site.js adds .is-folded and the toggle); the whole row opens it */
 .convo-row .fold-toggle { position: absolute; inset: 0; z-index: 3; width: 100%; border: 0; background: transparent; cursor: pointer; -webkit-tap-highlight-color: transparent; }
 .convo-row .fold-toggle::after { content: "+"; position: absolute; right: 0; top: 18px; width: 30px; height: 30px; display: grid; place-items: center; font: 400 22px/1 var(--sans); color: var(--ink); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .3); }
 .convo-row:not(.is-folded) .fold-toggle::after { content: "\2212"; }
@@ -771,26 +590,19 @@ html.menu-open { overflow: hidden; }
   -webkit-mask-image: linear-gradient(to bottom, #000 50%, transparent); mask-image: linear-gradient(to bottom, #000 50%, transparent); }
 .convo-row .fold-toggle:focus-visible { outline: 2px solid var(--beam); outline-offset: -2px; }
 @media (hover: hover) and (pointer: fine) { .convo-row .fold-toggle:hover::after { background: var(--ink); color: var(--black); } }
-
-/* ---------- The raised blocks: the argument and the letter, on the one surface step (r06: no grey bands) ---------- */
 .g-paper { background: var(--paper); color: var(--paper-ink); border-top: 1px solid var(--hard); }
 .g-paper .link, .g-paper a { color: var(--paper-ink); }
 .g-paper :focus-visible { outline-color: var(--lit); }
-/* Essays: two arguments in two ruled cells, then the statistic behind them set across the grid */
 .g-essays { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gap); }
 .g-essay { grid-column: span 6; padding-top: 28px; border-top: 2px solid var(--ink); }
 .g-essay + .g-essay { padding-left: var(--gap); margin-left: calc(-1 * var(--gap)); border-left: 1px solid var(--cell); }
 .g-essay h2 { font: 500 clamp(36px, 4vw, 68px)/.98 var(--sans); letter-spacing: -0.045em; max-width: 13ch; }
 .g-essay p { margin-top: clamp(24px, 2.6vw, 40px); font-size: 18px; line-height: 1.6; color: var(--paper-soft); max-width: 52ch; }
 .g-view { grid-column: 1 / -1; margin-top: clamp(72px, 7vw, 128px); padding-top: 28px; border-top: 1px solid var(--paper-ink); font: 400 clamp(24px, 2.7vw, 46px)/1.22 var(--sans); letter-spacing: -0.025em; color: var(--paper-ink); }
-
-/* ---------- Method: six steps as a 3 by 2 ruled grid; a thread draws along each cell's top as it arrives ---------- */
 .g-method .g-head { align-items: start; }
 .g-method .g-aside { font-size: 18px; }
 .g-method .g-who { color: var(--cap); font-size: 16px; }
 .g-thread { margin-top: clamp(56px, 5.6vw, 96px); }
-/* The threads (r06, navy's idea on grid's steps): strands hop from each step's node to the next as the section
-   arrives, and one returns from the rerun to the first step. Laptops only; phones keep the drawn rules. */
 .g-threads { display: none; width: 100%; height: auto; overflow: visible; }
 .g-threads path { fill: none; stroke: var(--lit); stroke-width: 1.2; stroke-dasharray: 1; opacity: var(--o, .5); }
 .g-threads .is-loop { stroke-width: 1.4; opacity: .8; }
@@ -815,8 +627,6 @@ html.menu-open { overflow: hidden; }
   .g-steps h3 { font-size: clamp(20px, 1.6vw, 24px); }
   .g-steps p { font-size: 15px; }
 }
-
-/* ---------- Plans: one comparison table, hard rules, each label once; phones show one plan at a time ---------- */
 .g-plans { margin-top: clamp(56px, 5.6vw, 96px); }
 .g-plans table { width: 100%; border-collapse: collapse; table-layout: fixed; }
 .g-plans thead td { width: 19%; }
@@ -839,8 +649,6 @@ html.menu-open { overflow: hidden; }
 .g-policy { grid-column: 1 / -1; padding-bottom: 32px; border-bottom: 1px solid var(--cell); font: 500 clamp(22px, 2vw, 32px)/1.3 var(--sans); letter-spacing: -0.02em; color: var(--ink); max-width: 46ch; }
 .g-note { font-size: 15px; line-height: 1.55; color: var(--soft); }
 .g-note .link-arrow { display: flex; width: fit-content; margin-top: 6px; color: var(--ink); }
-
-/* ---------- The request: on paper, the invitation in the left half, the letter in the right ---------- */
 .g-request { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gap); align-items: start; }
 .g-request-copy { grid-column: 1 / span 6; }
 .g-request h2 { font: 500 clamp(40px, 5.2vw, 88px)/.95 var(--sans); letter-spacing: -0.05em; max-width: 12ch; }
@@ -859,13 +667,7 @@ html.menu-open { overflow: hidden; }
 .g-form .form-note { margin-top: 16px; color: var(--paper-soft); }
 .g-form .form-note a { color: var(--paper-ink); }
 @media (hover: hover) and (pointer: fine) { .g-form .letter .btn:hover { background: #FFFFFF; } }
-
-/* ---------- Footer, as the header: ruled ---------- */
-/* r10.1: on phones the footer runs on through the body's bottom padding (kept for the pinned bar), so no lighter band
-   shows under it. --cta-bar-h is 0 above 760px. */
 .site-footer { border-top: 1px solid var(--hard); background: var(--deep); margin-bottom: calc(-1 * var(--cta-bar-h)); padding-bottom: calc(40px + var(--cta-bar-h)); }
-
-/* ---------- Narrower laptops and tablets ---------- */
 @media (max-width: 1180px) {
   .pv-window { grid-template-columns: minmax(0, 1fr); }
   .pv-index { border-right: 0; border-bottom: 1px solid var(--rule-dark); }
@@ -898,16 +700,12 @@ html.menu-open { overflow: hidden; }
   .g-request-copy, .g-form { grid-column: 1 / -1; }
   .g-form { margin-top: 48px; }
 }
-
-/* ---------- Phones ---------- */
 @media (max-width: 760px) {
-
   .site-nav { padding-left: var(--x); }
   .menu-toggle { padding: 0 18px; margin-left: auto; }
   .g-head h2 { font-size: clamp(34px, 10vw, 46px); letter-spacing: -0.045em; }
   .g-aside, .g-proof .g-aside, .g-method .g-aside { grid-column: 1 / -1; font-size: 16px; }
   .g-proof .g-aside { font-size: 15px; }
-
   .g-hero-stage { --rw: calc(100vw - 2 * var(--x)); --h1: clamp(42px, 12.6vw, 60px); display: block; min-height: 0; padding-top: 12px; }
   .g-ray { width: var(--rw); margin-left: auto; }
   .g-hero h1 { margin-top: calc(var(--rw) * -.1); padding-bottom: 22px; letter-spacing: -0.055em; }
@@ -917,7 +715,6 @@ html.menu-open { overflow: hidden; }
   .g-actions { flex-direction: column; align-items: stretch; gap: 8px; }
   .g-actions .btn { min-height: 52px; }
   .g-sample { padding-top: 6px; padding-bottom: 20px; }
-
   .g-figs { margin-top: 36px; grid-template-columns: minmax(0, 1fr); }
   .g-figs li { padding: 18px 0 0; }
   .g-figs li + li { margin-top: 24px; padding-left: 0; border-left: 0; border-top: 1px solid var(--cell); }
@@ -935,7 +732,6 @@ html.menu-open { overflow: hidden; }
   .g-case .g-claim { margin-top: 18px; font-size: 19px; }
   .g-case .g-body { margin-top: 10px; font-size: 15px; }
   .g-src { margin-top: 18px; padding-top: 10px; }
-
   .pv { margin: 32px calc(-1 * var(--x) + 10px) 0; }
   .pv::after { top: calc(100% - 24px); height: 120px; }
   .pv-tabs { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-bottom: 1px solid var(--rule-dark); }
@@ -948,8 +744,6 @@ html.menu-open { overflow: hidden; }
   .pv-grid .pv-mk { min-height: 52px; padding: 6px 10px 6px 14px; font-size: 14px; }
   .pv-grid .pv-mk span { white-space: normal; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
   .pv-cell { min-height: 52px; padding: 0 14px; font-size: 14px; }
-  /* r10.1: the wordless tap cue. Each tile ends in a disclosure mark, and the tile of the conversation the record
-     holds rings once as it arrives (site.js adds .is-cued) */
   .pv-cell::after { content: ""; flex: none; width: 7px; height: 7px; margin: 0 3px 0 auto; border-top: 1.5px solid currentColor; border-right: 1.5px solid currentColor; transform: rotate(45deg); opacity: .7; }
   .pv-cell.is-cued { z-index: 1; }
   .pv-cell.is-cued::before { content: ""; position: absolute; inset: 0; pointer-events: none; animation: pv-cue 1.6s var(--ease-surface) 1; }
@@ -957,7 +751,6 @@ html.menu-open { overflow: hidden; }
   .pv-grid:not([data-show="3"]) .pv-cell[data-col="3"], .pv-grid:not([data-show="4"]) .pv-cell[data-col="4"] { display: none; }
   .pv-convo { padding: 0 14px 12px; }
   .pv.is-live:not(.is-open) .pv-convo { display: none; }
-  /* r10.2: the record opens in place, under the tapped row, across both columns; the tile above it keeps its ring */
   .pv-grid > .pv-convo { grid-column: 1 / -1; border-bottom: 1px solid var(--rule-dark); background: var(--deep); box-shadow: inset 0 1px 0 var(--lit); }
   .pv.is-live:not(.is-open) .pv-index { border-bottom: 0; }
   .pv-nav { margin: 0 -14px; padding: 0 14px; }
@@ -967,21 +760,15 @@ html.menu-open { overflow: hidden; }
   .convo-row .record { font-size: 17px; }
   .g-after { margin-top: 48px; }
   .g-after .btn { width: 100%; padding: 0 18px; white-space: nowrap; }
-
   .g-essays { row-gap: 0; }
   .g-essay h2, .g-request h2 { font-size: clamp(34px, 10vw, 46px); }
   .g-essay p { font-size: 17px; }
   .g-essay + .g-essay { margin-top: 48px; }
   .g-view { margin-top: 56px; font-size: 21px; line-height: 1.35; }
-
   .g-method .g-who { font-size: 15px; }
   .g-steps { grid-template-columns: minmax(0, 1fr); margin-top: 40px; }
   .g-steps li:nth-child(n) { padding: 24px 0 28px; border-left: 0; }
   .g-steps li:nth-child(n)::before { left: 0; }
-  /* r10.2: the laptop's threads, turned to run down the page. A gutter left of the steps holds three strands from each
-     step's node to the next, and one long strand returns from the rerun to the first step. Each strand is half an
-     ellipse whose ends sit on the two nodes, so it fits any step height. site.js draws each hop as its step comes up
-     the screen (--rv) and the return last (--rl); without the script, or under reduced motion, they are drawn. */
   .g-steps { grid-template-columns: 46px minmax(0, 1fr); }
   .g-steps li:nth-child(n) { grid-column: 2; }
   .g-steps::before { content: ""; grid-column: 1; grid-row: 1 / 6; justify-self: end; width: 40px; margin: .5px -4.5px 0 0;
@@ -995,7 +782,6 @@ html.menu-open { overflow: hidden; }
   .g-hop::after { width: 12px; border-color: rgba(214, 231, 251, .26); }
   .g-steps h3 { font-size: 22px; }
   .g-steps p { font-size: 15px; margin-top: 10px; }
-
   .g-terms { grid-template-columns: minmax(0, 1fr); row-gap: 20px; }
   .g-policy { font-size: 20px; padding-bottom: 24px; }
   .g-intro { font-size: 17px; margin-top: 24px; }
@@ -1004,13 +790,9 @@ html.menu-open { overflow: hidden; }
   .g-form { margin-top: 36px; }
   .g-form .letter input:not([type=hidden]) { font-size: 18px; }
 }
-/* Phone plans (site.js sets data-show). r10.1: the table becomes one grid, three columns. Each plan's name is a tab
-   with its price straight under it, so all three prices read without a tap; the rows below show the chosen plan.
-   Without the script every plan's rows stay stacked under their label. */
 @media (max-width: 760px) {
   .g-plans { margin-top: 40px; }
   .g-plans table { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: 1px solid var(--hard); }
-  /* r10.2: the names' row is as tall as the names, and the price row takes whatever Engage's longer line needs */
   .g-plans[data-show] table { grid-template-rows: auto 1fr; }
   .g-plans thead, .g-plans tbody, .g-plans tr, .g-plans thead th, .g-plans thead th.is-start { display: contents; box-shadow: none; }
   .g-plans th, .g-plans td { display: block; padding: 0; }
@@ -1024,14 +806,9 @@ html.menu-open { overflow: hidden; }
   .g-plans thead h3 button[aria-pressed="true"] { color: var(--ink); }
   .g-plans thead th:nth-of-type(n + 2) h3, .g-plans tr.is-price td:nth-child(n + 3) { border-left: 1px solid var(--cell); }
   .g-plans tr.is-price th { display: none; }
-  /* r10.2: each price is the plan's key line, at body size and full contrast, the weight of the plan names; tapping it
-     picks the plan (site.js) */
   .g-plans tr.is-price td, .g-plans[data-show] tr.is-price td { display: block; grid-row: 2; margin: 0; padding: 2px 10px 14px; font: 500 15px/1.3 var(--sans); color: var(--ink); }
   .g-plans[data-show] tr.is-price td { padding-top: 0; cursor: pointer; -webkit-tap-highlight-color: transparent; }
-  /* the name's tab is 44px, the tap floor, with no padding under the name, so its price follows close below */
   .g-plans[data-show] thead h3 button { min-height: 44px; padding-bottom: 0; }
-  /* r10.2: Engage's price line starts with its name, so the tab shows the name once. Its tab keeps "Lens Engage" as the
-     button's name, out of sight, and the button fills the column under its price line, so the whole column is the tab */
   .g-plans[data-show] thead th:nth-of-type(3) h3, .g-plans[data-show] tr.is-price td:nth-child(4) { grid-row: 1 / span 2; }
   .g-plans[data-show] thead th:nth-of-type(3) .g-plan-name { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
   .g-plans[data-show] tr.is-price td:nth-child(4) { padding-top: 12px; pointer-events: none; }
@@ -1054,13 +831,10 @@ html.menu-open { overflow: hidden; }
   .pv-tabs button { font-size: 13px; padding: 0 2px; }
   .pv-cell, .pv-grid .pv-mk { padding-left: 10px; padding-right: 10px; }
 }
-
 @keyframes pv-cue {
   from { box-shadow: 0 0 0 0 rgba(214, 231, 251, .7); }
   to { box-shadow: 0 0 0 10px rgba(214, 231, 251, 0); }
 }
-
-/* 404: the missing address as one traced result, Not named, with the trace running on to three pages */
 .nf-field { max-width: 760px; padding: var(--gm);
   background-image: linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px); background-size: 22px 22px; background-position: -1px -1px; }
 .nf-sheet { background: var(--silt); color: var(--manta); padding: 0 30px 30px; }
@@ -1082,17 +856,8 @@ html.menu-open { overflow: hidden; }
   .nf-ways li::before { left: -25.5px; }
   .nf-ways li::after { left: -20px; width: 12px; }
 }
-
-/* Audit page, r06 merge. Home's system: one 12-column grid, every section opening on a hard full-width rule, ruled
-   cells instead of cards, the navy ground with the raised navy block for the letter. The first screen is the claim
-   on the left and the letter on the right (on phones, the letter follows the lede). Orange marks the sample
-   subject's result only, as type. Shared pieces (the header, the form, .g-sec, .g-head) come from pages.css and
-   components.css. */
-
 .aud { --aud-h2: clamp(36px, 4.4vw, 72px); }
 .aud .g-head h2 { grid-column: 1 / span 9; font-size: var(--aud-h2); letter-spacing: -0.045em; }
-
-/* ---------- The first screen: the claim, then the letter beside it ---------- */
 .aud-top { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gap); padding: clamp(56px, 6vw, 104px) var(--x) var(--sec); }
 .aud-open { grid-column: 1 / span 6; align-self: start; padding-top: 8px; }
 .aud-open h1 { font: 500 clamp(52px, 7.4vw, 128px)/.9 var(--sans); letter-spacing: -0.058em; max-width: 9ch; text-wrap: balance; }
@@ -1102,19 +867,14 @@ html.menu-open { overflow: hidden; }
 .aud-request h2 { font: 500 clamp(26px, 2.2vw, 34px)/1.1 var(--sans); letter-spacing: -0.03em; }
 .aud-request .request { max-width: none; }
 .aud-request .request-sheet { padding: 8px 0 0; background: none; }
-
-/* The founder: one ruled cell under the letter, never a card */
 .aud-founder { padding: 24px 0 0; }
 .aud-founder .founder { display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: 20px; align-items: center; padding: 0; border: 0; background: none; }
 .aud-founder .founder-photo { width: 96px; height: 120px; object-fit: cover; filter: saturate(.9); }
 .aud-founder .founder-name { font: 500 17px/1.35 var(--sans); color: var(--ink); }
 .aud-founder .founder-contact { margin-top: 12px; }
 .aud-founder .btn { min-height: 48px; }
-
-/* ---------- Who gets put forward: two bars, then the four facts in ruled cells ---------- */
 .aud-pick-body { margin-top: clamp(40px, 4vw, 64px); display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gap); align-items: start; }
 .aud-pick-bars { grid-column: 1 / span 5; }
-/* r10.1: one scale. The rows share the list's columns (subgrid), so both bars start at one edge on one track length */
 .aud-bars { display: grid; grid-template-columns: minmax(96px, 1fr) minmax(0, 2fr) max-content; column-gap: 20px; border-top: 1px solid var(--cell); }
 .aud-bars > div { display: grid; grid-column: 1 / -1; grid-template-columns: subgrid; align-items: center; padding: 18px 0; border-bottom: 1px solid var(--cell); }
 .aud-bars dt { font-size: 18px; color: var(--ink); }
@@ -1128,8 +888,6 @@ html.menu-open { overflow: hidden; }
 .aud-facts > div:nth-child(2n) { padding-left: var(--gap); padding-right: 0; border-left: 1px solid var(--cell); }
 .aud-facts dt { font: 500 14px/1.4 var(--sans); color: var(--cap); }
 .aud-facts dd { margin-top: 10px; font-size: 17px; line-height: 1.5; color: var(--ink); }
-
-/* ---------- How it runs: five ruled rows; a thread draws down each row's top rule as the section arrives ---------- */
 .aud-steps { list-style: none; padding: 0; margin-top: clamp(40px, 4vw, 64px); }
 .aud-steps > li { position: relative; display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gap); padding: 28px 0 32px; }
 .aud-steps > li::after { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 1px; background: var(--cell); transform-origin: 0 50%; transform: scaleX(var(--rv, 1)); }
@@ -1138,8 +896,6 @@ html.menu-open { overflow: hidden; }
 .aud-steps h3 { grid-column: 1 / span 4; font: 500 clamp(21px, 1.8vw, 28px)/1.2 var(--sans); letter-spacing: -0.02em; }
 .aud-steps p { grid-column: 6 / span 6; font-size: 17px; line-height: 1.55; color: var(--soft); max-width: 56ch; }
 .aud-steps .link { display: inline-flex; margin-top: 6px; color: var(--ink); }
-
-/* ---------- Questions: ruled rows that open ---------- */
 .aud-faq { margin-top: clamp(40px, 4vw, 64px); border-top: 1px solid var(--hard); }
 .aud .faq-item { padding: 0; border-bottom: 1px solid var(--cell); }
 .aud .faq-item summary { display: grid; grid-template-columns: minmax(0, 1fr) 44px; align-items: center; gap: 16px; min-height: 76px; padding: 14px 0; cursor: pointer; list-style: none; -webkit-tap-highlight-color: transparent; }
@@ -1150,8 +906,6 @@ html.menu-open { overflow: hidden; }
 .aud .faq-item p { margin: 0; padding: 0 0 28px; font-size: 17px; line-height: 1.6; color: var(--soft); max-width: 68ch; }
 .aud .faq-item summary:focus-visible { outline: 2px solid var(--lit); outline-offset: 2px; }
 @media (hover: hover) and (pointer: fine) { .aud .faq-item summary:hover::after { background: var(--rim); } }
-
-/* ---------- After the audit: two plans in two ruled cells, then the policy and the partner line ---------- */
 .aud-plans { list-style: none; padding: 0; margin-top: clamp(40px, 4vw, 64px); display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); border-top: 1px solid var(--hard); }
 .aud-plans > li { display: flex; flex-direction: column; padding: 28px var(--gap) 32px 0; border-bottom: 1px solid var(--cell); }
 .aud-plans > li + li { padding-left: var(--gap); padding-right: 0; border-left: 1px solid var(--cell); }
@@ -1165,8 +919,6 @@ html.menu-open { overflow: hidden; }
 .aud-policy p { margin-top: 12px; font: 500 clamp(21px, 2vw, 30px)/1.3 var(--sans); letter-spacing: -0.02em; color: var(--ink); max-width: 40ch; }
 .aud-partners { grid-column: 9 / -1; font-size: 15px; line-height: 1.55; color: var(--soft); }
 .aud-partners .link-arrow { display: flex; width: fit-content; margin-top: 6px; color: var(--ink); }
-
-/* ---------- Narrower ---------- */
 @media (max-width: 1023px) {
   .aud-open { grid-column: 1 / -1; }
   .aud-side { grid-column: 1 / -1; margin-top: 48px; max-width: 640px; }
@@ -1196,30 +948,21 @@ html.menu-open { overflow: hidden; }
   .aud .faq-item summary { min-height: 64px; }
   .aud .faq-item p { font-size: 16px; }
 }
-
-/* R07: the ray on the audit's first screen (judge A fix 4), the same asset and sweep as home, beam toward the form;
-   small on phones so the form still starts on the first screens. Seth's person block sits above the form. */
 .aud-ray { width: min(100%, 520px); margin: 0 0 clamp(8px, 1.4vw, 24px) -2%; pointer-events: none; }
 .aud-ray .ray { width: 100%; height: auto; }
 .aud-request .person { margin: 22px 0 6px; }
 .aud-request .person-line { font-size: 17px; }
-/* One marker per step, a solid square on its rule (judge A fix 2: the rule ran through it and read as a broken icon) */
 .aud-steps > li::before { z-index: 1; width: 8px; height: 8px; top: -3.5px; }
 @media (max-width: 760px) {
   .aud-ray { width: 62%; margin: -12px 0 -18px auto; }
 }
-/* Judge A (r06) fixes 7 to 9: the plans' shared note runs under both columns; the partners line on the body rhythm;
-   the open answer under its question's text, and a bare glyph for the fold */
 .aud-monthly { margin-top: 24px; font-size: 15px; line-height: 1.55; color: var(--cap); }
 .aud-partners { line-height: 24px; align-self: start; }
 .aud .faq-item p { max-width: 680px; }
 .aud .faq-item summary::after { width: 16px; height: 16px; box-shadow: none; color: rgba(238, 243, 251, .6); transition: color var(--dur-ui) var(--ease-standard); }
 @media (hover: hover) and (pointer: fine) { .aud .faq-item summary:hover::after { color: var(--ink); } }
 .aud-partners .link { display: inline; min-height: 0; }
-
-/* The shared price line is one long sentence in a guide's column; let it wrap like prose */
 .prose .price-line.num { white-space: normal; }
-/* Guides: price tables. The band table stacks into one block per band on phones. */
 .guide-table th[scope="row"] { padding-right: 16px; }
 @media (max-width: 760px) {
   .guide-bands thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
@@ -1230,9 +973,6 @@ html.menu-open { overflow: hidden; }
   .guide-bands td { margin-top: 12px; }
   .guide-bands td::before { content: attr(data-label); display: block; color: var(--ink); font-weight: 500; }
 }
-
-/* home cut list (cuts/CUT-LIST.md, Seth decides each one). Folds open on tap and add no words: the summary is
-   the block's own heading or first sentence, and the marker is a bare glyph. Nothing here applies to the uncut page. */
 .fa .g-fold > summary { display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; min-height: var(--tap); cursor: pointer; list-style: none; -webkit-tap-highlight-color: transparent; }
 .fa .g-fold > summary::-webkit-details-marker { display: none; }
 .fa .g-fold > summary::after { content: "+"; flex: none; width: 16px; font: 400 22px/1 var(--sans); text-align: center; color: var(--mute); transition: color .2s; }
@@ -1247,8 +987,6 @@ html.menu-open { overflow: hidden; }
 .fa .g-steps .g-fold:not([open]) > summary { min-height: 0; }
 .fa .g-note.g-fold > summary::after { font-size: 18px; }
 .fa .g-note.g-fold > p { margin-top: 8px; }
-
-/* With the other two cases cut, the one left reads as a pair: the two counts on the left, its words on the right */
 @media (min-width: 1024px) {
   .g-cases:has(> .g-case:nth-child(2):last-child) { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .g-cases:has(> .g-case:only-child) { grid-template-columns: minmax(0, 1fr); grid-template-rows: none; }
@@ -1256,19 +994,10 @@ html.menu-open { overflow: hidden; }
   .g-case:only-child > .g-split { grid-column: 1 / span 5; grid-row: 1 / span 3; align-self: start; }
   .g-case:only-child > :not(.g-split) { grid-column: 7 / -1; }
   .g-case:only-child > .g-claim { margin-top: 0; }
-  /* One essay left (if Seth cuts only one): it takes the width the pair used */
   .g-essay:only-of-type { grid-column: 1 / -1; }
   .g-essay:only-of-type h2 { max-width: 22ch; }
 }
-
-/* R07 (Seth, Nov 5): the person, the cut list's picks, the real report as the preview, and the
-   motion package. Built into ../../fr.css by tools/build_site.py; edit here, never there. Every effect here has a
-   still, finished state under reduced motion and without JS. */
-
-/* ---------- The count: tabular figures in a box of the final width (site.js), so counting never moves "of 592" ---------- */
 .g-count { display: inline-block; font-weight: inherit; text-align: right; font-variant-numeric: tabular-nums; }
-
-/* ---------- The two other audits, folded into one compact strip: each case's mark, its two numbers, its caption ---------- */
 .g-more { margin-top: clamp(40px, 4vw, 64px); display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); border-top: 1px solid var(--cell); }
 .g-more-i { display: grid; grid-template-rows: auto 1fr auto; align-content: start; gap: 14px; padding: 24px var(--gap) 0 0; color: inherit; text-decoration: none; }
 .g-more-i + .g-more-i { padding: 24px 0 0 var(--gap); border-left: 1px solid var(--cell); }
@@ -1285,8 +1014,6 @@ a.g-more-i:focus-visible { outline: 2px solid var(--beam); outline-offset: 4px; 
   .g-more-i + .g-more-i { border-top: 1px solid var(--cell); }
   .g-more .g-claim { font-size: 17px; }
 }
-
-/* ---------- The person you'll talk to: Seth, just above the form ---------- */
 .person { display: grid; grid-template-columns: 76px minmax(0, 1fr); align-items: center; gap: 18px; margin: 0 0 28px; padding: 0 0 24px; border-bottom: 1px solid var(--cell); }
 .person-photo { width: 76px; height: 95px; object-fit: cover; object-position: 50% 20%; background: var(--rim); }
 .person-line { font: 500 clamp(18px, 1.45vw, 22px)/1.35 var(--sans); letter-spacing: -0.012em; color: var(--ink); max-width: 34ch; }
@@ -1296,17 +1023,12 @@ a.g-more-i:focus-visible { outline: 2px solid var(--beam); outline-offset: 4px; 
   .person-photo { width: 64px; height: 80px; }
   .person-line { font-size: 17px; }
 }
-
-/* ---------- Threads between sections (site.js draws them by scroll; build_site.render_weave) ----------
-   In the section's top padding, under its rule: three strands from one node at the margin to the rule further along. */
 .weave { position: absolute; left: var(--x); right: var(--x); top: 0; height: calc(var(--sec) * .62); pointer-events: none; }
 .weave svg { display: block; width: 100%; height: 100%; overflow: visible; }
 .weave path { fill: none; stroke: var(--lit); stroke-width: 1.1; vector-effect: non-scaling-stroke; stroke-dasharray: 1; opacity: calc(.62 - var(--k) * .16); }
 .weave i { position: absolute; top: -4px; width: 7px; height: 7px; margin-left: -3.5px; background: var(--lit); transition: opacity .3s var(--ease-standard); }
 .weave .weave-o { left: 0; margin-left: 0; width: 9px; height: 9px; top: -5px; }
 @media (max-width: 760px) { .weave { height: calc(var(--sec) * .55); } }
-
-/* ---------- The live preview, on the real report's data (site.js) ---------- */
 .pv-top { display: grid; gap: 14px; padding: 18px clamp(16px, 1.6vw, 24px) 16px; border-bottom: 1px solid var(--rule-dark); }
 .pv-label { font: 500 14px/1.3 var(--sans); color: var(--ink); }
 .pv-co { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 16px; padding: 10px 12px 10px 14px; box-shadow: inset 3px 0 0 var(--orange); background: rgba(232, 116, 59, .05); }
@@ -1322,8 +1044,6 @@ a.g-more-i:focus-visible { outline: 2px solid var(--beam); outline-offset: 4px; 
 .pv-grid .pv-mk-h { display: flex; align-items: center; padding: 0 10px 0 clamp(16px, 1.6vw, 24px); }
 .pv-grid { grid-template-columns: minmax(0, 1.25fr) repeat(4, minmax(0, 1fr)); }
 .pv-cell { min-height: 44px; padding: 0 8px; color: var(--ink); }
-/* The matrix code, the report's own: Recommended a solid lit chip, Shortlisted a lit outline, Mentioned a dotted outline,
-   Named negatively a muted outline with a wavy underline, Not named the plain muted words */
 .chip { display: inline-flex; align-items: center; max-width: 100%; min-height: 28px; padding: 0 8px; font: 400 14px/1.1 var(--sans); white-space: nowrap; color: var(--ink); }
 .chip.o-rec { background: var(--lit); color: var(--black); font-weight: 500; }
 .chip.o-sho { box-shadow: inset 0 0 0 1px var(--lit); }
@@ -1333,7 +1053,6 @@ a.g-more-i:focus-visible { outline: 2px solid var(--beam); outline-offset: 4px; 
 .chip.chip-co { color: var(--orange); box-shadow: inset 0 0 0 1px var(--orange); padding-left: 8px; background: none; }
 .pv-cell[aria-pressed="true"] { background: var(--rim); box-shadow: inset 0 0 0 1px var(--lit); }
 @media (hover: hover) and (pointer: fine) { .pv-cell:hover { background: var(--rim); } }
-/* The record of one conversation, as the report's drawer shows it */
 .pv-nav { justify-content: flex-start; }
 .pv-step { width: auto; padding: 0 16px; font: 500 14px/1 var(--sans); }
 .pv-where { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 12px; flex: 1; min-width: 0; padding: 12px 12px 12px 0; }
@@ -1375,7 +1094,6 @@ a.g-more-i:focus-visible { outline: 2px solid var(--beam); outline-offset: 4px; 
 .pv .cites li { display: inline-flex; align-items: center; gap: 8px; }
 .pv .cites li em { font-family: var(--mono); font-style: normal; color: var(--ink); }
 .pv .sw { flex: none; width: 10px; height: 10px; }
-/* The underglow: the pool of light under the panel breathes, 8 s each way, between two low levels */
 @media (prefers-reduced-motion: no-preference) { .pv::after { animation: pv-glow 8s cubic-bezier(.45, 0, .55, 1) infinite alternate; } }
 @keyframes pv-glow { from { opacity: .55; } to { opacity: 1; } }
 @media (max-width: 1180px) and (min-width: 761px) { .pv-index-in { position: static; } }
@@ -1394,28 +1112,18 @@ a.g-more-i:focus-visible { outline: 2px solid var(--beam); outline-offset: 4px; 
   .pv .rec-sum { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .pv .rec-sum > div:nth-child(3) { grid-column: 1 / -1; padding-left: 0; border-left: 0; border-top: 1px solid var(--line); }
 }
-
-/* ---------- The essays fold to their first sentence (cut list 12 and 13); the 1.7x line stays in full ---------- */
 .g-essay .g-fold > summary { margin-top: clamp(24px, 2.6vw, 40px); font-size: 18px; line-height: 1.6; color: var(--paper-soft); }
 .g-essay .g-fold > p { margin-top: 10px; }
 @media (max-width: 760px) { .g-essay .g-fold > summary { font-size: 17px; } }
-/* The take-apart's intro folds to its first sentence (cut list 8) */
 .g-look .g-aside.g-fold > summary { color: var(--soft); }
-/* The method's steps fold to their headings (cut list 17); each heading is a 44px tap target on phones */
 .g-steps .g-fold > p { margin-top: 12px; }
 @media (max-width: 760px) { .fa .g-steps .g-fold > summary, .fa .g-steps .g-fold:not([open]) > summary { min-height: var(--tap); align-items: center; } }
-
-/* ---------- Judge A (r06) fixes 2 and 3: the three anchor sections keep the big headings; the rest step down, and
-   the proof and plans bands sit on the deeper ground so proof, demo, plans and the letter separate ---------- */
 .g-paths .g-head h2, .g-method .g-head h2 { font-size: clamp(36px, 3.6vw, 60px); letter-spacing: -0.045em; }
 .g-essay h2 { font-size: clamp(32px, 3.2vw, 52px); }
 .g-proof, .g-paths { background: var(--deep); }
 @media (max-width: 760px) {
   .g-paths .g-head h2, .g-method .g-head h2, .g-essay h2 { font-size: clamp(30px, 8.6vw, 38px); }
 }
-
-/* ---------- One scroll for a busy VP (R07 item 6), phones: under the request's heading come the person they'll talk to
-   and the form, then what the audit includes; the words are the same, only their order on a small screen ---------- */
 @media (max-width: 760px) {
   .g-request h2 { order: 1; }
   .g-request .g-form { order: 2; margin-top: 28px; }
@@ -1426,15 +1134,7 @@ a.g-more-i:focus-visible { outline: 2px solid var(--beam); outline-offset: 4px; 
   .g-more-i { gap: 10px; }
   .g-more-i, .g-more-i + .g-more-i { padding: 14px 0 16px; }
 }
-/* The form's own top rule closes the person block, so the block draws none of its own */
 .g-form .person, .aud-request .person { border-bottom: 0; padding-bottom: 0; }
-
-/* how-it-works: one sample situation followed from the buyer's three turns to the rerun. The hero sets the
-   turns beside the title; below it, each step's copy sits in columns one and two, and its exhibit lies on a
-   measurement-grid bench that runs down columns three and four, joined by one evidence line.
-   Exhibit sheets (.xf, .xs and friends) are shared and live in page-audit.css. Scoped to <main class="hiw">. */
-
-/* ---------- Hero: the title, then the three turns of one situation ---------- */
 .hiw .hiw-head { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); align-items: start; }
 .hiw .hiw-head > h1, .hiw .hiw-head > .lede, .hiw .hiw-head > .page-cta { grid-column: 1 / 3; padding-right: 40px; }
 .hiw .hiw-head > h1 { max-width: 10ch; }
@@ -1445,14 +1145,10 @@ a.g-more-i:focus-visible { outline: 2px solid var(--beam); outline-offset: 4px; 
 .hiw .hiw-role { padding-top: 3px; font: 500 15px/1.4 var(--sans); color: var(--manta-soft); }
 .hiw .hiw-said { font: italic 400 20px/1.36 var(--serif); color: var(--manta); }
 .hiw .hiw-thread li:last-child .hiw-said { font-size: 23px; line-height: 1.28; }
-
-/* ---------- The sequence ---------- */
 .hiw .hiw-seq { position: relative; display: grid; grid-template-columns: minmax(0, 1fr); padding: 56px var(--m) 40px; }
-/* The bench: the measurement grid under columns three and four, the full height of the sequence */
 .hiw .hiw-seq::before { content: ""; position: absolute; top: 0; bottom: 0; left: calc(var(--m) + (100% - 2 * var(--m)) / 2 + 1px); right: var(--m);
   background-image: linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px);
   background-size: 22px 22px; background-position: -1px -1px; opacity: .55; }
-/* The evidence line: one rule down the bench's gutter that every exhibit hangs from */
 .hiw .hiw-step::before { content: ""; position: absolute; top: 0; bottom: 0; left: calc(50% + 22px); width: 1.5px; background: var(--beam); opacity: .7; }
 .hiw .hiw-step:last-of-type::before { bottom: auto; height: 98px; }
 .hiw .hiw-step { position: relative; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); padding: 72px 0; }
@@ -1462,11 +1158,8 @@ a.g-more-i:focus-visible { outline: 2px solid var(--beam); outline-offset: 4px; 
 .hiw .hiw-body { margin-top: 20px; max-width: 54ch; color: var(--soft); }
 .hiw .hiw-after { margin-top: 28px; }
 .hiw .hiw-ex { position: relative; margin: 6px 44px 0 44px; }
-/* The node where the exhibit hangs from the line, and the short tick across to its sheet */
 .hiw .hiw-ex::before { content: ""; position: absolute; top: 15px; left: -26px; width: 9px; height: 9px; border-radius: 50%; background: var(--beam); }
 .hiw .hiw-ex::after { content: ""; position: absolute; top: 19px; left: -21px; width: 21px; height: 1.5px; background: var(--beam); transform-origin: 0 50%; }
-
-/* Exhibit contents */
 .hiw .hiw-sits { list-style: none; padding: 0; columns: 2; column-gap: 24px; font-size: 15px; line-height: 1.35; color: var(--manta-soft); }
 .hiw .hiw-sits li { break-inside: avoid; padding: 5px 0 5px 12px; border-left: 2px solid transparent; }
 .hiw .hiw-sits li.is-on { color: var(--manta); font-weight: 600; border-left-color: var(--ray-ink); }
@@ -1500,18 +1193,9 @@ a.g-more-i:focus-visible { outline: 2px solid var(--beam); outline-offset: 4px; 
 .hiw .hiw-open { display: inline-block; width: 7.5em; height: 1.6em; vertical-align: middle; border: 1px dashed var(--rule); }
 .hiw .hiw-todo { padding-left: 1.1em; }
 .hiw .hiw-todo li + li { margin-top: 4px; }
-
-/* ---------- Questions: two columns, each starting on a column line ---------- */
 .hiw .hiw-faqs h2 { grid-column: 1 / -1; padding-left: 16px; }
 .hiw .hiw-faq { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); margin-top: 48px; border-top: 1px solid var(--rule-dark); }
 .hiw .hiw-faq .faq-item { padding: 24px 40px 28px 16px; }
-
-/* ---------- Motion: each exhibit arrives as its step scrolls in (scroll-driven, CSS only) ----------
-   The tick draws across from the line, then the sheet settles 16px. Transform and opacity only, so layout
-   never moves. Every range starts as the exhibit's top edge enters, so nothing is seen to jump, and the
-   animations fill neither way, so outside the range (below the fold, in a full-page capture, after arrival)
-   each exhibit shows its final state.
-   Reduced motion and browsers without scroll timelines get the final state, static. */
 @media (min-width: 1024px) and (prefers-reduced-motion: no-preference) {
   @supports (animation-timeline: view()) {
     .hiw .hiw-ex { view-timeline: --hiw-ex block; }
@@ -1523,7 +1207,6 @@ a.g-more-i:focus-visible { outline: 2px solid var(--beam); outline-offset: 4px; 
 @keyframes hiw-tick { from { transform: scaleX(0); } }
 @keyframes hiw-node { from { transform: scale(0.2); opacity: 0; } }
 @keyframes hiw-settle { from { transform: translateY(16px); opacity: 0; } }
-
 @media (max-width: 1023px) {
   .hiw .hiw-head { grid-template-columns: minmax(0, 1fr); }
   .hiw .hiw-head > h1, .hiw .hiw-head > .lede, .hiw .hiw-head > .page-cta { grid-column: 1; padding-right: 0; }
@@ -1552,8 +1235,6 @@ a.g-more-i:focus-visible { outline: 2px solid var(--beam); outline-offset: 4px; 
   .hiw .hiw-rerun td { white-space: normal; }
   .hiw .hiw-open { width: 3.5em; }
 }
-
-/* measurement-standard: only what the shared components don't cover, scoped to this page's <main>. */
 .ms .ms-after { margin-top: 28px; }
 .ms .ms-body { margin-top: 22px; max-width: 58ch; color: var(--soft); }
 .ms .ms-body + .ms-body { margin-top: 18px; }
@@ -1563,9 +1244,6 @@ a.g-more-i:focus-visible { outline: 2px solid var(--beam); outline-offset: 4px; 
 .ms .ms-sources-title { font: 500 15px/1.3 var(--sans); color: var(--soft); }
 .ms .ms-sources a { overflow-wrap: anywhere; }
 .ms .cta-band .ms-also { margin-top: 20px; font-size: 16px; }
-
-/* The test setup gives the head's right half a job: what an engineer asks first, beside the title at 1024 and
-   up, after the lede below that. Only what the capture code enforces; no account or session detail (DECISIONS.md). */
 .ms .ms-head { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); align-items: start; }
 .ms .ms-head > h1, .ms .ms-head > .lede, .ms .ms-head > .meta { grid-column: 1 / 3; padding-right: 40px; }
 .ms .ms-setup { grid-column: 3 / -1; grid-row: 1 / span 3; margin-left: 1px; padding: 0 16px; }
@@ -1582,43 +1260,21 @@ a.g-more-i:focus-visible { outline: 2px solid var(--beam); outline-offset: 4px; 
 @media (max-width: 760px) {
   .ms .ms-spec > div { grid-template-columns: minmax(0, 1fr); gap: 2px; }
 }
-
-/* motion: the hero retime, scroll reveals, the take-apart pin and the article reading line.
-   Built into ../../fr.css by tools/build_site.py; edit here, never there.
-   Rules (MOTION_VIDEO_RULES): every state is a pure function of time (site.js renderAt(t)) or of scroll
-   position. Nothing here uses timers or transitions. Transform, opacity, clip-path and outline only, so
-   nothing moves layout. Without support, and under reduced motion, every element shows its final state. */
-
-/* ---------- Hero (site.js renderAt) ---------- */
-/* renderAt owns these states frame by frame, so no transition may smooth between frames */
 .evidence .v-row .v-name, .evidence .trace circle { transition: none; }
 .evidence .stamp { transform-origin: 50% 55%; }
-/* The count: tabular figures in a box exactly the final width, so counting never moves the label */
 .base .figure .count { display: inline-block; min-width: calc(var(--digits, 1) * (1ch - 0.04em)); text-align: right; font-variant-numeric: tabular-nums; }
-
-/* ---------- Scroll reveals (CSS scroll-driven animations) ----------
-   The animations fill neither way, so an element outside its range shows its final state: below the fold
-   (and so in a full-page capture or an audit at the top of the page) and after it has arrived. Each one
-   finishes by the time its element has fully entered the viewport. */
 @media (prefers-reduced-motion: no-preference) {
   @supports (animation-timeline: view()) {
-    /* Headings rise 18px and fade in over the scroll that brings them fully on screen */
     .section h2, .closing-copy h2, .cta-band h2 {
       animation: fr-rise linear none;
       animation-timeline: view();
       animation-range: entry 0% entry 35%;
     }
-    /* Silt sections arrive like a sheet laid on the field: the paper opens from the column margins to
-       full bleed and its top edge settles. The inset stays inside the section's top padding, so it never
-       clips text. */
     main > .section.on-silt, main > .cta-band.on-silt {
       animation: fr-paper linear none;
       animation-timeline: view();
       animation-range: entry 0% entry 45%;
     }
-    /* Home charts: each bar measures out from zero along its track as the chart comes up the screen, and is
-       at its value by the time the chart's middle reaches the middle of the viewport. The range starts the
-       moment the chart's top edge enters, so no bar is ever seen at full length and then reset. */
     .chart table { view-timeline: --fr-chart block; }
     .chart .fill {
       animation: fr-bar linear none;
@@ -1630,18 +1286,7 @@ a.g-more-i:focus-visible { outline: 2px solid var(--beam); outline-offset: 4px; 
 @keyframes fr-rise { from { opacity: 0; transform: translateY(18px); } }
 @keyframes fr-bar { from { transform: scaleX(0); } }
 @keyframes fr-paper { from { clip-path: inset(48px var(--m) 0 var(--m)); } }
-
-/* ---------- The take-apart record (site.js, scroll progress) ----------
-   r04: the record holds still; the subject's "Not named" row carries its orange rule inside its own box (pages.css). */
 .convo .order .stamp { transform-origin: 50% 55%; }
-/* r02: the pin is off. Its 130vh spacer read as screens of the same record, and the buyer's turns now fold, so
-   the record shows its final state where it sits (site.js reads no spacer, so progress stays at 1). */
-
-/* ---------- Insights articles: the reading line ----------
-   2px of FlintRay orange under the header, sticky at the top of the viewport while reading; it fills as
-   the article scrolls through (the article's own view timeline, so related reads and the footer don't count).
-   A pseudo-element with no text, so assistive tech never meets it. Hidden under reduced motion and where
-   scroll timelines aren't supported. */
 @media (prefers-reduced-motion: no-preference) {
   @supports (animation-timeline: view()) and (timeline-scope: --a) {
     .article-page { timeline-scope: --fr-article; }
@@ -1654,18 +1299,11 @@ a.g-more-i:focus-visible { outline: 2px solid var(--beam); outline-offset: 4px; 
   }
 }
 @keyframes fr-read { from { transform: scaleX(0); } to { transform: scaleX(1); } }
-
-/* partners: the title runs the full width, then a sample report cover in a partner's brand (columns one and
-   two) beside the lede. The cover is white paper in the partner's colour: an empty mark, "Your brand" in the
-   band, and no FlintRay anywhere. Below it, the client's side and ours sit side by side, and delivery
-   runs as one path across three columns. Scoped to <main class="prt">. */
 .prt .prt-head { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); align-items: end; row-gap: 72px; }
 .prt .prt-head > h1 { grid-column: 1 / 3; grid-row: 1; padding-right: 40px; }
 .prt .prt-open { grid-column: 3 / -1; grid-row: 1; padding-bottom: 6px; }
 .prt .prt-open .lede { margin-top: 0; }
 .prt .prt-cover { grid-column: 2 / 4; grid-row: 2; justify-self: center; width: min(100%, 600px); }
-
-/* The cover: the partner's colour is a placeholder, chosen to read as nobody's brand */
 .prt .cov { --brand: #0F4C5C; display: flex; flex-direction: column; min-height: 440px; background: #FAFAF8; color: #14181D; }
 .prt .cov-band { display: flex; align-items: center; gap: 18px; padding: 22px 32px; background: var(--brand); color: #F2F3F5; }
 .prt .cov-mark { display: grid; place-items: center; flex: none; width: 72px; height: 64px; padding: 4px; border: 1.5px dashed rgb(242 243 245 / .75); font: 500 13px/1.15 var(--sans); text-align: center; }
@@ -1674,7 +1312,6 @@ a.g-more-i:focus-visible { outline: 2px solid var(--beam); outline-offset: 4px; 
 .prt .cov-title { max-width: 15ch; font: 500 clamp(30px, 2.6vw, 38px)/1.06 var(--sans); letter-spacing: -0.03em; text-wrap: balance; }
 .prt .cov-meta { margin-top: 44px; border-top: 1px solid #14181D; }
 .prt .cov-meta > div { padding: 9px 0; border-bottom: 1px solid #D5D7DB; font-size: 15px; line-height: 1.45; }
-/* Callouts hung either side of the cover, each on a leader line to the part of it the partner owns */
 .prt .cov-band, .prt .cov-meta > div { position: relative; }
 .prt .cov-call { position: absolute; top: 50%; width: 200px; transform: translateY(-50%); font: 400 15px/1.35 var(--sans); color: var(--soft); }
 .prt .cov-call::after { content: ""; position: absolute; top: 50%; height: 1px; background: var(--beam); }
@@ -1684,15 +1321,11 @@ a.g-more-i:focus-visible { outline: 2px solid var(--beam); outline-offset: 4px; 
 .prt .cov-call.is-right::after { right: calc(100% + 12px); width: 108px; }
 @media (max-width: 1179px) { .prt .cov-call { display: none; } }
 .prt .cov-note { padding: 12px 32px; border-top: 1px solid #D5D7DB; font-size: 14px; line-height: 1.45; color: #4A5260; }
-
-/* Your side and ours, side by side */
 .prt .prt-side { grid-column: 1 / 3; padding: 0 40px 0 16px; }
 .prt .prt-side.is-behind { grid-column: 3 / -1; padding-left: 17px; }
 .prt .prt-side h2 { font-size: clamp(36px, 3.7vw, 56px); max-width: 12ch; }
 .prt .prt-side .intro { max-width: 34ch; }
 .prt .prt-side .ledger > li { grid-template-columns: minmax(0, 1fr) minmax(0, 1.7fr); }
-
-/* Delivery as one path: a single line across columns two to four, one node where each stage begins */
 .prt .prt-path { grid-column: 2 / -1; list-style: none; padding: 0; margin-top: 64px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
 .prt .prt-path li { position: relative; padding: 36px 32px 0 1px; }
 .prt .prt-path li::after { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 1.5px; background: var(--beam); transform-origin: 0 50%; }
@@ -1700,14 +1333,7 @@ a.g-more-i:focus-visible { outline: 2px solid var(--beam); outline-offset: 4px; 
 .prt .prt-path h3 { font: 500 22px/1.25 var(--sans); letter-spacing: -0.01em; max-width: 16ch; }
 .prt .prt-path p { margin-top: 12px; color: var(--soft); max-width: 34ch; }
 .prt .prt-after { grid-column: 2 / -1; margin-top: 48px; padding-left: 1px; }
-
-/* The inquiry letter sits at a readable width under the intro */
 .partner-letter { max-width: 560px; margin-top: 48px; }
-
-/* Motion: the path draws stage by stage as it scrolls in (CSS scroll-driven; transform only). All three
-   share one range that starts as the path's top edge enters, so nothing is seen to jump; the stagger lives in
-   the keyframes, each stage holding at zero until its turn. Outside the range (below the fold, in a full-page
-   capture, after arrival), without scroll timelines and under reduced motion, the path is drawn in full. */
 @media (min-width: 1024px) and (prefers-reduced-motion: no-preference) {
   @supports (animation-timeline: view()) {
     .prt .prt-path { view-timeline: --prt-path block; }
@@ -1719,7 +1345,6 @@ a.g-more-i:focus-visible { outline: 2px solid var(--beam); outline-offset: 4px; 
 @keyframes prt-draw-1 { 0% { transform: scaleX(0); } 40%, 100% { transform: scaleX(1); } }
 @keyframes prt-draw-2 { 0%, 30% { transform: scaleX(0); } 70%, 100% { transform: scaleX(1); } }
 @keyframes prt-draw-3 { 0%, 60% { transform: scaleX(0); } 100% { transform: scaleX(1); } }
-
 @media (max-width: 1023px) {
   .prt .prt-head { grid-template-columns: minmax(0, 1fr); row-gap: 0; }
   .prt .prt-head > h1 { grid-column: 1; padding-right: 0; }
@@ -1742,34 +1367,19 @@ a.g-more-i:focus-visible { outline: 2px solid var(--beam); outline-offset: 4px; 
   .prt .cov-body { padding: 32px 18px 22px; }
   .prt .cov-note { padding: 12px 18px; }
 }
-
-/* Privacy: the notice opens on its first heading with no extra gap */
 .privacy .prose > h2:first-child { margin-top: 0; }
-
-/* R08 (rounds/r07/judge-opus-A.json and judge-opus-R2.json): motion you can see, then the spacing and hierarchy fixes
-   for home and the audit page. Built into ../../fr.css last, by tools/build_site.py; edit here, never there. */
-
-/* ---------- The searchlight reaches past the ray's box, so each first screen clips it; the words sit above it ---------- */
 .g-hero, .aud-top { overflow: clip; }
 .aud-open h1, .aud-lede, .aud-side { position: relative; }
-
-/* ---------- Home, Opus A fix 10: one rule under the nav and one between sections; no ruled cells in the nav or the hero strip ---------- */
 .nav-links a, .g-cell { border-left: 0; }
-
-/* ---------- Home, Opus A fix 6: the linked stat reads like its sibling, a trailing arrow says where it goes ---------- */
 a.g-more-i .g-claim { text-decoration: none; }
 a.g-more-i .g-claim::after { content: "\2192"; display: inline-block; margin-left: .4em; font-size: 16px; color: var(--soft); transition: transform var(--dur-ui) var(--ease-standard); }
 @media (hover: hover) and (pointer: fine) {
   a.g-more-i:hover .g-claim { text-decoration: underline; text-decoration-color: var(--edge); text-decoration-thickness: 1px; text-underline-offset: 5px; }
   a.g-more-i:hover .g-claim::after { transform: translateX(3px); color: var(--ink); }
 }
-
-/* ---------- Home, Opus A fix 7: each fold's whole row is the button; its sign is full strength and turns to a minus ---------- */
 .fa .g-fold > summary::after { color: var(--ink); font-size: 20px; }
 .fa .g-fold > summary > :first-child, .fa .g-fold > summary { text-underline-offset: 5px; }
 @media (hover: hover) and (pointer: fine) { .fa .g-fold > summary:hover { text-decoration: underline; text-decoration-color: var(--edge); text-decoration-thickness: 1px; } }
-
-/* ---------- Home, Opus A fix 9: the record's cited links say their type in the type's own tint, no legend squares ---------- */
 .pv .stack { height: 10px; }
 .pv .sw { display: none; }
 .pv .cites li { gap: 0; }
@@ -1781,8 +1391,6 @@ a.g-more-i .g-claim::after { content: "\2192"; display: inline-block; margin-lef
 .pv .cites li em { margin-left: 6px; color: inherit; font-weight: 500; }
 .pv .sk-forum { background: #7488AE; }
 .pv .sk-directory { background: #4F628A; }
-
-/* ---------- Home, Opus A fix 5: on phones the three plans stack, each a block of its own: name, price, then its rows ---------- */
 @media (max-width: 760px) {
   .g-plans table { display: grid; grid-template-columns: minmax(0, 1fr); border-top: 0; }
   .g-plans thead, .g-plans tbody, .g-plans tr, .g-plans thead th, .g-plans thead th.is-start { display: contents; }
@@ -1804,20 +1412,15 @@ a.g-more-i .g-claim::after { content: "\2192"; display: inline-block; margin-lef
   .g-plans tbody tr:nth-child(1) td:nth-child(2) { order: 13; } .g-plans tbody tr:nth-child(1) td:nth-child(3) { order: 23; } .g-plans tbody tr:nth-child(1) td:nth-child(4) { order: 33; }
   .g-plans tbody tr:nth-child(2) td:nth-child(2) { order: 14; } .g-plans tbody tr:nth-child(2) td:nth-child(3) { order: 24; } .g-plans tbody tr:nth-child(2) td:nth-child(4) { order: 34; }
   .g-plans tbody tr:nth-child(3) td:nth-child(2) { order: 15; } .g-plans tbody tr:nth-child(3) td:nth-child(3) { order: 25; } .g-plans tbody tr:nth-child(3) td:nth-child(4) { order: 35; }
-  /* the evidence is the same for all three, so it closes the list once, under its own label */
   .g-plans tbody tr:nth-child(4) th { display: block; order: 40; margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--hard); font: 500 13px/1.4 var(--sans); color: var(--cap); }
   .g-plans tbody td.is-all { order: 41; padding: 4px 0 20px; border-bottom: 1px solid var(--hard); font: 500 17px/1.35 var(--sans); color: var(--ink); }
 }
-
-/* ---------- Audit, Opus A fixes 6 and 7: the ray sits close over the claim, beam toward its first word; larger on phones ---------- */
 .aud-top { padding-top: clamp(40px, 4vw, 72px); }
 .aud-ray { margin-bottom: calc(-0.16 * min(100%, 520px) + 24px); }
 @media (max-width: 760px) {
   .aud-ray { width: 72vw; margin: -8px calc(var(--x) * -.5) calc(-11.5vw + 12px) auto; }
   .aud-top { padding-top: 20px; }
 }
-
-/* ---------- Audit, Opus A fix 1: the two bars carry the evidence at the height of the facts beside them ---------- */
 .aud-bars .fa-bar { height: 12px; }
 .aud-bars > div { padding: 32px 0; }
 .aud-bars .num { font-size: clamp(32px, 3.4vw, 48px); }
@@ -1827,70 +1430,44 @@ a.g-more-i .g-claim::after { content: "\2192"; display: inline-block; margin-lef
   .aud-pick-bars { display: flex; flex-direction: column; }
   .aud-pick-bars .sample-caption { margin-top: auto; padding-top: 14px; }
 }
-
-/* ---------- Audit, Opus A fix 2: the partners line keeps its own leading; the link is plain inline text with its arrow ---------- */
 .aud-partners { font-size: 15px; line-height: 1.5; }
 .aud-partners .link, .aud-partners .link-arrow { display: inline; min-height: 0; padding: 0; line-height: inherit; }
-
-/* ---------- Audit, Opus A fix 3: both plan columns end on one line at the bottom, in the price's style ---------- */
 .aud-plans > li { display: flex; flex-direction: column; }
 .aud .aud-plans .aud-scope, .aud .aud-plans .price-line { margin-top: auto; padding-top: 24px; font: 500 18px/1.4 var(--sans); color: var(--ink); }
-
-/* ---------- Audit, Opus A fix 5: every step's rule runs the full width at rest; titles in four columns, the words from the fifth ---------- */
 .aud-steps h3 { grid-column: 1 / span 4; }
 .aud-steps p { grid-column: 5 / -1; max-width: 640px; }
-
-/* ---------- Audit, Opus A fix 8: the questions lead, the answers sit back, the open one carries a rule ---------- */
 .aud .faq-item h3 { font: 500 20px/1.3 var(--sans); color: var(--ink); }
 .aud .faq-item p { font-size: 16px; line-height: 1.6; color: rgba(238, 243, 251, .8); }
 .aud .faq-item summary::after { width: 16px; height: 16px; font-size: 20px; color: var(--ink); }
 .aud .faq-item[open] { box-shadow: inset 2px 0 0 var(--ink); padding-left: 18px; }
 @media (max-width: 1023px) { .aud-steps p { grid-column: 1 / -1; } }
-
-/* ---------- Home's preview: the report's outcome words, with no box around any of them (Opus R2 fix 2) ---------- */
 .chip { min-height: 28px; padding: 0 10px; }
 .chip.o-sho { box-shadow: none; background: rgba(214, 231, 251, .24); }
 .chip.o-men { padding-left: 0; outline: 0; text-decoration: underline dotted 1px var(--soft); text-underline-offset: 5px; }
 .chip.o-neg { padding-left: 0; box-shadow: none; }
 .chip.chip-co { padding-left: 0; box-shadow: none; font-weight: 500; }
 .pv-grid .pv-mk { font-family: var(--sans); font-size: 14px; }
-
-/* ---------- Home on phones: the folded method steps sit closer, so the path to the form is shorter ---------- */
 @media (max-width: 760px) {
   .fa .g-thread .g-steps li:nth-child(n) { padding-top: 12px; padding-bottom: 12px; }
 }
-
-/* R09 (R09.md; rounds/r08/judge-opus-A.json and judge-opus-R.json): words never faded, two navies, fewer lines, and the
-   shorter phone path. Built into ../../fr.css last, by tools/build_site.py; edit here, never there. */
-
-/* ---------- Two navies, edge to edge, with a visible step and no rule at the band's edge ---------- */
 :root { --black: #0B1120; --deep: #0B1120; --band: #121A2E; }
 .g-sec, .g-paper, .site-footer { border-top: 0; }
 .g-proof, .g-paths { background: var(--black); }
 .g-band, .p-home .g-paper { background: var(--band); }
 .site-footer { background: var(--band); }
 .aud ~ .site-footer, .p-audit .site-footer { background: var(--black); }
-
-/* ---------- Phones: the pinned bar never covers a section's last line (Sol A fix 1). Each section ends with the bar's
-   height and the safe-area inset under its content, and anything focused or linked to stops above the bar ---------- */
 @media (max-width: 760px) {
   :root { --sec: 56px; }
   html { scroll-padding-bottom: calc(var(--cta-bar-h) + 16px); }
   .g-sec { padding-bottom: calc(var(--cta-bar-h) + 12px); }
 }
-
-/* ---------- One mark: the hero ray's silhouette, flat, in the text colour (Opus R fix 10) ---------- */
 .hallmark { color: var(--ink); }
 .hallmark path { fill: currentColor; stroke: none; }
 .wordmark .hallmark { width: auto; height: 24px; margin-right: 12px; }
 .colophon .hallmark { display: block; width: auto; height: 40px; margin-bottom: 20px; }
 @media (max-width: 760px) { .wordmark .hallmark { height: 20px; margin-right: 10px; } }
-
-/* ---------- Home, fix 3: no glow under the situation grid; 48px of space before its button ---------- */
 .pv::after { content: none; animation: none; }
 .g-after { margin-top: 48px; }
-
-/* ---------- Home, fix 4: at 1440 the heading takes five columns and its lede the last six, top-aligned ---------- */
 @media (min-width: 1024px) {
   .g-head h2, .g-proof .g-head h2 { grid-column: 1 / span 5; font-size: clamp(44px, 4.6vw, 76px); }
   .g-paths .g-head h2, .g-method .g-head h2, .fa .g-head:has(> .g-aside) > h2 { grid-column: 1 / span 5; grid-row: 1; }
@@ -1898,25 +1475,17 @@ a.g-more-i .g-claim::after { content: "\2192"; display: inline-block; margin-lef
   .g-proof .g-aside { font-size: 17px; color: var(--soft); }
   .g-method .g-thread { margin-top: 64px; }
 }
-
-/* ---------- Home, fix 8: "of 592" in the body sans at 70% white, 8px after the numeral, on its baseline ---------- */
 .g-n { gap: 8px; }
 .g-figs .g-n small { font: 400 22px/1 var(--sans); letter-spacing: 0; color: rgba(238, 243, 251, .7); }
 .g-split .g-n small { font: 400 17px/1 var(--sans); letter-spacing: 0; color: rgba(238, 243, 251, .7); }
-
-/* ---------- Home, fix 5: the two other audits as the 75/25 figure's bars, from the counts in their sentences ---------- */
 .g-more .g-mk { display: grid; gap: 8px; width: min(100%, 420px); }
 .g-mk .fa-bar, .g-split .fa-bar { height: 12px; }
 .fa-bar.is-you { box-shadow: inset 3px 0 0 var(--orange); }
-
-/* ---------- Home, fix 1: the 1.7x paragraph at reading size in a 680px column; the space beside it does the work ---------- */
 .g-view { max-width: 680px; padding-top: 28px; font: 400 24px/1.45 var(--sans); letter-spacing: -0.01em;
   border-top: 0; background: linear-gradient(var(--ink), var(--ink)) 0 0 / calc(var(--k, 1) * 100%) 1px no-repeat; }
 .g-essay { border-top: 0; background: linear-gradient(var(--ink), var(--ink)) 0 0 / calc(var(--k, 1) * 100%) 2px no-repeat; }
 @media (min-width: 1024px) { .g-view { grid-column: 1 / span 7; margin-top: 96px; } }
 @media (max-width: 760px) { .g-view { margin-top: 48px; font-size: 19px; line-height: 1.45; } }
-
-/* ---------- Home, fix 7: a fold's whole row is its control, 56px tall under a top rule, the sign on its baseline ---------- */
 .fa .g-fold:not(.g-steps .g-fold) > summary { align-items: baseline; min-height: 56px; padding: 16px 0 14px; border-top: 1px solid var(--line); }
 .fa .g-fold:not(.g-steps .g-fold) > summary::after { margin-top: 0; align-self: baseline; }
 .fa .g-aside.g-fold > summary, .fa .g-note.g-fold > summary { min-height: 56px; }
@@ -1925,20 +1494,13 @@ a.g-more-i .g-claim::after { content: "\2192"; display: inline-block; margin-lef
 .g-policy { padding-bottom: 32px; border-bottom: 0; }
 .g-note { grid-column: 1 / span 2; }
 @media (max-width: 1180px) { .g-note { grid-column: 1 / -1; } }
-
-/* ---------- Home, fix 10, and the report's matrix code: Recommended filled, Shortlisted a 1px outline at 40% white,
-   Mentioned and Not named the plain word, Named negatively its wavy underline; one 26px chip with a 2px radius ---------- */
 .chip { min-height: 26px; padding: 0 9px; border-radius: 2px; }
 .chip.o-rec { background: rgba(214, 231, 251, var(--f, 1)); box-shadow: inset 0 0 0 1px rgba(214, 231, 251, calc(1 - var(--f, 1))); color: var(--black); }
 .chip.o-sho { background: none; box-shadow: inset 0 0 0 1px rgba(238, 243, 251, calc(.4 * var(--f, 1))); color: var(--ink); }
 .chip.o-men { padding-left: 0; text-decoration: none; color: var(--ink); }
 .chip.o-not { padding-left: 0; }
-
-/* ---------- Home, fix 2: the plans' rules draw as they arrive (--k); a 2px rule over each plan ---------- */
 .g-plans thead th { border-top: 0; background: linear-gradient(var(--hard), var(--hard)) 0 0 / calc(var(--k, 1) * 100%) 1px no-repeat; }
 .g-plans thead th.is-start { box-shadow: none; background: linear-gradient(var(--ink), var(--ink)) 0 0 / calc(var(--k, 1) * 100%) 2px no-repeat; }
-
-/* ---------- Home on phones, fix 6 and the path: each plan a block, its name, then its price, then its pairs ---------- */
 @media (max-width: 760px) {
   .g-plans { margin-top: 36px; }
   .g-plans thead h3 { padding-top: 20px; border-top: 0; font-size: 28px; line-height: 1.1;
@@ -1953,8 +1515,6 @@ a.g-more-i .g-claim::after { content: "\2192"; display: inline-block; margin-lef
   .g-plans tbody td.is-all { padding-bottom: 0; border-bottom: 0; }
   .g-terms { margin-top: 32px; }
   .g-policy { padding-bottom: 20px; font-size: 19px; }
-
-  /* the proof: the two figures side by side, the cases tighter */
   .g-figs { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: 16px; margin-top: 28px; }
   .g-figs li, .g-figs li + li { margin-top: 0; padding: 16px 0 0; border-top: 0; border-left: 0; }
   .g-figs .g-n { flex-wrap: wrap; gap: 4px 6px; font-size: clamp(54px, 16vw, 64px); }
@@ -1967,21 +1527,15 @@ a.g-more-i .g-claim::after { content: "\2192"; display: inline-block; margin-lef
   .g-split { gap: 4px 16px; }
   .g-case .g-claim { margin-top: 16px; font-size: 18px; }
   .g-more { margin-top: 28px; }
-
-  /* the preview: no gap above its button */
   .g-look .g-head { row-gap: 12px; }
   .pv { margin-top: 24px; }
   .g-after { margin-top: 24px; }
 }
-
-/* ---------- Audit, fix 2: on phones each step heading runs the full width, its words under it ---------- */
 @media (max-width: 899px) {
   .aud-steps h3, .aud-steps p { grid-column: 1 / -1; }
   .aud-steps h3 { font-size: 22px; line-height: 1.2; }
   .aud-steps p { font-size: 16px; }
 }
-
-/* ---------- Audit, fix 3: on phones the two short facts share a row ---------- */
 @media (max-width: 760px) {
   .aud-facts { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: 16px; }
   .aud-facts > div { grid-column: 1 / -1; padding: 20px 0; }
@@ -1989,34 +1543,21 @@ a.g-more-i .g-claim::after { content: "\2192"; display: inline-block; margin-lef
   .aud-facts dt { font-size: 13px; color: rgba(238, 243, 251, .6); }
   .aud-facts dd { font-size: 17px; }
 }
-
-/* ---------- Audit: the rows' rules draw as they arrive (--k), the same rule for facts, questions and plans ---------- */
 .aud-facts > div, .aud-faq > .faq-item, .aud-plans > li, .aud-close-row > * {
   border-top: 0; border-left: 0; background: linear-gradient(var(--line), var(--line)) 0 0 / calc(var(--k, 1) * 100%) 1px no-repeat; }
 .aud-faq > .faq-item:first-child, .aud-plans > li, .aud-facts > div:first-child { background-image: linear-gradient(var(--hard), var(--hard)); }
 .aud-faq { border-top: 0; }
 .aud-faq > .faq-item { border-bottom: 0; }
-
-/* ---------- Audit, fix 4: the bars' caption 20px under the last row ---------- */
 .aud-pick-bars .sample-caption, .aud-pick-bars .sample-caption:last-child { margin-top: 20px; padding-top: 0; }
 .aud-bars > div:last-child { border-bottom: 0; }
 @media (min-width: 1024px) { .aud-pick-bars { display: block; } }
-
-/* ---------- Audit, fix 6 (and Sol): one row system for the questions, top rules only, the open answer as readable as its question ---------- */
 .aud .faq-item[open] { box-shadow: none; padding-left: 0; }
 .aud .faq-item p { margin-top: 0; padding-top: 16px; color: var(--ink); }
-
-/* ---------- Audit, fix 7: each price line under its plan's name, the description under it ---------- */
 .aud .aud-plans .aud-scope, .aud .aud-plans .price-line { order: 0; margin-top: 10px; padding-top: 0; font: 500 20px/1.35 var(--sans); color: #FFFFFF; }
 .aud-plans > li > p:not(.aud-scope):not(.price-line) { margin-top: 16px; font-size: 16px; line-height: 1.6; color: rgba(238, 243, 251, .75); }
-
-/* ---------- Audit, fix 5: the white-label line, its own row under the fixes statement ---------- */
 .aud-close-row { display: grid; grid-template-columns: minmax(0, 1fr); gap: 0; }
 .aud-close-row > * { grid-column: 1 / -1; max-width: none; padding: 32px 0; }
 .aud-close-row .aud-partners { font-size: 16px; line-height: 1.55; color: rgba(238, 243, 251, .7); }
-
-/* ---------- Audit, fix 8 and Sol A audit fix 1: the person's row is compact; on the SE it shrinks so the first field
-   sits in the first 40% of the screen ---------- */
 .aud-request .person { grid-template-columns: 64px minmax(0, 1fr); gap: 16px; margin-bottom: 16px; }
 .aud-request .person-photo { width: 64px; height: 64px; }
 @media (max-width: 379px) {
@@ -2025,25 +1566,17 @@ a.g-more-i .g-claim::after { content: "\2192"; display: inline-block; margin-lef
   .aud-request .person-line { font-size: 15px; }
   .aud-request .person-name { margin-top: 6px; }
 }
-
-/* ---------- Home on phones, the busy VP's path (R07 item 6, R09): what FlintRay finds, the proof, what it costs, then the
-   product, then the person and the form. On a phone the plans come up before the preview, so the price is on screen
-   7 and the form on screen 9; laptops keep the preview beside the proof. Same words, same blocks; only the order on a
-   small screen. The record stays behind a tap, as before. ---------- */
 @media (max-width: 760px) {
   main.fa:has(> .g-hero) { display: flex; flex-direction: column; }
   main.fa > .g-hero { order: 0; } main.fa > .g-proof { order: 1; } main.fa > .g-paths { order: 2; } main.fa > .g-look { order: 3; }
   main.fa > .g-request { order: 4; } main.fa > .g-essays { order: 5; } main.fa > .g-method { order: 6; }
   .g-look .g-head h2 { font-size: clamp(30px, 8.6vw, 38px); }
-  /* with the plans moved up, the bands still alternate: proof on the ground, plans lighter, preview on the ground, form lighter */
   main.fa > .g-paths { background: var(--band); }
   main.fa > .g-look { background: var(--black); }
 }
 @media (max-width: 760px) {
-  /* phones: 40px over a section's content, the bar's height and 4px under it */
   :root { --sec: 40px; }
   .g-sec { padding-bottom: calc(var(--cta-bar-h) + 4px); }
-  /* the plans' short pairs read as a spec sheet, label then value on one line; "You get" keeps its own lines */
   .g-plans tbody tr:nth-child(1) td[data-label], .g-plans tbody tr:nth-child(3) td[data-label] { display: grid; grid-template-columns: 9.6em minmax(0, 1fr); column-gap: 12px; align-items: baseline; }
   .g-plans tbody tr:nth-child(1) td[data-label]::before, .g-plans tbody tr:nth-child(3) td[data-label]::before { margin: 0; }
   .g-plans thead th:nth-of-type(n + 2) h3 { margin-top: 40px; }
@@ -2052,8 +1585,6 @@ a.g-more-i .g-claim::after { content: "\2192"; display: inline-block; margin-lef
   .g-request .g-form { margin-top: 20px; }
   .pv-top { gap: 10px; padding: 12px 14px; }
 }
-
-/* ---------- The preview's key, as the report's: Rival A's outcome as an outcome chip, not a line swatch (Opus R fix 8) ---------- */
 .pv-read { align-items: center; }
 .pv-read i::before { content: none; }
 .pv-read i { display: inline-flex; align-items: center; min-height: 26px; padding: 0 9px; border-radius: 2px; box-shadow: inset 0 0 0 1px rgba(238, 243, 251, .4); color: var(--ink); }
@@ -2073,24 +1604,9 @@ a.g-more-i .g-claim::after { content: "\2192"; display: inline-block; margin-lef
   .g-request .g-form { margin-top: 16px; }
   .g-request .person { margin-bottom: 12px; }
 }
-
-/* ---------- The audit's ray: on phones it is smaller than home's, so its beam reaches further down the title, at the
-   same softness; at 1440 it is 80% of r08's and its beam ends above the title's cap height, clear of the form card
-   (Opus A audit fix 9) ---------- */
 @media (max-width: 760px) { .aud-ray .ray { --ray-len: 124%; } }
-
-/* ---------- Fewer lines: the two essays sit side by side on space alone ---------- */
 .g-essay + .g-essay { border-left: 0; }
-/* the narrowest phones (320 to 380): the mark and the word a touch smaller, so the wordmark stays clear of the centre of the bar */
 @media (max-width: 380px) { .site-nav .wordmark { font-size: 17px; } .site-nav .wordmark .hallmark { height: 16px; margin-right: 8px; } }
-
-/* R10 (R10.md): change the system, not the list. Motion you can see in a still, data without chips or boxes, space
-   instead of lines, full laptop compositions, readable secondary text, and the ray's dark body. Built into ../../fr.css
-   last, by tools/build_site.py; edit here, never there. */
-
-/* ---------- The ray travels: where each hero's beam rests, how far it reaches and how far it swings ----------
-   The beam stays inside its hero: clear of the headline, the form card and the screen edge at both ends of the sweep
-   (measured in rounds/r10/BUILD.md). Phones keep the hero's height, so the headline doesn't move. */
 .g-ray .ray { --ray-aim: 6deg; --ray-len: 34%; }
 .aud-ray .ray { --ray-aim: -24deg; --ray-len: 29%; }
 @media (min-width: 761px) { .aud-ray { margin-bottom: calc(-0.16 * min(100%, 520px) + 64px); } }
@@ -2104,17 +1620,11 @@ a.g-more-i .g-claim::after { content: "\2192"; display: inline-block; margin-lef
 @media (max-width: 380px) {
   .g-ray { height: calc(var(--rw) * .5645); }
 }
-
-/* ---------- Two navies you can tell apart: the ground at L* 4.4 and the band at L* 13.0, 8.6 apart in CIELAB (r09's
-   pair was 4.3 apart), edge to edge. The brand's light blues are the accents: the lit mark, Shortlisted, the bars. ---------- */
 :root { --black: #0A0F1C; --deep: #0A0F1C; --band: #172139; --raised: #172139; --panel: #172139; --rim: #1F2B48;
   --lit: #D6E7FB; --blue: #A9C3E8; --track: rgba(214, 231, 251, .16);
   --mute: #9AA6BD; --cap: #9AA6BD; --soft: #BCC7D8;
-  /* Mono only ever carried counted numbers; R10 keeps it nowhere (Opus: two type voices, a coded look) */
   --mono: var(--sans); }
 body, .site-nav, .menu-sheet { background-color: var(--black); }
-
-/* ---------- Readable secondary text: 14px or more on phones, 15px or more on laptops, in the main sans ---------- */
 :root { --t-meta: 15px; --t-cap: 15px; }
 @media (max-width: 760px) { :root { --t-meta: 14px; --t-cap: 14px; } }
 .person-name, .pv-pos, .pv-co-v em, .stamp, .g-n small { font-family: var(--sans); font-variant-numeric: tabular-nums; letter-spacing: 0; }
@@ -2129,9 +1639,6 @@ body, .site-nav, .menu-sheet { background-color: var(--black); }
   .pv .rec-sum dt, .pv .turn-h em, .pv .named li, .pv .none, .pv .cites ul, .stamp, .g-plans tbody th, .g-plans tbody td[data-label]::before,
   .aud-facts dt, .pv-co-h, .convo-row .meta-line, .convo-row .callout, .g-src, .g-product, .foot-legal, .field label, .audit-form label { font-size: 14px; }
 }
-
-/* ---------- Space instead of lines. Hairlines stay only on the form's fields (and the report's verdict and source
-   tables); everything else is separated by space, type and the two navies ---------- */
 .site-nav { border-bottom: 0; box-shadow: none; }
 .nav-book { box-shadow: none; text-decoration: underline; text-decoration-color: transparent; text-underline-offset: 6px; }
 .nav-book:hover { background: transparent; box-shadow: none; text-decoration-color: currentColor; }
@@ -2148,29 +1655,20 @@ body, .site-nav, .menu-sheet { background-color: var(--black); }
 .fa-bar.is-you { box-shadow: none; }
 .pv .turn.is-lit::before, .pv .turn.is-lit::after { border: 0; }
 .weave { display: none; }
-
-/* ---------- Secondary actions are plain text links; the one filled button is the primary action ---------- */
 .btn-ghost { min-height: var(--tap); padding: 0; background: transparent; box-shadow: none; color: var(--ink); gap: 10px;
   text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 6px; text-decoration-color: rgba(238, 243, 251, .45); }
 .btn-ghost:hover { background: transparent; box-shadow: none; text-decoration-color: var(--ink); }
-
-/* ---------- The sticky bar: the primary action fills the bar; "Book a call" is a plain text link beside it ---------- */
 .cta-bar-book { box-shadow: none; padding: 0 4px 0 12px; text-decoration: underline; text-underline-offset: 5px; text-decoration-color: rgba(238, 243, 251, .45); }
 .cta-bar-main { flex: 1 1 auto; }
 .cta-bar { border-top: 0; box-shadow: none; }
-
 .pv-cell, .pv-cell.is-recommended, .pv-cell.is-shortlisted, .pv-cell.is-mentioned { background: transparent; box-shadow: none; outline: 0; color: var(--ink); }
 .pv-cell[aria-pressed="true"] { background: var(--rim); box-shadow: none; }
 @media (hover: hover) and (pointer: fine) { .pv-cell:hover, .pv-cell:not(.is-recommended):hover { background: var(--rim); } }
-
-/* ---------- The outcome words (components.css, "R10: outcomes in words") win over every earlier layer's chip ---------- */
 .chip, .chip.o-rec, .chip.o-sho, .chip.o-men, .chip.o-not, .chip.o-neg, .chip.chip-co, .pv-co-v .chip, .pv .named .chip, .pr .chip, .mc .chip {
   min-height: 0; padding: 0; border: 0; border-radius: 0; background: none; box-shadow: none; outline: 0; }
 .chip, .chip.o-rec, .chip.o-sho, .chip.o-men, .chip.o-not, .chip.o-neg, .pv-co-v .chip, .pv .named .chip, .pr .chip, .mc .chip, .pv-cell .chip, .pv-cell.is-recommended .chip, .pv-cell.is-shortlisted .chip, .pv-cell[aria-pressed="true"] .chip {
   color: color-mix(in srgb, var(--o, var(--mute)) calc(var(--f, 1) * 100%), var(--mute)); font-weight: calc(400 + var(--w, 0) * var(--f, 1)); }
 .chip.chip-co, .pv-co-v .chip.chip-co, .co-sum .chip, .chip-co.o-not { color: var(--orange); }
-
-/* ---------- Lines, continued: the earlier layers' own selectors, one step stronger ---------- */
 :root .site-nav :is(.nav-book, .nav-cta) { border-left: 0; }
 :root .fa .g-fold:not(.g-steps .g-fold) > summary, :root .fa .g-aside.g-fold > summary, :root .fa .g-note.g-fold > summary { border-top: 0; }
 :root .g-more-i, :root .g-more-i + .g-more-i { border: 0; }
@@ -2195,19 +1693,12 @@ body, .site-nav, .menu-sheet { background-color: var(--black); }
 :root .pv-cell[aria-pressed="true"], :root .pv-cell.is-recommended[aria-pressed="true"] { background: transparent; box-shadow: none; }
 :root .pv-cell[aria-pressed="true"] .chip { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 6px; text-decoration-color: var(--lit); }
 @media (max-width: 760px) { :root .fa .g-plans tbody tr th, :root .g-plans tbody tr th { font-size: 14px; } }
-/* Bars and their tracks are fills, never outlines */
 :root .sk, :root .sk.sk-other, :root .pv .sk-other, :root .fa-bar, :root .bar, :root .ty-bar { box-shadow: none; }
 :root .sk.sk-other, :root .pv .sk-other, :root .pv .sw-other { background: var(--track); box-shadow: none; }
 :root .g-plans tbody th, :root .g-plans tbody tr th, :root .g-plans tbody td { background-image: none; }
-
-/* ---------- The preview: the product on the band itself, no pane, no boxed company row, the key in the matrix's
-   own words (Rival A's outcome in Shortlisted's blue, as in its cells) ---------- */
 :root .pv-co { box-shadow: none; background: none; padding-left: 0; padding-right: 0; }
 :root .pv-read i { box-shadow: none; padding: 0; min-height: 0; border-radius: 0; color: var(--blue); font-weight: 500; }
 :root .pv-window, :root .pv-index, :root .pv-convo { background: transparent; }
-
-/* ---------- On phones the situation list is compact: two situations to a row, each situation beside its outcome, so
-   an assistant's fifteen conversations take eight rows, one screen. The open conversation still opens under its row. */
 @media (max-width: 760px) {
   :root .pv-grid { grid-template-columns: minmax(0, .82fr) minmax(0, 1.18fr) minmax(0, .82fr) minmax(0, 1.18fr); grid-auto-flow: row dense; }
   :root .pv-grid .pv-mk { min-height: 48px; padding: 4px 6px 4px 0; font: 400 14px/1.2 var(--sans); color: var(--mute); }
@@ -2216,8 +1707,6 @@ body, .site-nav, .menu-sheet { background-color: var(--black); }
   :root .pv-cell::after { content: none; }
   :root .pv-cell .chip { font-size: 14px; white-space: nowrap; }
 }
-
-/* ---------- Laptops: the policy line and the fold beside it share the row, so neither half is blank ---------- */
 @media (min-width: 1024px) {
   :root .g-terms { grid-template-columns: repeat(12, minmax(0, 1fr)); align-items: start; }
   :root .g-policy { grid-column: 1 / span 7; padding-bottom: 0; }
@@ -2225,9 +1714,6 @@ body, .site-nav, .menu-sheet { background-color: var(--black); }
 }
 :root .pv .rec-sum, :root .pv .rec-sum > div, :root .pv .rec-sum dt, :root .pv .rec-sum dd { border: 0; box-shadow: none; }
 :root .g-after .btn-ghost, :root .btn-ghost { width: auto; justify-content: flex-start; }
-
-/* ---------- Audit: the steps are a timeline, drawn as they arrive. A rail runs down the left from node to node, each
-   step's segment and node drawing in turn (site.js, "steps": --rv draws the segment, --rd the node). No row rules. ---------- */
 :root .aud-steps > li { padding: 0 0 40px 44px; }
 :root .aud-steps > li:last-child { padding-bottom: 0; }
 :root .aud-steps > li::after { left: 4px; right: auto; top: 18px; bottom: -6px; width: 1px; height: auto; background: rgba(214, 231, 251, .5);
@@ -2237,7 +1723,6 @@ body, .site-nav, .menu-sheet { background-color: var(--black); }
 :root .aud-steps > li::before { left: 0; top: 8px; width: 9px; height: 9px; border-radius: 50%; background: var(--lit); transform: scale(var(--rd, 1)); }
 :root .aud-count { font-weight: inherit; font-variant-numeric: tabular-nums; display: inline-block; text-align: right; }
 @media (min-width: 1024px) {
-  /* The questions sit beside their heading, and the closing row is two-sided */
   :root .aud-qs { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gap); align-items: start; }
   :root .aud-qs > .g-head { grid-column: 1 / span 5; }
   :root .aud-qs > .aud-faq { grid-column: 6 / -1; margin-top: 0; }
@@ -2247,16 +1732,11 @@ body, .site-nav, .menu-sheet { background-color: var(--black); }
   :root .aud-close-row > .aud-partners { grid-column: 9 / -1; margin-top: 0; }
 }
 :root .aud-faq > .faq-item > summary { padding-top: 20px; padding-bottom: 20px; }
-
-/* ---------- Home at 1440: the 1.7x paragraph is a pull-quote across ten columns, and the proof's reading line runs
-   the width under its figures, so no block leaves half the row blank ---------- */
 @media (min-width: 1024px) {
   :root .g-view { grid-column: 1 / span 10; max-width: none; margin-top: 112px; padding-top: 0; font: 400 32px/1.38 var(--sans); letter-spacing: -0.015em; }
   :root .g-read { max-width: 1080px; }
 }
 :root .btn-ghost:hover, :root .fa .btn-ghost:hover { color: var(--lit); text-decoration-color: var(--lit); }
-/* The paired list's label column is fixed, so "Recommended" fits its cell on an iPhone SE; under 360px a row holds one
-   situation, as in r09 */
 @media (max-width: 760px) {
   :root .pv-grid { grid-template-columns: 62px minmax(0, 1fr) 74px minmax(0, 1fr); }
 }

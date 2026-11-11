@@ -1,15 +1,5 @@
-// The real report's interactions: the header's phone menu, the section bar (pinned on laptops only), the phone
-// matrix's sideways swipe between assistants, the record of each conversation, and the figures that draw once on
-// entry. No framework. The phone header and bottom bar are the site's own chrome.js. Without this file the page still
-// reads top to bottom: the section bar is a row of links on laptops and hidden on phones, the phone matrix lists all
-// four assistants one after another, and every figure is drawn.
 document.documentElement.classList.add("js");
 const reduced = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-
-// The section bar is the report's one pinned element on laptops (TOKENS.md, Chrome; the site header scrolls away). It
-// marks the section you're in. On phones (760px and below, CSS) it sits in the flow under the cover, never pinned, as
-// a slim row that names the current section and opens the section list; the site's bottom bar carries the action.
 (() => {
   const jump = document.querySelector(".jump");
   if (!jump) return;
@@ -39,9 +29,6 @@ const reduced = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
   addEventListener("resize", mark);
   mark();
 })();
-
-// Phone matrix: one assistant at a time, as a native sideways swipe (scroll-snap, data-carousel). The tabs show
-// which assistant is showing and jump to another; arrow keys move between tabs. Nothing moves on its own.
 (() => {
   const track = document.querySelector(".pm-track");
   const tabs = [...document.querySelectorAll(".pm-tabs [role=tab]")];
@@ -77,12 +64,6 @@ const reduced = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
   }, { passive: true });
   select(0);
 })();
-
-// The record of one conversation. Tapping a matrix cell (or a phone row) opens it in a drawer that is a native
-// sideways swipe through all 60 in the matrix's order (scroll-snap, one conversation per snap, data-carousel). It
-// never advances on its own and touching it starts no timer. The position ("8 of 60") and Previous and Next stay in
-// the head; the arrow keys step on laptops; Escape or Close returns to the cell. Every value comes from
-// real-report-records.js, which the build writes from the audit.
 (() => {
   const records = window.RR_RECORDS;
   const openers = [...document.querySelectorAll("[data-rec]")];
@@ -108,7 +89,6 @@ const reduced = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
   const slides = records.map(() => { const d = document.createElement("article"); d.className = "slide"; return d; });
   body.append(...slides);
   const state = { index: 0, trigger: null };
-
   const chip = ([word, code], extra = "") => `<b class="chip o-${code}${extra}">${esc(word)}</b>`;
   const turnHtml = (t, n, rec) => {
     const lit = rec.ft && n >= rec.ft, first = rec.ft === n;
@@ -131,7 +111,6 @@ const reduced = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
       </dl>
       <ol class="turns">${rec.t.map((t, k) => turnHtml(t, k + 1, rec)).join("")}</ol>`;
   };
-
   const mark = (i) => {
     state.index = i;
     [i - 1, i, i + 1].forEach(fill);
@@ -160,7 +139,6 @@ const reduced = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
     });
   }, { passive: true });
   addEventListener("resize", () => { if (!root.hidden) body.scrollLeft = state.index * body.clientWidth; });
-
   const others = () => [...document.body.children].filter((n) => n !== root && n.tagName !== "SCRIPT");
   const open = (i, trigger) => {
     state.trigger = trigger;
@@ -182,7 +160,6 @@ const reduced = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (state.trigger && state.trigger.isConnected) state.trigger.focus({ preventScroll: true });
   };
   openers.forEach((o) => o.addEventListener("click", () => open(Number(o.dataset.rec), o)));
-  // R07: home's live preview links each record here as #c<n> (matrix order); the page opens on it
   const asked = location.hash.match(/^#c(\d+)$/);
   if (asked && records[Number(asked[1])]) open(Number(asked[1]), openers.find((o) => Number(o.dataset.rec) === Number(asked[1])));
   root.addEventListener("click", (e) => {
@@ -206,17 +183,10 @@ const reduced = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
     }
   });
 })();
-
-// R08. The figures reveal through the site's one engine (the lane's site.js, "reveal: begin"; the standalone page gets
-// the same block): the verdict's bars, the matrix, the turns and the sources each carry data-reveal. Here the matrix
-// cells only learn their row and column, so the fill runs row by row.
 (() => {
   const mx = document.querySelector("[data-fill]");
   if (mx) mx.querySelectorAll(".mr:not(.mr-head)").forEach((row, r) => row.querySelectorAll(".mc").forEach((c, k) => { c.style.setProperty("--r", r); c.style.setProperty("--c", k); }));
 })();
-
-// R07. The ray's parallax on the cover: it drifts at a fifth of the scroll (an eighth on phones) while the cover is on
-// screen, by transform only. Reduced motion: it stays put.
 (() => {
   const fig = document.querySelector(".ray-fig");
   if (!fig || reduced()) return;

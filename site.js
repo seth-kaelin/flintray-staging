@@ -1,6 +1,3 @@
-// FlintRay site script, loaded on every page. No framework, no animation library.
-
-// Phone menu: the header's Menu button opens a full-screen sheet with every route.
 (() => {
   const toggle = document.querySelector(".menu-toggle");
   const sheet = document.getElementById("site-menu");
@@ -15,17 +12,13 @@
   toggle.addEventListener("click", () => setOpen(true));
   close.addEventListener("click", () => setOpen(false));
   sheet.addEventListener("keydown", (e) => { if (e.key === "Escape") setOpen(false); });
-  // An in-page link (Pricing on the home page) closes the sheet so the section is visible
   sheet.querySelectorAll("nav a").forEach((a) => a.addEventListener("click", () => {
     if (new URL(a.href).pathname === location.pathname) setOpen(false);
   }));
   matchMedia("(min-width: 1024px)").addEventListener("change", (m) => { if (m.matches && !sheet.hidden) setOpen(false); });
 })();
-
-// Motion helpers, shared by the hero and the take-apart. Pure functions: no clocks, no state.
 const FR = (() => {
   const clamp = (x) => Math.max(0, Math.min(1, x));
-  // CSS cubic-bezier(x1, y1, x2, y2) as a function of progress (bisection on x, so it is exact and deterministic)
   const bezier = (x1, y1, x2, y2) => {
     const at = (a, b, u) => 3 * a * u * (1 - u) * (1 - u) + 3 * b * u * u * (1 - u) + u * u * u;
     return (x) => {
@@ -38,12 +31,6 @@ const FR = (() => {
   };
   return { clamp, bezier, easeOut: (x) => 1 - Math.pow(1 - x, 3), land: bezier(0.2, 0.8, 0.2, 1) };
 })();
-
-// The live specimen in the home hero. The server HTML holds the final frame; on load it replays once:
-// the buyer's question types, the answer line arrives, each classification stamp lands, the source line
-// draws. "next" replays it with the next engine's answer.
-// Seekable (MOTION_VIDEO_RULES): renderAt(t) is a pure function of time; ?t=<s> freezes a frame.
-// Reduced motion: the final state, no travel. Exact sample text only (embedded by tools/build_site.py from the sample JSON).
 (() => {
   const root = document.querySelector("[data-specimen]");
   const json = root && root.querySelector("[data-specimen-json]");
@@ -55,35 +42,16 @@ const FR = (() => {
   const phone = matchMedia("(max-width: 760px)");
   const maxLines = () => Number((phone.matches && root.dataset.linesPhone) || root.dataset.lines || 99);
   const CITED_ONLY = root.dataset.sources === "cited";
-  // 'One more company is named further down the answer.' (build_site.more_named() says the same)
   const moreNamed = (n) => `${["No", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine"][n] ?? n} more ${n === 1 ? "company is" : "companies are"} named further down the answer.`;
   const ROLE = { recommended: "Recommended", shortlisted: "Shortlisted", mentioned: "Mentioned", cautioned: "Named negatively", none: "Not named" };
-
-  // Beats (seconds; plan() computes them per engine, figures are for the opening answer, Perplexity):
-  //   0.00  FRAME 1  the sheet, the faint question, every company name in the verdict and "0 of 60" are on
-  //                  the page; the answer line, the stamps and the source line wait. It reads as a form
-  //                  about to be filled, never blank.
-  //   0.10  COUNT    "6 of 60" counts up over 0.5 s in tabular Geist Mono; the box is fixed, nothing moves
-  //   0.25  ASK      the question types at 34 chars/s (capped 1.9 s), the orange caret leading
-  //   2.40  ANSWER   (aStart: question end + 0.25) the answer streams at 26 words/s (capped 1.6 s); its source fades up
-  //   2.86  TRACE    (lStart: answer end) the source line draws from the end of the [1] line to its source, 0.7 s
-  //   3.01  STAMPS   (sStart: answer end + 0.15) each named company's stamp lands, 140 ms apart: 220 ms,
-  //                  cubic-bezier(.2,.8,.2,1), scale 1.06 to 1, fading up
-  //   3.73  YOU      (yStart) a 300 ms beat after the last stamp's slot (and after the trace ends) the sample
-  //                  client's stamp lands last; "Not named" then throws a 1px orange ring that grows
-  //                  0 to 6px and fades, 3.86 to 4.26
-  //   4.26  HOLD     (end) the final frame, identical to the server HTML and to the reduced-motion state
-  // The sheet shows the moment, not the whole conversation: the first lines and the source they cite.
   function view(e) {
     const lines = e.lines.slice(0, maxLines());
     const first = lines.find((l) => l.cites.length);
     const keep = CITED_ONLY ? (first ? [first.cites[0]] : []) : e.sources.map((_, i) => i + 1);
-    // Stamp only the companies the visible lines name; count the ones named further down the answer
     const shown = new Set(lines.flatMap((l) => l.names));
     const named = e.named.filter((n) => shown.has(n.name));
     return { ...e, lines, named, later: e.named.length - named.length, sourceIds: keep };
   }
-
   const STAMP_GAP = 0.14, STAMP_DUR = 0.22, BEAT = 0.3, RING = 0.4, COUNT = [0.1, 0.5];
   function plan(e) {
     const qStart = 0.25, qDur = Math.min(1.9, e.ask.length / 34);
@@ -100,11 +68,8 @@ const FR = (() => {
   const { clamp, easeOut: ease, land } = FR;
   const countEl = root.querySelector(".base .count");
   const countTo = countEl ? Number(countEl.dataset.count) : 0;
-  // The headline figure is the same for every assistant, so it counts up on the opening replay only
   let counting = true;
-
   let engine = Object.keys(D.engines)[0], P = null, start = null, raf = 0, geom = null;
-
   function paint(key) {
     const e = view(D.engines[key]);
     root.dataset.engine = key;
@@ -129,8 +94,6 @@ const FR = (() => {
     P = plan(e);
     measure();
   }
-
-  // The source line: from the first recommended name in the answer to the source its line cites.
   function measure() {
     const e = view(D.engines[engine]);
     const svg = $("svg.trace"), path = svg.querySelector("path");
@@ -141,8 +104,6 @@ const FR = (() => {
     const li = $("[data-f=answer]").children[e.lines.indexOf(first)];
     const s = $(`[data-f=sources] [data-src="${first.cites[0]}"]`);
     if (!li || !s) { path.setAttribute("d", ""); geom = null; return; }
-    // From the end of the cited answer line, through the gutter, to its source row: never over text.
-    // Anchor on the citation marker itself, e.g. "[1]", not on the line box.
     const marker = `[${first.cites[0]}]`;
     const walker = document.createTreeWalker(li, NodeFilter.SHOW_TEXT);
     const range = document.createRange(); let node, end = null;
@@ -151,16 +112,13 @@ const FR = (() => {
       if (at >= 0) { range.setStart(node, at); range.setEnd(node, at + marker.length); end = range.getBoundingClientRect(); break; }
     }
     if (!end) { range.selectNodeContents(li); const rs = [...range.getClientRects()]; end = rs[rs.length - 1]; }
-    // The marker can sit mid-line ("Trellisec [1], Kontrolo and…"): leave from the end of that visual line,
-    // so the trace never runs through the words after it
     range.selectNodeContents(li);
     const row = [...range.getClientRects()].filter((r) => Math.abs(r.top + r.height / 2 - (end.top + end.height / 2)) < end.height / 2);
     if (row.length) end = { top: end.top, height: end.height, right: Math.max(...row.map((r) => r.right)) };
     const c = s.getBoundingClientRect();
     const x1 = end.right - box.left + 10, y1 = end.top - box.top + end.height / 2;
     const x2 = c.left - box.left - 6, y2 = c.top - box.top + c.height / 2;
-    const stacked = x2 < x1 || root.dataset.route === "gutter"; // route down the right margin
-    // Orthogonal route with rounded corners: along the end of the line, down the gutter, into the source.
+    const stacked = x2 < x1 || root.dataset.route === "gutter";
     const sheetBox = root.querySelector(".sheet")?.getBoundingClientRect();
     const gx = stacked ? (sheetBox ? sheetBox.right - box.left + 20 : box.width - 7) : x2 - 14, r = root.dataset.route === "gutter" ? 0 : 8, dy = Math.sign(y2 - y1) || 1;
     path.setAttribute("d", stacked
@@ -170,7 +128,6 @@ const FR = (() => {
     const dot = svg.querySelector("circle"); if (dot) { dot.setAttribute("cx", x1); dot.setAttribute("cy", y1); }
     path.style.strokeDasharray = `${geom}`;
   }
-
   function renderAt(t) {
     const e = view(D.engines[engine]);
     const q = Math.round(e.ask.length * clamp((t - P.qStart) / P.qDur));
@@ -192,7 +149,6 @@ const FR = (() => {
       k -= n;
       li.style.opacity = n ? String(show / n) : "1";
     });
-    // Names are on the page from the start; each classification stamp lands in turn, the sample client's last.
     const vrows = $("[data-f=verdict]").querySelectorAll(".v-row");
     vrows.forEach((row, i) => {
       const last = i === vrows.length - 1;
@@ -202,13 +158,11 @@ const FR = (() => {
       const st = row.querySelector(".stamp");
       st.style.opacity = String(p);
       st.style.transform = k >= 1 ? "" : `scale(${1.06 - 0.06 * p})`;
-      // "Not named": a 1px orange ring leaves the stamp, growing to 6px as it fades
       const r = last && st.classList.contains("stamp-none") ? clamp((t - P.ringStart) / RING) : 0;
       st.style.outline = r > 0 && r < 1 ? `1px solid rgb(232 116 59 / ${(1 - r).toFixed(3)})` : "";
       st.style.outlineOffset = r > 0 && r < 1 ? `${(6 * ease(r)).toFixed(2)}px` : "";
     });
     if (countEl) countEl.textContent = String(counting ? Math.round(countTo * ease(clamp((t - COUNT[0]) / COUNT[1]))) : countTo);
-    // The cited source arrives with the answer; the trace dot waits for its line.
     const aProg = clamp((t - P.aStart) / P.aDur);
     $("[data-f=sources]").querySelectorAll("li").forEach((li) => (li.style.opacity = String(0.45 + 0.55 * aProg)));
     const dot = root.querySelector("svg.trace circle");
@@ -217,7 +171,6 @@ const FR = (() => {
     if (geom) path.style.strokeDashoffset = String(geom * (1 - ease(clamp((t - P.lStart) / 0.7))));
     $("[data-f=sources]").classList.toggle("is-lit", t >= P.lStart + 0.5);
   }
-
   function play() {
     cancelAnimationFrame(raf);
     delete root.dataset.done;
@@ -230,7 +183,6 @@ const FR = (() => {
     };
     raf = requestAnimationFrame(frame);
   }
-
   const order = Object.keys(D.engines);
   root.querySelectorAll("[data-next]").forEach((b) => b.addEventListener("click", () => {
     counting = false;
@@ -244,19 +196,14 @@ const FR = (() => {
     paint(engine);
     if (reduced) renderAt(P.end); else play();
   }));
-  // A resize re-lays the sheet and shows the frame it should be on: the frozen ?t= frame if there is one, else the end
   const settled = () => (frozen !== null ? Number(frozen) : P.end);
   addEventListener("resize", () => { measure(); renderAt(settled()); });
   phone.addEventListener("change", () => { paint(engine); renderAt(settled()); });
-
   paint(engine);
   if (frozen !== null) { renderAt(Number(frozen)); document.fonts.ready.then(() => { measure(); renderAt(Number(frozen)); }); }
   else if (reduced) { renderAt(P.end); document.fonts.ready.then(() => { measure(); renderAt(P.end); }); }
   else document.fonts.ready.then(() => { measure(); play(); });
 })();
-
-// Home, r02. The take-apart's three buyer turns fold to their first lines; the row is the button, named by its own
-// callout, and opening it shows the whole turn. Without this script every turn reads in full.
 (() => {
   for (const row of document.querySelectorAll(".convo-row.is-fold")) {
     const name = row.querySelector(".callout b");
@@ -274,16 +221,6 @@ const FR = (() => {
     row.append(button);
   }
 })();
-
-// R07. The live preview is the real report, the demo at sample-report.html: its matrix of 60 conversations as a
-// working miniature, Rival A's outcome in words in every cell, the company's one outcome above it, and one
-// conversation's record beside it, built from the same records (assets/report-records.js), so every word is the
-// approved report's. The record is a native sideways swipe (scroll-snap, one conversation per snap, data-carousel):
-// nothing advances on its own and touching it starts no timer. Tapping a cell goes to that conversation, the position
-// shows as "8 of 60", and on laptops the steps and the arrow keys move through. Each record's title opens that
-// conversation in the report. Phones keep the record closed until a cell is tapped (a wordless cue rings one tile),
-// and it opens under that row. The first time the matrix comes up the screen it fills in, row by row (pages CSS,
-// .is-filling); already on screen, or under reduced motion, it is simply there. No JS: a still image of the preview.
 (() => {
   const root = document.querySelector("[data-preview]");
   const index = root && root.querySelector("[data-pv-index]");
@@ -299,14 +236,11 @@ const FR = (() => {
   const situation = (i) => `Situation ${String(Math.floor(i / E) + 1).padStart(2, "0")}`;
   const engine = (i) => M.engines[i % E][1];
   const chip = ([word, code], extra = "") => `<b class="chip o-${code}${extra}">${esc(word)}</b>`;
-
-  // Above the matrix: the label, the company's one outcome in all 60, and the key (the report's own words)
   const top = document.createElement("div");
   top.className = "pv-top";
   top.innerHTML = `<p class="pv-label">Real data, anonymized.</p>
     <div class="pv-co"><p class="pv-co-h">The company, in all ${total}</p><p class="pv-co-v">${chip([M.co[0], M.co[1]], " chip-co")}<em>${M.co[2]} of ${total}</em></p></div>
     <p class="pv-read"><b>Each cell is one conversation</b><i>Rival A’s outcome</i></p>`;
-  // The matrix: the four assistants across, the 15 situations down
   const grid = document.createElement("div");
   grid.className = "pv-grid";
   grid.setAttribute("role", "group");
@@ -320,7 +254,6 @@ const FR = (() => {
     }
   }
   grid.innerHTML = html;
-  // Phones (pages CSS): one assistant's column at a time, chosen by these tabs
   const tabs = document.createElement("div");
   tabs.className = "pv-tabs";
   tabs.setAttribute("role", "group");
@@ -336,8 +269,6 @@ const FR = (() => {
   box.append(top, tabs, grid);
   index.replaceChildren(box);
   const cells = [...grid.querySelectorAll(".pv-cell")];
-
-  // One conversation's record, as the report's drawer shows it (sample.js)
   const turn = (t, n, rec) => {
     const lit = rec.ft && n >= rec.ft, first = rec.ft === n;
     const named = t.n.map(([who, word, code]) => `<li><i class="who">${esc(who)}</i>${chip([word, code])}</li>`).join("")
@@ -352,7 +283,6 @@ const FR = (() => {
       <div><dt>Top pick</dt><dd>${rec.p ? esc(rec.p) : "None"}</dd></div>
       <div><dt>Top pick first named</dt><dd>${rec.ft ? `Turn ${rec.ft}` : "None"}</dd></div>
     </dl><ol class="turns">${rec.t.map((t, k) => turn(t, k + 1, rec)).join("")}</ol>`;
-
   const nav = document.createElement("div");
   nav.className = "pv-nav";
   nav.innerHTML = `<p class="pv-where"><a class="pv-open" href="sample-report.html"></a><em></em></p><button type="button" class="pv-step" data-step="-1">Previous</button><p class="pv-pos" aria-live="polite"></p><button type="button" class="pv-step" data-step="1">Next</button>`;
@@ -366,10 +296,8 @@ const FR = (() => {
   track.append(slides[start]);
   pane.replaceChildren(nav, track);
   root.classList.add("is-live");
-
   let recs = null, loading = null, built = false;
   const fill = (i) => { if (recs && slides[i] && !slides[i].childElementCount) slides[i].innerHTML = record(recs[i]); };
-  // Every slide in place once the records are in; each is filled when it comes near
   const build = () => {
     if (built || !recs) return;
     built = true;
@@ -389,17 +317,12 @@ const FR = (() => {
     const io = new IntersectionObserver((es) => { if (es.some((e) => e.isIntersecting)) { io.disconnect(); load(); } }, { rootMargin: "800px 0px" });
     io.observe(root);
   }
-
-  // The track is as tall as the record showing, at every width, so it reads on the page with no inner scroll
   const fit = () => {
     const shown = slides[current];
     if (shown && shown.offsetHeight) track.style.height = `${shown.scrollHeight}px`;
   };
   const sized = "ResizeObserver" in window ? new ResizeObserver(() => fit()) : null;
   if (sized) slides.forEach((d) => sized.observe(d));
-
-  // Where the track is: the tile pressed, the title and its link, the count, the steps at either end. On phones a tile
-  // is pressed only while the record is open under it.
   let current = start;
   const pos = nav.querySelector(".pv-pos");
   const where = nav.querySelector(".pv-open");
@@ -421,8 +344,6 @@ const FR = (() => {
     fit();
   };
   mark(start);
-
-  // Phones: the wordless tap cue rings the tile of the record it opens on, once, as it comes up the screen
   const cued = cells[start];
   if (cued && phone.matches && "IntersectionObserver" in window && !reduced()) {
     const cue = new IntersectionObserver((es) => {
@@ -432,8 +353,6 @@ const FR = (() => {
     }, { rootMargin: "0px 0px -35% 0px" });
     cue.observe(cued);
   }
-  // Phones: the record opens in place, straight under the tapped row. It moves by moving rows past it, never by moving
-  // the record itself, so its sideways scroll survives, and the page scrolls by the shift so the element in hand stays put.
   const win = root.querySelector(".pv-window");
   const rowEnd = (i) => cells[Math.floor(i / E) * E + E - 1];
   const place = (i, hold) => {
@@ -461,7 +380,6 @@ const FR = (() => {
   let ticking = false, rest = 0;
   track.addEventListener("scroll", () => {
     if (!built) return;
-    // A swipe into another situation takes the record to that row once the track comes to rest
     clearTimeout(rest);
     rest = setTimeout(() => { if (phone.matches && root.classList.contains("is-open")) place(current, pane); }, 180);
     if (ticking) return;
@@ -490,7 +408,6 @@ const FR = (() => {
     const cell = ev.target.closest(".pv-cell");
     if (!cell) return;
     const i = Number(cell.dataset.i);
-    // Phones: a second tap on the open tile closes the record again
     if (phone.matches && root.classList.contains("is-open") && cell.getAttribute("aria-pressed") === "true") {
       root.classList.remove("is-open");
       mark(current);
@@ -517,37 +434,8 @@ const FR = (() => {
     const next = cells[cells.indexOf(cell) + move];
     if (next) { ev.preventDefault(); next.focus(); }
   });
-
-  // The fill (R08): the reveal engine below fills the matrix row by row the first time it comes into view
   grid.dataset.reveal = "fill";
 })();
-
-// reveal: begin
-// R08, R09. Reveals, one contract for every page (tools/qa/motiongate.mjs). Every element that reveals carries
-// data-reveal="<kind>". The script adds html.rv, and only under that class does CSS (components.css, "Reveals") hold an
-// element in its start state, and only while it carries data-reveal-wait, so with JS off everything shows finished. An
-// element on the screen at load, or above it, is finished at once; one below it waits until it is really in view (an
-// IntersectionObserver, about a quarter of it on screen, no early margin), then plays while the visitor watches, and
-// gets data-revealed when it ends, always within 1.3 s. State is a pure function of the time since it started, the last
-// frame writes the finished state, and a tab that goes hidden finishes at once. Reduced motion: finished at load.
-// R09: words are never faded. r08's reveals held text at 25% while they waited, so a fast scroller and every still saw
-// ghost text (Opus: "the motion is hiding content"). Text is at full opacity in every state; the motion is in the
-// graphics around it: rules drawing, bars growing, marks filling, chips stamping in, nodes scaling. A heading may rise
-// a few pixels at full opacity, nothing more.
-// Kinds:
-//   rise   a heading comes up 8px, at full opacity (700 ms)
-//   rows   each child's rule draws from the left (--k, 0 to 1), one after another (600 ms each, the list within 1.2 s)
-//   rule   the element's own rule draws (--k)
-//   bars   its bars grow from their left edge, one after another (750 ms each)
-//   tally  its conversation marks fill in reading order, the top picks first, as a typewriter fills a page (900 ms)
-//   count  its [data-count] figures count up once from 0 to their exact value (900 ms, in a box of the final width, the
-//          "of 592" base on screen throughout), starting only when the whole figure is in view; no other number counts
-//   fill   a matrix stamps in row by row, 40 ms a row and 22 ms a column: R10, with no chips, each outcome word settles
-//          from the quiet tone to its rank's colour and weight (--f) and rises 4px, over 420 ms; every word is on
-//          screen at full opacity throughout
-//   steps  the method's steps: each step's rule, node and hop draw, one after another, and on laptops the threads
-//          above them draw step to step
-//   weave  the threads under the hero: three strands draw from the margin's node to the rule, a beat apart
 (() => {
   const els = [...document.querySelectorAll("[data-reveal]")];
   if (!els.length) return;
@@ -559,7 +447,6 @@ const FR = (() => {
   const stagger = (n, each, cap) => (n > 1 ? Math.min(cap, Math.max(0, 1200 - each) / (n - 1)) : 0);
   const clear = (n, ...props) => props.forEach((p) => n.style.removeProperty(p));
   const draw = (n, k) => n.style.setProperty("--k", out(clamp(k)).toFixed(4));
-  // a cell's place in its matrix: the --r and --c it carries (home's preview), or its row and column in the table
   const place = (n) => {
     const cs = getComputedStyle(n), r = cs.getPropertyValue("--r"), c = cs.getPropertyValue("--c");
     if (r !== "") return [Number(r) || 0, Number(c) || 0];
@@ -636,7 +523,6 @@ const FR = (() => {
     },
   };
   const kind = (el) => KINDS[el.dataset.reveal] || KINDS.rise;
-  // count only: its figures hold their final width from the start, so nothing moves while they count
   for (const n of document.querySelectorAll("[data-reveal=count] [data-count]")) n.style.minWidth = `${n.getBoundingClientRect().width}px`;
   document.documentElement.classList.add("rv");
   const running = new Map();
@@ -658,7 +544,6 @@ const FR = (() => {
     requestAnimationFrame(frame);
   };
   document.addEventListener("visibilitychange", () => { if (document.hidden) [...running.keys()].forEach(finish); });
-  // In view: a quarter of it on screen, or for a tall element a third of the screen; a counted figure, all of it
   const io = new IntersectionObserver((es) => es.forEach((e) => {
     if (!e.isIntersecting) return;
     const seen = kind(e.target).whole ? e.intersectionRatio >= 0.97 : e.intersectionRatio >= 0.25 || e.intersectionRect.height >= innerHeight * 0.34;
@@ -669,15 +554,10 @@ const FR = (() => {
     const r = el.getBoundingClientRect();
     if (!el.getClientRects().length || r.top < h) { done(el); continue; }
     el.setAttribute("data-reveal-wait", "");
-    // a counted figure waits at 0, in full view, at its final width
     if (el.dataset.reveal === "count") el.querySelectorAll("[data-count]").forEach((n) => { n.textContent = "0"; });
     io.observe(el);
   }
 })();
-// reveal: end
-
-// R07. The ray's parallax: the figure that holds it drifts at a fifth of the scroll (an eighth on phones) while its
-// section is on screen, by transform only. Reduced motion: it stays put.
 (() => {
   const els = [...document.querySelectorAll("[data-parallax]")];
   if (!els.length || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
