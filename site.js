@@ -250,20 +250,36 @@ const FR = (() => {
     html += `<p class="pv-mk" style="--r:${s}">${situation(s * E)}</p>`;
     for (let c = 0; c < E; c++) {
       const i = s * E + c, [word, code] = M.cells[i];
-      html += `<button type="button" class="pv-cell" data-i="${i}" data-col="${c + 1}" aria-pressed="false" aria-label="${esc(word)}, ${situation(i)}, ${esc(engine(i))}" style="--r:${s};--c:${c}">${chip([word, code])}</button>`;
+      html += `<button type="button" class="pv-cell tile t-${code}" data-i="${i}" data-col="${c + 1}" aria-pressed="false" aria-label="${esc(word)}, ${situation(i)}, ${esc(engine(i))}" style="--r:${s};--c:${c}">${chip([word, code])}</button>`;
     }
   }
   grid.innerHTML = html;
   const tabs = document.createElement("div");
   tabs.className = "pv-tabs";
   tabs.setAttribute("role", "group");
-  tabs.innerHTML = M.engines.map(([, n], i) => `<button type="button" data-col="${i + 1}" aria-pressed="false">${esc(n)}</button>`).join("");
+  tabs.innerHTML = M.engines.map(([, n], i) => `<button type="button" data-col="${i + 1}" aria-pressed="false" aria-expanded="false"><span class="pv-tab-n">${esc(n)}</span></button>`).join("");
   const showCol = (n) => {
     grid.dataset.show = String(n);
     tabs.querySelectorAll("button").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.col === String(n))));
   };
-  tabs.addEventListener("click", (ev) => { const b = ev.target.closest("button"); if (b) showCol(Number(b.dataset.col)); });
+  const tileMode = () => phone.matches && !root.classList.contains("is-list");
+  const syncTiles = () => grid.querySelectorAll(".pv-cell").forEach((b) => (tileMode() ? (b.tabIndex = -1) : b.removeAttribute("tabindex")));
+  const listOpen = (on) => {
+    root.classList.toggle("is-list", on);
+    tabs.querySelectorAll("button").forEach((b) => b.setAttribute("aria-expanded", String(on && b.dataset.col === grid.dataset.show)));
+    syncTiles();
+  };
+  phone.addEventListener("change", syncTiles);
+  tabs.addEventListener("click", (ev) => {
+    const b = ev.target.closest("button");
+    if (!b) return;
+    const again = root.classList.contains("is-list") && b.dataset.col === grid.dataset.show;
+    if (again) { root.classList.remove("is-open"); listOpen(false); return; }
+    showCol(Number(b.dataset.col));
+    listOpen(true);
+  });
   showCol(start % E + 1);
+  syncTiles();
   const box = document.createElement("div");
   box.className = "pv-index-in";
   box.append(top, tabs, grid);
@@ -338,13 +354,13 @@ const FR = (() => {
     eng.textContent = engine(i);
     track.setAttribute("aria-label", `${situation(i)}, ${engine(i)}`);
     pos.textContent = `${i + 1} of ${total}`;
-    if (getComputedStyle(tabs).display !== "none") showCol(i % E + 1);
+    if (getComputedStyle(tabs).display !== "none" && root.classList.contains("is-open")) { showCol(i % E + 1); if (root.classList.contains("is-list")) listOpen(true); }
     steps[0].disabled = !built || i === 0;
     steps[1].disabled = !built || i === total - 1;
     fit();
   };
   mark(start);
-  const cued = cells[start];
+  const cued = tabs.querySelector(`[data-col="${start % E + 1}"]`);
   if (cued && phone.matches && "IntersectionObserver" in window && !reduced()) {
     const cue = new IntersectionObserver((es) => {
       if (!es.some((e) => e.isIntersecting)) return;
@@ -407,6 +423,7 @@ const FR = (() => {
   grid.addEventListener("click", async (ev) => {
     const cell = ev.target.closest(".pv-cell");
     if (!cell) return;
+    if (tileMode()) { tabs.querySelector(`[data-col="${cell.dataset.col}"]`).click(); return; }
     const i = Number(cell.dataset.i);
     if (phone.matches && root.classList.contains("is-open") && cell.getAttribute("aria-pressed") === "true") {
       root.classList.remove("is-open");
@@ -435,6 +452,11 @@ const FR = (() => {
     if (next) { ev.preventDefault(); next.focus(); }
   });
   grid.dataset.reveal = "fill";
+})();
+(() => {
+  const folds = [...document.querySelectorAll(".g-plan-more")];
+  const wide = matchMedia("(min-width: 1024px)");
+  folds.forEach((d) => d.addEventListener("toggle", () => { if (wide.matches) folds.forEach((o) => { if (o.open !== d.open) o.open = d.open; }); }));
 })();
 (() => {
   const els = [...document.querySelectorAll("[data-reveal]")];
@@ -482,14 +504,28 @@ const FR = (() => {
       at: (el, t, end, s) => s.nums.forEach(([n, to]) => { n.textContent = String(end ? to : Math.round(to * out(clamp(t / 900)))); }),
     },
     fill: {
-      prep: (el) => ({ cells: [...el.querySelectorAll(".chip")].map((n) => { const [r, c] = place(n); return [n, r * 40 + c * 22]; }) }),
+      prep: (el) => ({ tiles: !!el.querySelector(".tile"), cells: [...el.querySelectorAll(el.querySelector(".tile") ? ".tile" : ".chip")].map((n) => { const [r, c] = place(n.querySelector(".chip") || n); return [n, r * 40 + c * 22]; }) }),
       dur: (el, s) => 420 + Math.min(880, Math.max(0, ...s.cells.map(([, d]) => d))),
       at: (el, t, end, s) => s.cells.forEach(([n, d]) => {
         if (end) return clear(n, "--f", "transform");
         const e = out(clamp((t - Math.min(d, 880)) / 420));
         n.style.setProperty("--f", e.toFixed(3));
-        n.style.transform = `translateY(${((1 - e) * 4).toFixed(2)}px)`;
+        if (!s.tiles) n.style.transform = `translateY(${((1 - e) * 4).toFixed(2)}px)`;
       }),
+    },
+    rail: {
+      scroll: (el) => clamp((innerHeight * 0.92 - el.getBoundingClientRect().top) / (innerHeight * 0.55)),
+      prep: (el) => ({ steps: [...el.children] }),
+      dur: () => 1000,
+      at: (el, t, end, s) => {
+        const n = s.steps.length, p = clamp(t / 1000);
+        s.steps.forEach((li, i) => {
+          if (end) return clear(li, "--rv", "--rd");
+          const k = clamp(p * n - i);
+          li.style.setProperty("--rv", out(k).toFixed(4));
+          li.style.setProperty("--rd", clamp(k * 4).toFixed(3));
+        });
+      },
     },
     steps: {
       prep: (el) => {
@@ -531,6 +567,21 @@ const FR = (() => {
     io.unobserve(el);
     const K = kind(el), s = K.prep ? K.prep(el) : null, dur = K.dur(el, s);
     running.set(el, { dur, s });
+    if (K.scroll) {
+      let best = 0;
+      const tick = () => {
+        if (!running.has(el)) return removeEventListener("scroll", on);
+        best = Math.max(best, K.scroll(el));
+        if (best >= 1) { removeEventListener("scroll", on); finish(el); } else K.at(el, best * dur, false, s);
+      };
+      let queued = false;
+      const on = () => { if (!queued) { queued = true; requestAnimationFrame(() => { queued = false; tick(); }); } };
+      K.at(el, 0, false, s);
+      el.removeAttribute("data-reveal-wait");
+      addEventListener("scroll", on, { passive: true });
+      tick();
+      return;
+    }
     K.at(el, 0, false, s);
     el.removeAttribute("data-reveal-wait");
     let t0 = null;
@@ -546,7 +597,8 @@ const FR = (() => {
   document.addEventListener("visibilitychange", () => { if (document.hidden) [...running.keys()].forEach(finish); });
   const io = new IntersectionObserver((es) => es.forEach((e) => {
     if (!e.isIntersecting) return;
-    const seen = kind(e.target).whole ? e.intersectionRatio >= 0.97 : e.intersectionRatio >= 0.25 || e.intersectionRect.height >= innerHeight * 0.34;
+    const K = kind(e.target);
+    const seen = K.scroll ? true : K.whole ? e.intersectionRatio >= 0.97 : e.intersectionRatio >= 0.25 || e.intersectionRect.height >= innerHeight * 0.34;
     if (seen) play(e.target);
   }), { threshold: [0, 0.1, 0.2, 0.25, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 0.97, 1] });
   const h = innerHeight;

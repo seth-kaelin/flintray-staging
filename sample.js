@@ -9,17 +9,33 @@ const reduced = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
   here.type = "button"; here.className = "jump-here";
   here.setAttribute("aria-expanded", "false"); here.setAttribute("aria-controls", "jump-list");
   jump.prepend(here);
-  const open = (on) => { jump.classList.toggle("is-open", on); here.setAttribute("aria-expanded", String(on)); };
+  const open = (on) => { jump.classList.toggle("is-open", on); here.setAttribute("aria-expanded", String(on)); dispatchEvent(new Event("reportchromechange")); };
   here.addEventListener("click", () => open(!jump.classList.contains("is-open")));
-  links.forEach((a) => a.addEventListener("click", () => open(false)));
+  links.forEach((a) => a.addEventListener("click", () => {
+    open(false);
+    if (matchMedia("(max-width: 760px)").matches) {
+      const section = document.getElementById(a.hash.slice(1));
+      const target = section?.querySelector("h1,h2,h3,h4") || section;
+      if (target) { target.tabIndex = -1; target.focus({preventScroll:true}); }
+    }
+  }));
   document.addEventListener("click", (e) => { if (!jump.contains(e.target)) open(false); });
   jump.addEventListener("keydown", (e) => { if (e.key === "Escape") { open(false); here.focus(); } });
   let current = null, ticking = false;
   const mark = () => {
     ticking = false;
-    const edge = Math.max(0, jump.getBoundingClientRect().bottom);
+    const nav = document.querySelector(".site-nav");
+    const shown = el => el && getComputedStyle(el).visibility === "visible" && el.getBoundingClientRect().bottom > 0;
+    const edge = Math.max(0, shown(jump) ? Math.min(64, jump.getBoundingClientRect().bottom) : 0, shown(nav) ? nav.getBoundingClientRect().bottom : 0);
     let at = 0;
-    sections.forEach((s, k) => { if (s && s.getBoundingClientRect().top <= edge + 24) at = k; });
+    sections.forEach((s, k) => { if (s && s.getBoundingClientRect().top <= edge + 8) at = k; });
+    const target = location.hash && document.getElementById(decodeURIComponent(location.hash.slice(1)));
+    if (target) {
+      const landing = parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop) + parseFloat(getComputedStyle(target).scrollMarginTop);
+      const y = target.getBoundingClientRect().top;
+      const selected = sections.findIndex(s => s && s.contains(target));
+      if (selected >= 0 && y >= edge && y <= landing + 1) at = selected;
+    }
     if (at === current) return;
     current = at;
     here.textContent = links[at].textContent;
@@ -27,42 +43,49 @@ const reduced = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
   };
   addEventListener("scroll", () => { if (!ticking) { ticking = true; requestAnimationFrame(mark); } }, { passive: true });
   addEventListener("resize", mark);
+  addEventListener("hashchange", () => {
+    requestAnimationFrame(() => {
+      if (location.hash === "#title" || location.hash === "#verdict") scrollTo({top:0,behavior:"instant"});
+      mark();
+    });
+  });
   mark();
 })();
 (() => {
   const track = document.querySelector(".pm-track");
-  const tabs = [...document.querySelectorAll(".pm-tabs [role=tab]")];
+  const tabs = [...document.querySelectorAll(".pm-tabs button")];
   if (!track || !tabs.length) return;
-  const panels = tabs.map((t) => document.getElementById(t.getAttribute("aria-controls")));
-  let at = 0;
-  const select = (k) => {
-    at = k;
-    tabs.forEach((t, j) => { t.setAttribute("aria-selected", String(j === k)); t.tabIndex = j === k ? 0 : -1; });
-    panels.forEach((p, j) => p.toggleAttribute("inert", j !== k));
+  const mx = document.querySelector(".mx"), narrow = matchMedia("(max-width: 760px)");
+  const panels = tabs.map(t => document.getElementById(t.getAttribute("aria-controls")));
+  document.querySelector(".pm-tabs").removeAttribute("role");
+  const set = (k, on, focus = false) => {
+    tabs[k].setAttribute("aria-expanded", String(on));
+    panels[k].hidden = !on;
+    panels[k].inert = !on;
+    if (focus) tabs[k].focus({preventScroll:true});
   };
-  const go = (k, focus) => {
-    select(k);
-    track.scrollTo({ left: panels[k].offsetLeft - track.offsetLeft, behavior: reduced() ? "auto" : "smooth" });
-    if (focus) tabs[k].focus();
-  };
-  tabs.forEach((t, k) => {
-    t.addEventListener("click", () => go(k));
-    t.addEventListener("keydown", (e) => {
-      const step = e.key === "ArrowRight" ? 1 : e.key === "ArrowLeft" ? -1 : 0;
-      if (step) go((k + step + tabs.length) % tabs.length, true);
-    });
+  tabs.forEach((t,k) => {
+    t.removeAttribute("role"); t.removeAttribute("aria-selected"); t.tabIndex = 0;
+    panels[k].removeAttribute("role");
+    set(k, false);
+    t.addEventListener("click", () => set(k, t.getAttribute("aria-expanded") !== "true", true));
   });
-  let queued = false;
-  track.addEventListener("scroll", () => {
-    if (queued) return;
-    queued = true;
-    requestAnimationFrame(() => {
-      queued = false;
-      const k = Math.max(0, Math.min(tabs.length - 1, Math.round(track.scrollLeft / track.clientWidth)));
-      if (k !== at) select(k);
-    });
-  }, { passive: true });
-  select(0);
+  document.addEventListener("keydown", e => {
+    if (e.key !== "Escape" || document.documentElement.classList.contains("drawer-open")) return;
+    const k = tabs.findIndex((t,k) => t === document.activeElement || panels[k].contains(document.activeElement));
+    if (k >= 0 && tabs[k].getAttribute("aria-expanded") === "true") { e.preventDefault(); set(k,false,true); }
+  });
+  const sync = () => {
+    if (narrow.matches) mx.setAttribute("aria-hidden", "true"); else mx.removeAttribute("aria-hidden");
+    mx.querySelectorAll(".mc-b").forEach(b => { if (narrow.matches) b.tabIndex = -1; else b.tabIndex = 0; });
+  };
+  mx.addEventListener("click", e => {
+    const tile = e.target.closest(".mc-b");
+    if (!narrow.matches || !tile) return;
+    e.preventDefault(); e.stopImmediatePropagation();
+    tabs[Number(tile.dataset.rec) % 4].click();
+  }, true);
+  narrow.addEventListener("change", sync); sync();
 })();
 (() => {
   const records = window.RR_RECORDS;
@@ -170,7 +193,7 @@ const reduced = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
     (t.disabled ? root.querySelector(`[data-step="${-Number(t.dataset.step)}"]`) : t).focus();
   });
   root.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") { close(); return; }
+    if (e.key === "Escape") { e.stopPropagation(); close(); return; }
     if ((e.key === "ArrowRight" || e.key === "ArrowLeft") && !e.target.closest("a")) {
       e.preventDefault();
       go(state.index + (e.key === "ArrowRight" ? 1 : -1));
@@ -194,4 +217,32 @@ const reduced = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
   let queued = false;
   const paint = () => { queued = false; const y = scrollY; if (y < innerHeight * 1.6) fig.style.transform = `translate3d(0, ${Math.min(y * (narrow.matches ? 0.12 : 0.2), innerHeight * 0.22).toFixed(1)}px, 0)`; };
   addEventListener("scroll", () => { if (!queued) { queued = true; requestAnimationFrame(paint); } }, { passive: true });
+})();
+(() => {
+  document.querySelectorAll("a[href],button,summary").forEach(el => {
+    if (!el.hasAttribute("tabindex") && !el.matches(".mc-b") && !el.closest(".site-nav,.site-footer,.menu-sheet,[data-cta-bar]")) el.tabIndex = 0;
+  });
+  document.addEventListener("focusin", event => {
+    const el = event.target;
+    if (el === document.body || el === document.documentElement || el.closest(".site-nav,.drawer-root,.menu-sheet")) return;
+    requestAnimationFrame(() => {
+      if (document.activeElement !== el) return;
+      const jump = el.closest(".jump");
+      if (jump) {
+        if (matchMedia("(max-width: 760px)").matches && jump.getBoundingClientRect().top !== 0) scrollTo({top:jump.getBoundingClientRect().top+scrollY,behavior:"instant"});
+        return;
+      }
+      el.scrollIntoView({block:"nearest",inline:"nearest",behavior:"instant"});
+      const shown = e => getComputedStyle(e).visibility === "visible" && e.getBoundingClientRect().bottom > 0;
+      const bars = [...document.querySelectorAll(".jump,.site-nav,.vh,.mr-head")].filter(e => shown(e) && !e.contains(el));
+      const top = bars.reduce((n,e) => {
+        const r=e.getBoundingClientRect(),s=getComputedStyle(e);
+        const stuck=(s.position === "sticky" || s.position === "fixed") && r.top <= parseFloat(s.top || "0") + 0.5;
+        return stuck ? Math.max(n,r.bottom) : n;
+      },0);
+      const r=el.getBoundingClientRect();
+      if (r.top < top + 8) scrollBy({top:r.top-top-8,behavior:"instant"});
+      else if (r.bottom > innerHeight-8) scrollBy({top:r.bottom-innerHeight+8,behavior:"instant"});
+    });
+  });
 })();

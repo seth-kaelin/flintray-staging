@@ -117,7 +117,7 @@
       <header class="aud-open">
         <div class="aud-ray" data-parallax><div class="ray" aria-hidden="true"><svg class="ray-body" viewBox="0 0 1240 700" focusable="false"><image href="assets/ray-dark.webp" x="0" y="0" width="1056" height="500"/></svg><i class="ray-lamp"><i class="ray-aim"><i class="ray-cone"></i></i><i class="ray-eye"></i></i></div></div>
         <h1 id="aud-title">Your free AI search audit</h1>
-        <p class="aud-lede">When your buyers ask ChatGPT, Claude, Gemini or Perplexity who to call, the answer works like a referral. The audit shows you who gets it in your place, and why, across a real slice of your market.</p>
+
       </header>
       <div class="aud-side">
         <section class="aud-request" id="request" aria-labelledby="request-title">
@@ -141,6 +141,7 @@
       </div>
         </section>
       </div>
+        <p class="aud-lede">When your buyers ask ChatGPT, Claude, Gemini or Perplexity who to call, the answer works like a referral. The audit shows you who gets it in your place, and why, across a real slice of your market.</p>
     </section>
 
     <section class="g-sec aud-pick" aria-labelledby="card-title">
@@ -149,9 +150,9 @@
       </header>
       <div class="aud-pick-body">
         <div class="aud-pick-bars" data-reveal="bars">
-            <dl class="aud-bars" data-reveal="count">
-              <div><dt>Trellisec</dt><dd><span class="fa-bar" style="--v: 66.67%" aria-hidden="true"><i></i></span><span class="num"><b class="aud-count" data-count="40">40</b> of 60</span></dd></div>
-              <div class="is-you"><dt>Corvane</dt><dd><span class="fa-bar" style="--v: 10%" aria-hidden="true"><i></i></span><span class="num"><b class="aud-count" data-count="6">6</b> of 60</span></dd></div>
+            <dl class="aud-bars">
+              <div><dt>Trellisec</dt><dd><span class="fa-bar" style="--v: 66.67%" aria-hidden="true"><i></i></span><span class="num" data-reveal="count"><b class="aud-count" data-count="40">40</b> of 60</span></dd></div>
+              <div class="is-you"><dt>Corvane</dt><dd><span class="fa-bar" style="--v: 10%" aria-hidden="true"><i></i></span><span class="num" data-reveal="count"><b class="aud-count" data-count="6">6</b> of 60</span></dd></div>
             </dl>
             <p class="sample-caption">Illustrative sample. Companies and sources are fictional.</p>
         </div>
@@ -168,7 +169,7 @@
       <header class="g-head" data-reveal="rise">
         <h2 id="steps">How the free audit runs</h2>
       </header>
-          <ul class="aud-steps fa-steps" data-reveal="steps">
+          <ul class="aud-steps fa-steps" data-reveal="rail">
             <li><h3>You ask</h3><p>Tell us your website and the competitor you lose to most.</p></li>
             <li><h3>We research</h3><p>We study your buyers and write the situations. We never name you in the questions.</p></li>
             <li><h3>We run it</h3><p>Every situation goes through all four assistants, and a person reads every answer word for word. Each one runs the way a real buyer's does, from the problem to the shortlist.</p></li>
@@ -182,7 +183,7 @@
         <h2 id="faq-title">Questions people ask first</h2>
       </header>
           <div class="aud-faq">
-            <details class="faq-item" open>
+            <details class="faq-item">
               <summary><h3>What does the audit add to a cheap tracking tool?</h3></summary>
               <p>Tracking tools run from about $30 to $1,000 a month on published plans, and they'll tell you how often your name comes up. The audit runs your real buyer situations as full conversations, and a person reads every turn exactly as it was given, so you see where the decision started to form. You also see the sources behind each answer and the first fixes to make.</p>
             </details>
@@ -206,11 +207,13 @@
         <h2 id="after">After the audit</h2>
         <p class="g-aside">If you want the full picture and the fixes, there are two ways to keep going, both monthly.</p>
       </header>
+        <div class="aud-plan-grid">
         <ul class="aud-plans">
-          <li><h3>Lens Monitor</h3><p class="aud-scope">Lens Monitor is scoped on the call.</p><p>We measure and your team fixes. Your situations rerun on a set schedule, with a live report, the pages behind every answer, and a fix plan your team works through.</p></li>
-          <li><h3>Lens Engage</h3><p class="price-line num">Lens Engage starts at $5,000 a month.</p><p>We measure and we do the fixes. Your situations rerun every week, we write and place the fixes, and we review the results with you each month. You name 3 to 5 rivals, and none of them can become a paying client while you're on Engage. Your first month includes the full audit and the first fixes.</p></li>
+          <li><h3>Lens Monitor</h3><p class="aud-scope">Lens Monitor is scoped on the call.</p><details class="g-fold g-plan-more aud-plan-more"><summary>We measure and your team fixes.</summary><p>Your situations rerun on a set schedule, with a live report, the pages behind every answer, and a fix plan your team works through.</p></details></li>
+          <li><h3>Lens Engage</h3><p class="price-line num">Lens Engage starts at $5,000 a month.</p><details class="g-fold g-plan-more aud-plan-more"><summary>We measure and we do the fixes.</summary><p>Your situations rerun every week, we write and place the fixes, and we review the results with you each month. You name 3 to 5 rivals, and none of them can become a paying client while you're on Engage. Your first month includes the full audit and the first fixes.</p></details></li>
         </ul>
         <p class="aud-monthly">Both plans are monthly.</p>
+        </div>
         <div class="aud-close-row">
           <div class="aud-policy"><h3>How we make fixes</h3><p>When we make the fixes on Lens Engage, we never post under fake names, buy reviews or invent quotes.</p></div>
           <p class="aud-body aud-partners">Agencies and advisory firms can offer all of this under their own name, on a private quote. <a class="link link-arrow" href="partners.html">White-label for partners</a></p>
@@ -226,7 +229,8 @@
       </div>
       <div class="foot-col"><h2>FlintRay</h2><ul><li><a href="index.html">Home</a></li><li><a href="how-it-works.html">How it works</a></li><li><a href="measurement-standard.html">Method</a></li><li><a href="sample-report.html">Sample report</a></li><li><a href="audit.html">Free audit</a></li></ul></div>
       <div class="foot-col"><h2>Insights</h2><ul><li><a href="insights.html">All insights</a></li><li><a href="insights/how-ai-assistants-decide.html">How AI assistants decide</a></li><li><a href="insights/how-much-does-aeo-cost.html">How much AEO costs</a></li></ul></div>
-      <div class="foot-col"><h2>Company</h2><ul><li><a href="partners.html">Partners</a></li><li><a href="https://calendar.app.google/9M8xRZvibsCU6EeSA">Book a call</a></li><li><a href="privacy.html">Privacy</a></li><li><a href="mailto:seth@flintray.com">seth@flintray.com</a></li><li><a href="mailto:privacy@flintray.com">privacy@flintray.com</a></li></ul></div>
+      <div class="foot-col"><h2>Company</h2><ul><li><a href="partners.html">Partners</a></li><li><a href="https://calendar.app.google/9M8xRZvibsCU6EeSA">Book a call</a></li><li><a href="privacy.html">Privacy</a></li></ul></div>
+      <ul class="foot-mail"><li><a href="mailto:seth@flintray.com">seth@flintray.com</a></li><li><a href="mailto:privacy@flintray.com">privacy@flintray.com</a></li></ul>
       <div class="foot-legal meta"><p>© 2026 FlintRay</p></div>
     </div>
   </footer>
