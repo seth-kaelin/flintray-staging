@@ -849,3 +849,19 @@ html:has(body.rr) { scroll-behavior: auto; }
   html:root body.p-sample-report .defs { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 48px; column-gap: var(--gap); }
   html:root body.p-sample-report .defs > div { grid-column: auto; }
 }
+body.rr { --sec-y: 128px; }
+@media (max-width: 1023px) { body.rr { --sec-y: 112px; } }
+@media (max-width: 760px) { body.rr { --sec-y: 96px; } }
+html:root body.rr :is(.ch, .ch.ch-band, .findings) { min-height: 0; padding-top: var(--sec-y); padding-bottom: 0; }
+html:root body.rr .closing { margin-top: 0; padding-top: var(--sec-y); padding-bottom: var(--sec-y); }
+@media (max-width: 760px) {
+  html:root body.rr .jump .jump-cta, html:root body.rr .jump.is-pinned .jump-cta { display: none; }
+}
+html:root body.rr .ch-band, html:root body.rr .ch-band .mr-head { background: var(--black); }
+@media (min-width: 1024px) {
+  html:root body.rr .cover-meta { order: 9; grid-row: 9; margin: 24px 0 0; font-size: 14px; color: color-mix(in srgb, var(--ink) 60%, transparent); }
+}
+@media (min-width: 1024px) {
+  html:root body.rr .closing .price-line { grid-column: 1 / 8; font-size: 40px; line-height: 1.1; }
+  html:root body.rr .closing .closing-actions { grid-column: 1 / -1; justify-content: flex-start; margin-top: 32px; gap: 16px 24px; }
+}

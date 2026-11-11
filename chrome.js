@@ -144,9 +144,4 @@
   addEventListener("resize", set);
   set();
 })();
-(() => {
-  const wide = matchMedia("(min-width: 1024px)");
-  const set = () => { for (const d of document.querySelectorAll("[data-plans] details.g-plan-more")) d.open = wide.matches; };
-  wide.addEventListener("change", set);
-  set();
-})();
+for (const d of document.querySelectorAll("[data-plans] details.g-plan-more, details.aud-plan-more")) d.open = true;
