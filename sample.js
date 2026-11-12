@@ -211,14 +211,6 @@ const reduced = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
   if (mx) mx.querySelectorAll(".mr:not(.mr-head)").forEach((row, r) => row.querySelectorAll(".mc").forEach((c, k) => { c.style.setProperty("--r", r); c.style.setProperty("--c", k); }));
 })();
 (() => {
-  const fig = document.querySelector(".ray-fig");
-  if (!fig || reduced()) return;
-  const narrow = matchMedia("(max-width: 760px)");
-  let queued = false;
-  const paint = () => { queued = false; const y = scrollY; if (y < innerHeight * 1.6) fig.style.transform = `translate3d(0, ${Math.min(y * (narrow.matches ? 0.12 : 0.2), innerHeight * 0.22).toFixed(1)}px, 0)`; };
-  addEventListener("scroll", () => { if (!queued) { queued = true; requestAnimationFrame(paint); } }, { passive: true });
-})();
-(() => {
   document.querySelectorAll("a[href],button,summary").forEach(el => {
     if (!el.hasAttribute("tabindex") && !el.matches(".mc-b") && !el.closest(".site-nav,.site-footer,.menu-sheet,[data-cta-bar]")) el.tabIndex = 0;
   });

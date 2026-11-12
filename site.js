@@ -610,17 +610,3 @@ const FR = (() => {
     io.observe(el);
   }
 })();
-(() => {
-  const els = [...document.querySelectorAll("[data-parallax]")];
-  if (!els.length || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-  const narrow = matchMedia("(max-width: 760px)");
-  const paint = () => {
-    const y = scrollY, h = innerHeight;
-    if (y > h * 1.6) return;
-    const f = narrow.matches ? 0.12 : 0.2;
-    for (const el of els) el.style.transform = `translate3d(0, ${Math.min(y * f, h * 0.22).toFixed(1)}px, 0)`;
-  };
-  let queued = false;
-  addEventListener("scroll", () => { if (!queued) { queued = true; requestAnimationFrame(() => { queued = false; paint(); }); } }, { passive: true });
-  paint();
-})();
