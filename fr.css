@@ -3226,3 +3226,74 @@ html:root .aud .aud-plans > li > .aud-plan-more > summary, html:root .aud .aud-p
 @media (max-width: 760px) {
   html:root .fa .g-plans > .g-plan-all { margin-top: 12px; }
 }
+@media (max-width: 760px) {
+  html:root body.rr main .jump { transition-property: color, background-color, border-color, transform;
+    transition-duration: 200ms; transition-timing-function: ease-out; transition-delay: 0s; }
+  html:root body.rr main .jump.is-ended { transform: translateY(-100%); }
+  html:root body.rr main .jump.is-ended:not(.is-pinned) { visibility: hidden;
+    transition-property: color, background-color, border-color, transform, visibility;
+    transition-duration: 200ms, 200ms, 200ms, 200ms, 0s; transition-delay: 0s, 0s, 0s, 0s, 200ms; }
+}
+@media (max-width: 760px) and (prefers-reduced-motion: reduce) {
+  html:root body.rr main .jump { transition-duration: 0s; }
+}
+@media (max-width: 760px) {
+  html:root body.rr main .verdict .vr.vr-co { padding-right: 0; }
+  html:root body.rr main .verdict .vr > p:not(.vn):not(.vt) { justify-content: center; align-items: center; padding-right: 0; padding-left: 0; text-align: center; }
+  html:root body.rr main .verdict .vr > p.vc > strong { text-align: center; }
+}
+@media (max-width: 760px) {
+  html:root body.rr main #matrix .mx > .mr-head > p {
+    box-shadow: 4px 0 0 var(--black), 0 1px 0 color-mix(in srgb, var(--rp-ink, var(--ink)) 10%, transparent), 4px 1px 0 color-mix(in srgb, var(--rp-ink, var(--ink)) 10%, transparent),
+      0 4px 0 var(--black); z-index: 5; }
+}
+@media (min-width: 1024px) {
+  html:root main.aud .aud-how > .aud-steps > li::before { transform: none; }
+  html:root main.aud .aud-how > .aud-steps > li::after { transform: none; }
+  html:root main.aud .aud-how > .aud-steps > li:last-child::after { content: ""; right: 0; }
+}
+@media (prefers-color-scheme: dark) {
+  html:root .fa .g-hero-stage { background: #142039; box-shadow: inset 0 -1px 0 rgba(238, 242, 250, .1); }
+  html:root main.aud > .aud-top { background: #142039; box-shadow: inset 0 -1px 0 rgba(238, 242, 250, .1); }
+  html:root body.rr main .cover { background: #142039; box-shadow: inset 0 -1px 0 rgba(238, 242, 250, .1); }
+  html:root body.rr main .closing { background: #142039; box-shadow: inset 0 1px 0 rgba(238, 242, 250, .1), inset 0 -1px 0 rgba(238, 242, 250, .1); }
+}
+@media (max-width: 760px) {
+  html:root main.fa > #proof.g-sec.g-proof { padding-top: 38px; }
+}
+@media (max-width: 760px) {
+  html:root main.fa > #method.g-sec.g-method { padding-bottom: 31px; }
+  html:root main.aud > .g-sec.aud-after { padding-bottom: 36px; }
+}
+@media (max-width: 1023px) {
+  html:root .aud .aud-faq > .faq-item { border: 0; border-top: 1px solid color-mix(in srgb, var(--ink) 12%, transparent); }
+  html:root .aud .aud-faq > .faq-item:last-child { border-bottom: 1px solid color-mix(in srgb, var(--ink) 12%, transparent); }
+}
+html:root .fa #proof .g-rates > .fa-bar.is-you > i { background: var(--orange); min-width: 4px; }
+@media (max-width: 760px) {
+  html:root .fa #proof .g-more-i > .g-rates { row-gap: 8px; }
+  html:root .fa #proof .g-case > .g-split + .g-claim, html:root .fa #proof .g-more-i > .g-rates + .g-claim { margin-top: 16px; }
+}
+html:root .fa .g-fold > summary::after, html:root .aud .faq-item summary::after {
+  transition: color .2s cubic-bezier(.2, 0, 0, 1), transform 160ms ease-out; }
+@media (prefers-reduced-motion: reduce) {
+  html:root .fa .g-fold > summary::after, html:root .aud .faq-item summary::after { transition: none; }
+}
+@media (max-width: 760px) {
+  html:root .fa .pv-top .pv-read i { color: var(--ink); font-weight: 500; box-shadow: none; padding: 0; min-height: 26px;
+    text-decoration: underline 2px #4E6FAE; text-underline-offset: 4px; text-decoration-skip-ink: none; }
+}
+@media (max-width: 760px) and (prefers-color-scheme: dark) {
+  html:root .fa .pv-top .pv-read i { text-decoration-color: #5B7DBE; }
+}
+@media (max-width: 760px) {
+  html:root .fa .g-plans > .g-plan > .g-q { margin-top: 6px; font-weight: 500; color: var(--ink); }
+}
+@media (max-width: 760px) {
+  html:root .fa #proof > .g-trio { margin-top: 67px; }
+  html:root .fa #proof .g-trio > .g-more { margin-top: 67px; }
+  html:root .fa #proof .g-more > .g-more-i + .g-more-i { margin-top: 67px; }
+  html:root main.fa > #get.g-look > .g-head > .g-aside { margin-top: 30px; }
+  html:root main.fa > #get.g-look > .pv.pv { margin-top: 36px; }
+  html:root main.fa > .g-sec.g-look .pv-top > .pv-label { margin-top: 71px; }
+}

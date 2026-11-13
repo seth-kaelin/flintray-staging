@@ -12,7 +12,8 @@
     const y = scrollY;
     if (jump) {
       const delta = y - previousY, sign = Math.sign(delta);
-      if (sign) {
+      if (Math.abs(delta) > innerHeight) { down = true; anchor = y; direction = 1; travel = 0; }
+      else if (sign) {
         if (sign !== direction) { direction = sign; travel = 0; }
         travel += Math.abs(delta);
         if (travel > 8) { down = direction > 0; anchor = y; }
@@ -44,7 +45,9 @@
   addEventListener("hashchange", () => { down = true; anchor = scrollY; previousY = scrollY; direction = 1; travel = 0; schedule(); });
   if (jump && nav) {
     let frames = 0, running = false;
+    const plate = document.querySelector("[data-final]");
     const measure = () => {
+      if (plate) jump.classList.toggle("is-ended", phone.matches && !jump.classList.contains("is-open") && !jump.contains(document.activeElement) && plate.getBoundingClientRect().top < jump.offsetHeight - 0.5);
       const j = jump.getBoundingClientRect(), n = nav.getBoundingClientRect();
       const overlap = j.top < n.bottom && j.bottom > n.top && n.bottom > 0;
       jump.classList.toggle("is-yielded", phone.matches && ((root.classList.contains("chrome-up") && j.top < n.height && j.bottom > 0) || overlap || root.classList.contains("menu-open")));
