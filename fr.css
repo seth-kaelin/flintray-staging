@@ -3037,3 +3037,109 @@ html:root body.rr main #picks > .findings .fd-list > li { padding-top: 0; paddin
 @media (max-width: 760px) {
   html:root main.aud .aud-request { background: none; box-shadow: none; border-top: 0; border-bottom: 0; }
 }
+@media (min-width: 761px) {
+  html:root .site-footer .foot-grid > *, html:root .site-footer .foot-grid > .foot-legal { padding-left: 0; }
+}
+@media (max-width: 760px) {
+  html:root main.fa > #pricing > .g-head { row-gap: 0; margin-bottom: 0; }
+  html:root main.fa > #pricing > .g-head > .g-aside { margin-top: 4px; }
+  html:root main.fa > #pricing > .g-plans { margin-top: 26px; row-gap: 40px; }
+}
+@media (max-width: 760px) {
+  html:root main.fa > .g-request > .g-request-copy > h2 { order: 1; }
+  html:root main.fa > .g-request > .g-request-copy > .g-request-more { order: 2; margin-top: 16px; }
+  html:root main.fa > .g-request > .g-form { order: 3; margin-top: 24px; }
+  html:root main.fa > .g-request > .g-request-copy > .g-book { order: 4; margin-top: 20px; padding-top: 0; border-top: 0; }
+  html:root main.fa > .g-sec.g-essays { padding-top: 64px; }
+}
+@media (max-width: 760px) {
+  html:root .fa .pv:not(.is-list) .pv-grid { grid-auto-flow: column; grid-template-columns: 88px; grid-auto-columns: 104px;
+    grid-template-rows: 32px repeat(4, 44px); gap: 4px; }
+  html:root .fa .pv:not(.is-list) .pv-grid .pv-h, html:root .fa .pv:not(.is-list) .pv-grid .pv-mk-h {
+    position: sticky; left: 0; z-index: 2; align-items: center; min-height: 0; padding: 0; background: var(--band);
+    box-shadow: 4px 0 0 var(--band); font: 500 14px/1.2 var(--sans); color: var(--ink); }
+  html:root .fa .pv:not(.is-list) .pv-grid .pv-mk-h { z-index: 3; align-items: flex-end; padding-bottom: 6px; font-weight: 400; color: var(--mute); }
+  html:root .fa .pv:not(.is-list) .pv-grid > .pv-mk:not(.pv-mk-h), html:root .fa .pv:not(.is-list) .pv-grid > .pv-mk:nth-of-type(n):not(.pv-mk-h) {
+    position: static; z-index: auto; align-items: flex-end; padding: 0 0 6px 10px; background: none; box-shadow: none;
+    font: 400 13px/1.2 var(--sans); color: var(--mute); }
+  html:root .fa .pv:not(.is-list) .pv-grid .pv-cell.tile[data-col] { height: 44px; }
+  html:root .fa .pv:not(.is-list) .pv-window > .g-after { margin-top: 28px; }
+}
+@media (min-width: 1024px) {
+  html:root .fa .g-plans { grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: 48px; }
+  html:root .fa .g-plans > .g-plan:first-of-type { padding-left: 24px; padding-right: 24px; }
+  html:root .fa .g-plans > .g-plan:first-of-type::before { inset: -3px 0 -24px 0; }
+}
+@media (max-width: 760px) {
+  html:root .fa .g-plans > .g-plan > .g-product { margin-top: 6px; }
+  html:root .fa .g-plans > .g-plan > .g-price { margin-top: 12px; }
+  html:root .fa .g-plans > .g-plan > .g-q { margin-top: 6px; }
+  html:root .fa .g-plans > .g-plan > .g-plan-more { margin-top: 16px; }
+}
+@media (min-width: 1280px) {
+  html:root .fa .pv:not(.is-list) .pv-window { grid-template-columns: 716px minmax(0, 1fr); column-gap: 64px; }
+  html:root .fa .pv:not(.is-list) .pv-grid { grid-template-columns: 104px repeat(4, 150px); }
+  html:root .fa .pv:not(.is-list) .pv-window > .pv-convo, html:root .fa .pv:not(.is-list) .pv-window > .g-after { padding-left: 0; }
+}
+@media (min-width: 761px) {
+  html:root .aud .aud-plans { column-gap: 48px; }
+}
+html:root .aud .aud-plans > li > .aud-plan-more > summary, html:root .aud .aud-plans > li > .aud-plan-more[open] > summary { font: 400 15px/1.45 var(--sans); color: color-mix(in srgb, var(--ink) 72%, transparent); }
+html:root .aud .aud-plans > li > .aud-plan-more > p { margin-top: 8px; max-width: 60ch; }
+@media (max-width: 760px) {
+  html:root .aud .aud-top { padding-bottom: 40px; }
+  html:root .aud .aud-top > .aud-lede { margin: 0; padding: 0; border-top: 0; background: none; color: var(--ink); font-size: 17px; line-height: 1.5; }
+  html:root main.aud > .g-sec.aud-pick { padding-top: 40px; }
+}
+@media (max-width: 760px) {
+  html:root .aud .aud-plan-grid { margin-bottom: 0; padding-bottom: 0; }
+  html:root .aud .aud-close-row { margin-top: 64px; }
+  html:root .aud .aud-close-row > .aud-policy { padding-top: 0; margin-top: 0; }
+  html:root main.aud > .g-sec.aud-qs { padding-top: 64px; }
+  html:root main.aud > .g-sec.aud-after { padding-top: 64px; padding-bottom: 64px; }
+}
+@media (min-width: 1024px) {
+  html:root main.aud > .aud-top { padding-top: 40px; padding-bottom: 32px; }
+  html:root .aud .aud-open > .aud-ray { margin-bottom: -100px; }
+  html:root main.aud > .g-sec.aud-pick { padding-top: 40px; }
+}
+@media (max-width: 760px) {
+  html:root body.rr main #matrix .mx { grid-template-columns: 72px repeat(4, minmax(0, 1fr)); grid-template-rows: none; grid-auto-rows: auto;
+    column-gap: 4px; row-gap: 0; }
+  html:root body.rr main #matrix .mx > .mr, html:root body.rr main #matrix .mx > .mr:not(.mr-head) { display: contents; }
+  html:root body.rr main #matrix .mx .mr:nth-child(n) > .mc:nth-child(n) { grid-column: auto; grid-row: auto; }
+  html:root body.rr main #matrix .mx .mr:not(.mr-head) > .ms {
+    position: static; width: auto; height: auto; margin: 0; padding: 0; overflow: visible; clip: auto; clip-path: none; white-space: nowrap;
+    display: flex; align-items: center; padding-bottom: 4px; font: 400 13px/1.2 var(--sans); color: color-mix(in srgb, var(--rp-ink, var(--ink)) 72%, transparent); }
+  html:root body.rr main #matrix .mx > .mr-head > p {
+    position: sticky; top: calc(var(--sample-top, 0px) + var(--jump-h, 48px)); z-index: 3; visibility: visible; width: auto; height: auto; margin: 0; padding: 10px 0 8px;
+    overflow: visible; clip: auto; clip-path: none; white-space: nowrap; display: flex; align-items: flex-end;
+    background: var(--black); box-shadow: 4px 0 0 var(--black), 0 1px 0 color-mix(in srgb, var(--rp-ink, var(--ink)) 10%, transparent), 4px 1px 0 color-mix(in srgb, var(--rp-ink, var(--ink)) 10%, transparent);
+    font: 500 13px/1.2 var(--sans); color: var(--rp-ink, var(--ink)); }
+  html:root body.rr main #matrix .mx > .mr-head > p > .vh-w { position: static; width: auto; height: auto; overflow: visible; clip: auto; clip-path: none;
+    font: inherit; color: color-mix(in srgb, var(--rp-ink, var(--ink)) 72%, transparent); }
+  html:root body.rr main #matrix .mx > .mr-head + .mr > * { margin-top: 4px; }
+  html:root.js body.rr main #matrix .pm-tabs { display: none; }
+}
+@media (min-width: 761px) {
+  html:root body.rr main #method .defs dd { font-size: 17px; line-height: 1.55; color: color-mix(in srgb, var(--rp-ink, var(--ink)) 78%, transparent); }
+  html:root body.rr main #method .defs dt { font-size: 18px; }
+  html:root body.rr main .src-sites ol.sites > li > :is(b, strong) { font-size: 17px; }
+  html:root body.rr main .src-sites ol.sites > li > strong { font-variant-numeric: tabular-nums; }
+  html:root body.rr main .src-sites ol.sites > li > em { font-size: 16px; color: color-mix(in srgb, var(--rp-ink, var(--ink)) 72%, transparent); }
+}
+@media (max-width: 760px) {
+  html:root body.rr main > section.ch + section.ch { padding-top: 56px; }
+  html:root body.rr main #sources { padding-top: 56px; }
+}
+@media (max-width: 760px) {
+  html:root body.rr main #matrix .mx-out .sum li .ty-bar { margin-left: 0; width: 100%; }
+  html:root body.rr main #matrix .mx-out .sum li .ty-bar::before { content: none; }
+}
+@media (min-width: 1280px) {
+  html:root body.rr .mr, html:root body.rr .mr-head { grid-template-columns: 120px repeat(4, 140px); }
+  html:root body.rr #matrix .fig { grid-template-columns: 692px minmax(0, 1fr); }
+}
+@media (max-width: 760px) {
+  html:root .aud .aud-plans > li > .aud-scope { font: 500 20px/1.3 var(--sans); color: var(--ink); }
+}
