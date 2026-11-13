@@ -3143,3 +3143,86 @@ html:root .aud .aud-plans > li > .aud-plan-more > p { margin-top: 8px; max-width
 @media (max-width: 760px) {
   html:root .aud .aud-plans > li > .aud-scope { font: 500 20px/1.3 var(--sans); color: var(--ink); }
 }
+@media (max-width: 760px) {
+  html:root .fa .g-plans > .g-plan > h3 { order: 1; }
+  html:root .fa .g-plans > .g-plan > .g-product { order: 2; margin-top: 6px; }
+  html:root .fa .g-plans > .g-plan > .g-q { order: 3; margin-top: 4px; }
+  html:root .fa .g-plans > .g-plan > .g-price { order: 4; margin-top: 12px; }
+  html:root .fa .g-plans > .g-plan > .g-plan-more { order: 5; margin-top: 0; }
+  html:root .fa .g-plans > .g-plan > :is(.g-product, .g-q) { font: 400 16px/1.5 var(--sans); color: color-mix(in srgb, var(--ink) 72%, transparent); }
+  html:root .fa .g-plan .g-plan-more > summary, html:root .fa .g-plan .g-plan-more[open] > summary {
+    min-height: 44px; margin: 0; padding: 0; border-top: 0; display: flex; align-items: flex-end; line-height: 1.2; }
+  html:root .fa .g-plan .g-plan-more > p { margin-top: 0; }
+}
+@media (max-width: 760px) {
+  html:root .fa .g-essays > .g-essay > .g-essay-fold > summary { padding-top: 24px; }
+  html:root .fa .g-essays > .g-view-row { margin-top: 10px; padding-top: 0; }
+}
+@media (max-width: 760px) {
+  html:root main.fa > section.g-hero > .g-hero-stage { padding-bottom: 24px; }
+  html:root main.fa > #get.g-sec.g-look { padding-top: 72px; }
+  html:root main.fa > #get.g-look > .g-head { margin-bottom: 0; }
+  html:root main.fa > #get.g-look > .pv.pv { margin-top: 22px; }
+  html:root main.fa > .g-sec.g-look .pv-top > .pv-label { margin-top: 78px; }
+  html:root main.fa > .g-sec.g-look .pv-top > .pv-read { margin-top: 12px; }
+}
+@media (max-width: 760px) {
+  html:root main.fa > #pricing.g-sec { padding-top: 36px; }
+}
+@media (max-width: 760px) {
+  html:root main.aud > .g-sec.aud-how { padding-top: 56px; }
+  html:root main.aud > .g-sec.aud-after { padding-top: 38px; }
+  html:root .aud .aud-close-row > .aud-policy { padding-bottom: 0; }
+  html:root .aud .aud-close-row > .aud-partners { margin-top: 24px; padding-top: 0; padding-bottom: 0; }
+  html:root .aud .aud-close-row > .aud-partners > a { margin-top: 0; }
+}
+html:root .aud .aud-plans > li > .aud-plan-more { display: contents; }
+html:root .aud .aud-plans > li > h3 { order: 1; }
+html:root .aud .aud-plans > li > .aud-plan-more > summary, html:root .aud .aud-plans > li > .aud-plan-more[open] > summary {
+  order: 2; min-height: 0; margin-top: 6px; padding: 0; border: 0; }
+html:root .aud .aud-plans > li > :is(.aud-scope, .price-line) { order: 3; margin-top: 12px; }
+html:root .aud .aud-plans > li > .aud-plan-more > p { margin-top: 16px; }
+html:root .aud .aud-plans > li > .aud-plan-more::details-content { order: 4; }
+@media (min-width: 761px) {
+  html:root .aud .aud-plans { grid-template-rows: none; }
+  html:root .aud .aud-plans > li, html:root .aud .aud-plans > li + li { grid-row: auto; grid-template-rows: none; align-content: start; }
+}
+html:root .aud .aud-plans > li > .aud-plan-more > summary, html:root .aud .aud-plans > li > .aud-plan-more[open] > summary {
+  font: 400 16px/1.5 var(--sans); color: color-mix(in srgb, var(--ink) 72%, transparent); }
+@media (min-width: 1024px) {
+  html:root main.aud > .g-sec.aud-how { padding-top: 78px; }
+  html:root main.aud > .g-sec.aud-how > .g-head { margin-bottom: 0; }
+  html:root main.aud > .g-sec.aud-how > .aud-steps { margin-top: 28px; }
+  html:root main.aud > .g-sec.aud-how > .aud-steps > li { padding-top: 32px; }
+}
+@media (min-width: 1024px) {
+  html:root main.aud > .aud-after > .g-head > h2 { grid-column: 1 / -1; grid-row: 1; justify-self: start; width: calc(50% - 24px); }
+}
+@media (max-width: 760px) {
+  html:root body.rr { --jump-h: 44px; }
+  html:root body.rr .jump, html:root body.rr nav.jump { --jump-h: 44px; height: 44px; }
+  html:root body.rr .jump.has-menu .jump-here { font-size: 15px; }
+  html:root body.rr .cta-bar { height: calc(64px + env(safe-area-inset-bottom, 0px)); padding-top: 8px; padding-bottom: calc(8px + env(safe-area-inset-bottom, 0px)); }
+  html:root body.rr .cta-bar a { min-height: 48px; }
+}
+@media (max-width: 760px) {
+  html:root body.rr main .closing { padding-top: 48px; padding-bottom: 48px; }
+}
+@media (max-width: 760px) {
+  html:root body.rr main #matrix .mx-turns { margin-top: 0; }
+}
+@media (max-width: 760px) {
+  html:root body.rr main #method dl { margin-top: 32px; row-gap: 24px; }
+  html:root body.rr main section.closing { margin-top: 40px; }
+}
+@media (min-width: 761px) {
+  html:root body.rr main dl.defs { column-gap: var(--gap); }
+  html:root body.rr main ol.sites { column-gap: var(--gap); }
+}
+@media (max-width: 1023px) {
+  html:root .aud .aud-plans > li > .aud-plan-more > summary, html:root .aud .aud-plans > li > .aud-plan-more[open] > summary {
+    min-height: 44px; display: flex; align-items: center; margin-top: -5px; margin-bottom: -11px; }
+}
+@media (max-width: 760px) {
+  html:root .fa .g-plans > .g-plan-all { margin-top: 12px; }
+}
