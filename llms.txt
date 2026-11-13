@@ -11,12 +11,12 @@
 
 ## Pages
 
-- [FlintRay](https://xvomiit.github.io/flintray-staging/): What FlintRay does, proof, operating models and the free audit.
-- [How we measure what AI tells your buyers](https://xvomiit.github.io/flintray-staging/how-it-works.html): The method: buyer situations, three-turn conversations, four assistants, what we count, sources, fixes.
-- [The FlintRay measurement standard](https://xvomiit.github.io/flintray-staging/measurement-standard.html): The public measurement standard: situations, turns, engines and models, classification, citations, retests, limitations.
-- [Free AI search audit: see which companies AI recommends to your buyers](https://xvomiit.github.io/flintray-staging/audit.html): What the free audit includes, a sample report, and how to request one.
-- [Insights on AI search for B2B companies](https://xvomiit.github.io/flintray-staging/insights.html): Index of FlintRay's insights on AI search.
-- [White-label AEO for agencies](https://xvomiit.github.io/flintray-staging/partners.html): White-label AEO for agencies and firms with clients.
-- [Privacy](https://xvomiit.github.io/flintray-staging/privacy.html): Privacy notice.
-- [How AI assistants decide which companies to recommend](https://xvomiit.github.io/flintray-staging/insights/how-ai-assistants-decide.html): What decides the short list of companies an AI assistant gives a buyer, and what a company can change.
-- [How much does AEO cost?](https://xvomiit.github.io/flintray-staging/insights/how-much-does-aeo-cost.html): What it costs in 2026 to find out where you stand in AI answers and to fix it, and what each price buys.
+- [FlintRay](https://seth-kaelin.github.io/flintray-staging/): What FlintRay does, proof, operating models and the free audit.
+- [How we measure what AI tells your buyers](https://seth-kaelin.github.io/flintray-staging/how-it-works.html): The method: buyer situations, three-turn conversations, four assistants, what we count, sources, fixes.
+- [The FlintRay measurement standard](https://seth-kaelin.github.io/flintray-staging/measurement-standard.html): The public measurement standard: situations, turns, engines and models, classification, citations, retests, limitations.
+- [Free AI search audit: see which companies AI recommends to your buyers](https://seth-kaelin.github.io/flintray-staging/audit.html): What the free audit includes, a sample report, and how to request one.
+- [Insights on AI search for B2B companies](https://seth-kaelin.github.io/flintray-staging/insights.html): Index of FlintRay's insights on AI search.
+- [White-label AEO for agencies](https://seth-kaelin.github.io/flintray-staging/partners.html): White-label AEO for agencies and firms with clients.
+- [Privacy](https://seth-kaelin.github.io/flintray-staging/privacy.html): Privacy notice.
+- [How AI assistants decide which companies to recommend](https://seth-kaelin.github.io/flintray-staging/insights/how-ai-assistants-decide.html): What decides the short list of companies an AI assistant gives a buyer, and what a company can change.
+- [How much does AEO cost?](https://seth-kaelin.github.io/flintray-staging/insights/how-much-does-aeo-cost.html): What it costs in 2026 to find out where you stand in AI answers and to fix it, and what each price buys.
