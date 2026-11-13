@@ -28,7 +28,9 @@
     root.classList.toggle("chrome-up", !hide);
     if (bar) {
       bar.classList.toggle("is-instant", !!jump || !past);
-      bar.classList.toggle("is-shown", hide && !blocked());
+      const shown = hide && !blocked();
+      root.classList.toggle("cta-bar-hidden", !shown);
+      bar.classList.toggle("is-shown", shown);
     }
   };
   if (bar && "IntersectionObserver" in window) {
@@ -82,7 +84,7 @@
       const reverse = event.shiftKey && document.activeElement === firstBody;
       if (!forward && !reverse) return;
       const target = jump.querySelector(forward ? ".jump-here" : ".jump-cta");
-      if (!target) return;
+      if (!target || (reverse && jump.classList.contains("is-ended"))) return;
       event.preventDefault();
       scrollTo({top:jump.getBoundingClientRect().top+scrollY,behavior:"instant"});
       down = true; anchor = scrollY; previousY = scrollY; direction = 1; travel = 9;

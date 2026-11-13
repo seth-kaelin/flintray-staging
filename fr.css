@@ -3297,3 +3297,27 @@ html:root .fa .g-fold > summary::after, html:root .aud .faq-item summary::after 
   html:root main.fa > #get.g-look > .pv.pv { margin-top: 36px; }
   html:root main.fa > .g-sec.g-look .pv-top > .pv-label { margin-top: 71px; }
 }
+@media (max-width: 430px) {
+  html:root .site-footer .foot-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 24px; }
+  html:root .site-footer .colophon { grid-column: 1 / -1; grid-row: 1; margin-bottom: 0; }
+  html:root .site-footer .foot-col { grid-column: auto; grid-row: 2; }
+  html:root .site-footer .foot-col:nth-child(2) { grid-column: 1; }
+  html:root .site-footer .foot-col:nth-child(3) { grid-column: 1 / -1; grid-row: 3; }
+  html:root .site-footer .foot-col:nth-child(4) { grid-column: 2; }
+  html:root .site-footer .foot-col a { white-space: nowrap; min-height: 44px; }
+  html:root .site-footer .foot-mail { grid-row: 4; }
+  html:root .site-footer .foot-legal { grid-row: 5; }
+}
+@media (max-width: 760px) {
+  html:root .fa #proof .g-more > .g-more-i:first-child .g-rates > .fa-bar:nth-child(2) > i { background: color-mix(in srgb, var(--ink) 45%, transparent); }
+}
+@media (max-width: 760px) {
+  html:root .fa .g-steps::before { grid-row: 1 / 7; }
+  html:root .fa .g-steps > li:last-child::before { transform: scale(1); }
+}
+@media (max-width: 760px) {
+  html:root.cta-bar-hidden .site-footer { padding-bottom: calc(40px + env(safe-area-inset-bottom, 0px)); }
+}
+@media (max-width: 760px) {
+  html:root body.rr main .jump.is-ended:not(.is-pinned) .jump-cta { visibility: hidden; transition: visibility 0s linear 200ms; }
+}
